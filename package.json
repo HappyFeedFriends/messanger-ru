@@ -1,0 +1,12 @@
+{
+  "name": "messanger-ru",
+  "version": "1.0.0",
+  "description": "messanger for diploma",
+  "scripts": {},
+  "author": "HappyFeedFriends",
+  "license": "ISC",
+  "dependencies": {
+    "react-redux": "^7.2.2",
+    "typescript": "^4.2.2"
+  }
+}
