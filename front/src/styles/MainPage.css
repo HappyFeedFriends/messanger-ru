@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+.MainPage{
+    width: 100%;
+    min-height: 100%; 
+    background: transparent radial-gradient(closest-side at 50% -17%, #5C7F91 0%, #2E4049 100%) 0% 0% no-repeat padding-box;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+.headerLeftBlock{
+    cursor: pointer;
+}
+
+header{
+    justify-content: space-between;
+    padding-right: 30px;
+    padding-left: 30px;
+    width: 100%;
+    z-index: 2000;
+
+}
+
+.header-MessangerLabel{
+    justify-self: center;
+    align-self: center;
+}
+
+.header-MessangerLabel span{
+    font: normal normal 900 26px/33px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #8DB0C1;
+    text-shadow: 0px 0px 6px #00000029;
+    opacity: 1;
+}
+
+.waves{
+    z-index: -20;
+    margin-top: -400px;
+}
+.links{
+    justify-content: center;
+    align-self: center;
+}
+.links li{
+    margin-right: 20px;
+    margin-left: 20px;
+}
+.links a::after{
+    content: '';
+    width: 0%;
+    opacity: 0;
+    align-self: center;
+    height: 1px;
+    background-color: white;
+    transition-property: width,opacity;
+    transition-duration: .33s;
+}
+.links a:hover::after{
+    width: 80%;
+    opacity: 1;
+}
+.links a{
+    font: normal normal 900 26px/33px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #8DB0C1;
+    text-shadow: 0px 0px 6px #00000029;
+    transition-property: color;
+    transition-duration: .33s;
+}
+
+.links a:hover{
+    color: #b3e2fa;
+}
+.ring{
+    width: 200px;
+    height: 200px;  
+    border-radius: 50%;
+    background: transparent linear-gradient(180deg, #52646DBF 0%, #1B272D00 89%, #00000000 100%) 0% 0% no-repeat padding-box;
+    box-shadow: 0px 0px 6px #00000029;
+    position: relative;
+    margin-right: 480px;
+}
+.ring.big{
+    width: 400px;
+    height: 400px;
+    z-index: 25;
+}
+.containerMainInfo{
+    justify-content: center;
+}
+
+.ring.small{
+    margin-left: -40px;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: -20px;
+    margin-left: 350px;
+}
+
+.headerRing{
+    font: normal normal 900 60px/75px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #A6C0CE;
+    text-shadow: 0px 0px 6px #A6C0CE61;
+    position: absolute;
+    right: 0;
+    width: 150%;
+    left: 120px;
+    top: 90px;
+    text-align: left;
+}
+
+.MainTextRing{
+    font: normal normal 900 25px/29px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #D3DEE3;
+    text-shadow: 0px 0px 6px #20202029;
+    position: absolute;
+    right: 0;
+    width: 150%;
+    left: 120px;
+    top: 220px;
+    text-align: left;
+}
+
+.advantagesBlock{
+    width: 100%;
+    background-color: #262D34;
+    margin-top: -250px;
+}
+
+.MainObject{
+    position: relative;   
+}
+
+.advantagesBlock > span{
+    font: normal normal 900 36px/45px Poiret One;
+    letter-spacing: 0px;
+    color: white;
+    text-shadow: 0px 0px 6px #A6C0CE61;
+}
+
+.AdvantageMainContainer{
+    padding: 120px;
+    padding-top: 60px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+}
+.imageAdvantage > img{
+    width: 100%;
+    height: 100%;
+}
+.AdvantageContainer{
+    width: 250px;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+.imageAdvantage{
+    width: 200px;
+    height: 200px; 
+    margin: 20px;
+}
+
+.cardHeader{
+    color: #A6C0CE;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 31px;
+    align-self: center;
+    justify-self: center;
+    font-family: 'Poiret One', cursive;
+}
+
+.cardDescription{
+    color: white;
+    font-size: 19px;
+    font-family: 'Poiret One', cursive;
+    letter-spacing: 1px; 
+}
+
+.cardDescription > span{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Poiret One', cursive;
+    letter-spacing: 1px;
+}

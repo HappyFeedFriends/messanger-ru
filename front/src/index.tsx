@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Router } from "react-router-dom";
+import { Provider } from 'react-redux'
+import { applyMiddleware, createStore } from 'redux'
+import { rootReducer } from './redux/rootReducer'
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { createBrowserHistory } from 'history'
+const history = createBrowserHistory({
+
+}) 
+
+const store = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(thunk),
+));
+// store.dispatch(InitAPP())
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <Router history={history}>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 
