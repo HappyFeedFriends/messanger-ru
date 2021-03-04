@@ -42,7 +42,7 @@ header{
 }
 
 .waves{
-    z-index: -20;
+    /* z-index: -20; */
     margin-top: -400px;
 }
 .links{
@@ -134,7 +134,7 @@ header{
 .advantagesBlock{
     width: 100%;
     background-color: #262D34;
-    margin-top: -250px;
+    margin-top: -150px;
 }
 
 .MainObject{
@@ -149,10 +149,12 @@ header{
 }
 
 .AdvantageMainContainer{
-    padding: 120px;
+    /* padding: 120px; */
     padding-top: 60px;
     flex-wrap: wrap;
     padding-bottom: 20px;
+    justify-content: center;
+    justify-items: center;
 }
 .imageAdvantage > img{
     width: 100%;
@@ -192,4 +194,119 @@ header{
     font-weight: bold;
     font-family: 'Poiret One', cursive;
     letter-spacing: 1px;
+}
+
+@media(max-width:1660px){
+    .ring.big{
+        width: 300px;
+        height: 300px;
+    }
+    .ring.small{
+        height: 150px;
+        width: 150px;
+    }
+    .MainTextRing{
+        font-size: 20px;
+        top: 130px;
+    }
+    .headerRing{
+        font-size: 50px;
+        top: 50px;
+    }
+}
+
+@media(max-width:1100px){
+    .ring.big{
+        width: 200px;
+        height: 200px;
+    }
+    .ring.small{
+        visibility: collapse;
+    }
+    .MainTextRing{
+        font: normal normal 900 15px/25px Source Sans Pro;
+        top: 100px;
+        left: 60px;
+        width: 200%;
+    }
+    .headerRing{
+        font-size: 40px;
+        top: 30px;
+        left: 60px;
+    }
+    .ring{
+        margin: 0;
+        margin-right: 200px;
+    }
+    .waves{
+        margin-top: -100px;
+    }
+}
+
+@media(max-width:940px){
+
+    .links a{
+        font-size: 20px;
+    }
+
+    .ring.big{
+        align-self: flex-start;
+        justify-self: flex-start;
+        position:initial;
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .ring.big > span{
+        width: 80%; 
+    }
+
+    .waves{
+        margin-top: 0px;
+    }
+    .advantagesBlock{
+        margin-top: -50px;
+    }
+    .ring{
+        margin: 0;
+    }
+}
+
+@media(max-width:550px){
+
+    .links a{
+        font-size: 15px;
+    }
+
+    .links li.HiddenPhone{
+        display: none;
+    }
+
+    .ring.big{
+        width: 150px;
+        height: 150px;
+    }
+    .ring.big > span{
+        width: 80%; 
+    }
+    .MainTextRing{
+        width: 200%;
+    }
+    .MainObject{
+        width: 100%;
+    }
+    .AdvantageMainContainer{
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+    .imageAdvantage{
+        width: 100%;
+        height: 100%;
+        padding: 20%;
+        margin-bottom: -50px;
+    }
+    .AdvantageContainer{
+        width: 100%;
+    }
 }
