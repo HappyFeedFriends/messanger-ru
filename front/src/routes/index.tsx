@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from '../components/LogoMini';
 import '../styles/MainPage.css';
 import {
-    Link,
+    NavLink,
   } from "react-router-dom";
 class MainPage extends React.Component{
     render(){
@@ -17,10 +17,10 @@ class MainPage extends React.Component{
                     </a>
                     <div className="links">
                         <ul className="row">
-                            <li><Link className="column" to="/" >Главная</Link></li>
-                            <li className="HiddenPhone" ><Link className="column" to="/about" >О нас</Link></li>
-                            <li className="HiddenPhone" ><Link className="column" to="/contacts" >Контакты</Link></li>
-                            <li><Link className="column" to="/signup" >Регистрация</Link></li>                            
+                            <li><NavLink className="column" to="/" >Главная</NavLink></li>
+                            <li className="HiddenPhone" ><NavLink className="column" to="/about" >О нас</NavLink></li>
+                            <li className="HiddenPhone" ><NavLink className="column" to="/messages" >Контакты</NavLink></li>
+                            <li><NavLink className="column" to="/signup" >Регистрация</NavLink></li>                            
                         </ul>
                     </div>
                 </header>

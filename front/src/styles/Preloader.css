@@ -1,0 +1,14 @@
+.PreloadContainer{
+    width: 100vw;
+    height: 100vh;
+    z-index: 200;
+    background-color: #262D34;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.Shark{
+    width: 150px;
+    height: 150px;
+}
