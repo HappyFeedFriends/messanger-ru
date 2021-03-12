@@ -17,6 +17,8 @@ body {
   box-sizing: border-box;
   list-style: none;
   font-family: inherit;
+  border: none;
+  outline: none;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -26,4 +28,45 @@ code {
 #root{
   width: 100%;
   min-height: 100%;
+}
+.tooltipGlobal{
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+.tooltipGlobal::after {
+  clip-path: polygon(0% 0%, 100% 0, 100% 75%, 57% 75%, 50% 100%, 38% 75%, 0% 75%);
+  background-color: rgb(27, 25, 25);
+  color: var(--default-color-messange-hover);
+	content: attr(data-tooltip); 
+  border: 1px solid black;
+  box-shadow: 0px 0px 6px #00000029;
+	opacity: 0; 
+	position: absolute;
+	visibility: hidden; 
+  padding: 8px;
+	transition: all 0.4s ease-in-out; 
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Source Sans Pro;
+  color: var(--default-color-messange-hover);
+	margin-top: -60px;
+}
+		
+.tooltipGlobal.bottomTooltip::after{
+	margin-top: 0;
+  clip-path: polygon(0 100%, 100% 100%, 99% 18%, 61% 17%, 49% 0, 37% 17%, 0 18%);
+	margin-bottom: -60px;
+}
+
+.tooltipGlobal:hover::after {
+	opacity: 1;
+	visibility: visible;
+}
+
+.MessageContainer{
+  width: 100%;
 }

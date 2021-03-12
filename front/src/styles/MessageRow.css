@@ -1,0 +1,43 @@
+.MessageRow > img{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+}
+.isDuplicate .MessageContent{
+    margin-left: 65px;
+}
+.MessageRow{
+    margin-top: 10px;
+    padding: 4px;
+}
+
+.MessageRow.isDuplicate{
+    margin-top: 0;
+    margin-bottom: 0; 
+    
+}
+
+.MessageContent{
+    margin-left: 10px;
+    justify-content: space-around;
+}
+
+.MessagesBlocksMain > div > div > *{
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.MessageContent > h2{
+    font-size: 16px;
+    color: white;
+}
+.MessageContent > * {
+    text-align: left;
+}
+
+.MessageRow:hover{
+    background-color: var(--default-color-messange-background);
+}
+
+.messageContent{
+    color: rgb(190, 190, 190);
+}
