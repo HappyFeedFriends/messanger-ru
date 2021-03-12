@@ -32,6 +32,8 @@
 }
 .MessageContent > * {
     text-align: left;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
 }
 
 .MessageRow:hover{
@@ -41,3 +43,4 @@
 .messageContent{
     color: rgb(190, 190, 190);
 }
+

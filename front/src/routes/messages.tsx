@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import MessageRow from '../components/MessageRow';
-import Preloader from '../components/Preloader';
+// import Preloader from '../components/Preloader';
 import UserRow from '../components/userRow';
 import '../styles/MessagesRouter.css';
+import TextareaAutosize from 'react-textarea-autosize';
 
 class MessagesRouter extends React.Component{
     render(){
@@ -149,16 +149,42 @@ class MessagesRouter extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            <div className="InputMessage">
-
+                            <div className="InputMessage row">
+                                <div className="InputMessageBlock row">
+                                    <button className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></button>
+                                    <TextareaAutosize spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
+                                    <div className="emoji_smile_icon_vector"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="participants_block">
-
+                        <div className="participants_block column">
+                            <div className="ParticianitsHeader row">
+                                <span>Участники — 4</span>
+                            </div>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
                         </div>
                     </div>
-                
+                 
                 </div>
             </div>
         );  

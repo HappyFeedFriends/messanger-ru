@@ -2,8 +2,8 @@
     width: 100%;
     height: 100vh;
     background-color: #262D34;
-    
     overflow: hidden;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 
@@ -76,7 +76,7 @@
 }
 
 .Messages-Friends{
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .searchContainer > input{
@@ -197,10 +197,22 @@
     overflow: hidden scroll;
 }
 
+.participants_block::-webkit-scrollbar{
+    width: 7px;
+    background-color: rgb(27, 25, 25);
+}
+
+.participants_block::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:black;
+}
+
 .messageContainer::-webkit-scrollbar{
     width: 3px;
     background-color: rgb(27, 25, 25);
 }
+
 
 .messageContainer::-webkit-scrollbar-thumb {
     -webkit-border-radius: 0px;
@@ -242,10 +254,10 @@
 
 .headerMainText span{
     color: white;
-    font-family: Source Sans Pro;
+    /* font-family: Source Sans Pro; */
     letter-spacing: 1px;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 21px;
 }
 
 .OnlineStatusMessages{
@@ -372,8 +384,9 @@ input:focus{
     justify-content: flex-end;
 }
 .participants_block{
-    width: 265px;
-    background-color: red;
+    width: 255px;
+    background-color: rgb(41, 40, 40);
+    padding: 20px;
 }
 
 .MessagesStartContainer{
@@ -391,8 +404,12 @@ input:focus{
 }
 
 .InputMessage{
-    height: 100px;
-    background-color: violet;
+    margin-top: 20px;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    align-items: center;
+    /* background-color: violet; */
 }
 
 .MessagesStartContainer > span{
@@ -426,4 +443,83 @@ input:focus{
     -webkit-border-radius: 0px;
     border-radius: 25px;
     background-color:black;
+}
+
+
+.InputMessageBlock{
+    /* justify-content: center; */
+    /* align-items: center; */
+    padding:15px;
+    /* padding-bottom: 0; */
+    margin-bottom: 10px;
+}
+.InputFile{
+    width: 24px;
+    height: 24px;
+}
+.InputMessageBlock > button{
+    cursor: pointer;
+    background: transparent;
+}
+.InputMessageBlock {
+    overflow-y: scroll;
+}
+.InputMessageBlock > * {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+.InputMessageBlock{
+    width: 98%;
+    min-height: 50px;
+    max-height: 200px;
+    border-radius: 10px;
+    background-color: #202427;
+}
+
+.InputText{
+    width: 100%;
+    border-radius: 5px;
+    background-color: transparent;
+    color: rgb(190, 190, 190);
+    font-size: 18px;
+    overflow-wrap: break-word;
+    overflow-y: hidden;
+    resize:none;
+    position: relative;
+    /* font-family: 'Poiret One', cursive; */
+}
+
+.InputMessageBlock::-webkit-scrollbar{
+    width: 7px;
+    background-color: rgb(27, 25, 25);
+}
+
+.InputMessageBlock::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px; 
+    background-color:black;
+}
+
+.emoji_smile_icon_vector{
+    width: 24px;
+    height: 24px;
+    background-image: url('../images/smile_icon.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin-right: 0;
+} 
+.participants_block{
+    padding-bottom: 5px;
+    padding-top: 25px;
+    font-weight: bold;
+    overflow-y: scroll;
+}
+.ParticianitsHeader > span{
+    color: var(--default-color-messange);
+    text-transform: uppercase;
+    text-align: left;
+    font-family: Source Sans Pro;
+    letter-spacing: 1px;
+    font-size: 13px;
+
 }
