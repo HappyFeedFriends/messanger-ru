@@ -17,7 +17,7 @@ app.use(cookieParser('dev'));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(loggerMiddleware)
-app.use('/api',routerAPI); 
+app.use('/api',routerAPI);
 
 app.use(function(req, res, next){
     res.sendStatus(404);
