@@ -10,8 +10,7 @@ AuthRouter.get('/user_data',async (req : Request,res : Response) => {
 
     const data = await knexQuery('users').select('*').where('id',2).first()
     res.cookie('auth',jwt.sign({id:data.id}, process.env.SECRET))
-
-    res.redirect('/api/user_data')
+    res.redirect('http://localhost:3000/messages')
 })  
    
 export default AuthRouter;  

@@ -1,12 +1,42 @@
 import React from 'react';
 import MessageRow from '../components/MessageRow';
-// import Preloader from '../components/Preloader';
 import UserRow from '../components/userRow';
 import '../styles/MessagesRouter.css';
 import TextareaAutosize from 'react-textarea-autosize';
+import Preloader from '../components/Preloader';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '../redux/rootReducer';
+import { AppUpdateLoadingAction } from '../redux/actions';
+import { RouteComponentProps } from 'react-router-dom';
 
-class MessagesRouter extends React.Component{
+ 
+class MessagesRouter extends React.Component<PropsFromRedux>{
+
+    componentDidMount(){
+        fetch('http://localhost:8080/api/user_data',{
+            credentials : 'include',
+        })
+        .then(res => {
+            if (res.status !== 200){
+                throw new Error(res.status.toString())
+            }
+            return res;
+        })
+        .then(res => res.json()) 
+        .then(res => {
+            this.props.AppUpdateLoadingAction(!res.status)
+        })
+        .catch(err => {
+            this.props.history.push('/signin')
+        })
+    }
+
     render(){
+
+        if (this.props.IsLoading){
+            return <Preloader/>
+        }
+
         return (
             <div className="MessagesBlock row">
                 <div className="column leftElement">
@@ -182,6 +212,86 @@ class MessagesRouter extends React.Component{
                             <UserRow/>
                             <UserRow/>
                             <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
+                            <UserRow/>
                         </div>
                     </div>
                  
@@ -190,5 +300,18 @@ class MessagesRouter extends React.Component{
         );  
     }
 }
- 
-export default MessagesRouter;
+
+const mapStateToProps = (state : RootState) => {
+    return { 
+        IsLoading:state.APPReducer.AppLoading, 
+    };
+}
+
+const connector = connect(mapStateToProps,{
+        AppUpdateLoadingAction,        
+})
+type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
+
+export default connector(MessagesRouter)
+
+// export default MessagesRouter;

@@ -9,6 +9,7 @@ import {
 import MainPage from './routes';
 import Error_404 from './routes/404';
 import MessagesRouter from './routes/messages';
+import signIn from './routes/signin';
 
 class App extends React.Component {
 
@@ -19,6 +20,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={MainPage} />
             <Route exact path='/messages' component={MessagesRouter} />
+            <Route exact path='/signin' component={signIn} />
             <Route path="*" component={Error_404}/>
           </Switch>
         </div>

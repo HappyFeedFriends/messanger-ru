@@ -1,10 +1,26 @@
 import React from 'react';
 import '../styles/Preloader.css';
 class Preloader extends React.Component{
+
+    GetRandomTip(){
+
+        const arr = [
+            'А вы знали, что акулы очень добрые существа?',
+            'Если вы голодны - поешьте.',
+            'Если хочешь спать - поспи.',
+            'Влюблённая акула уже не хищник.',
+            'Не наводите суету.',
+            'ОООООО Повезло - Повезло.',
+        ]   
+
+        return arr.sort((a,b) => Math.random() - 0.5)[0] 
+    }
+
     render(){
         return (
             <div className="PreloadContainer column">
                 <img src="./images/preloader.gif" alt="" className="Shark"/>
+                <span>{this.GetRandomTip()}</span>
             </div>
         );  
     }
