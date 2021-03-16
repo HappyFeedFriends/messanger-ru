@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
 import { ChannelListTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ResponseDataExample,ResponseUserData,UserDataResponse } from '../../../global/types';
+import { ResponseDataExample,ResponseUserData,UserDataResponse,ChannelStorage } from '../../../global/types';
 const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 
 const routerAPI = express.Router()
@@ -34,17 +34,26 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
   const users = await knexQuery({
     users : 'users',
     images : 'images',
-  }).select('users.username','users.id','images.Url').whereIn('users.id',query_user_channels).where('images.id',knexQuery.ref('users.imageID'))
+  })
+  .select('users.username','users.id','images.Url')
+  .whereIn('users.id',query_user_channels)
+  .where('images.id',knexQuery.ref('users.imageID'))
+
+  const channels : ChannelStorage =  Object.values(await knexQuery('channellist').select('UserID','MessageChannelID').whereIn('MessageChannelID',query_channels).distinctOn('UserID')).reduce((prev,current) => {
+    prev[current.MessageChannelID] = prev[current.MessageChannelID] || []
+    prev[current.MessageChannelID].push(current.UserID)
+    return prev;
+  },{})
 
   const obj = {
-    UserName : (await knexQuery<UsersTable>('users').select('*').where('id',id).first()).username,
+    id : id,
     Channels : Object.values(await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)).reduce((prev,current) => {
       prev.push(current.MessageChannelID)
       return prev
     },[]),
-    users : users,
-  } as UserDataResponse 
-  
+    Users : users,
+    channelsStorage : channels,
+  } as UserDataResponse   
   
 
   data.data.push( obj )

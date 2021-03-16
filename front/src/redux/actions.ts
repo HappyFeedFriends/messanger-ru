@@ -1,5 +1,6 @@
-import { APP_LOADING_STATE, APP_USER_INIT_STATE, MessageInterface, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
-
+import { UserLocalData } from "../../../global/types";
+import { APP_LOADING_STATE, APP_USER_INIT_STATE, InitStorageInterface, InitStorageTypes, MessageInterface, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, STORAGE_INIT, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
+ 
 export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{
     return {
         type: APP_LOADING_STATE,
@@ -25,5 +26,12 @@ export function MessageUpdateForChatAction(state : {id : number,content : Messag
     return {
         type: MESSAGE_CHANNEL_MESSAGES,
         payload:state,
+    }
+}
+
+export function InitStorageAction(data : InitStorageInterface) : InitStorageTypes{
+    return {
+        type: STORAGE_INIT,
+        payload:data,
     }
 }

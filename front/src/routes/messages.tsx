@@ -6,25 +6,40 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction, AppUserDataAction, MessageSelectAction } from '../redux/actions';
+import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, MessageSelectAction } from '../redux/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
+import Participants from '../components/participants';
 
 interface MessageRouterParams{
     ChannelID? : string
 }
  
-class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean },RouteComponentProps<MessageRouterParams>>{
+class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean }>{
+
+    params : MessageRouterParams
 
     constructor(props : PropsFromRedux){
         super(props);
         this.state = {
             transitionHidden : false,
         }
-        
-        // const params = (this.props.match.params as MessageRouterParams)
-        // console.log(params.ChannelID) channel id
+
+        this.params = (this.props.match.params as MessageRouterParams)
+
+    }
+
+    GetUserDataByID(id : number){
+        return this.props.Storage.users.find((value) => value.id === id)
+    }
+
+    shouldComponentUpdate(nextProps : PropsFromRedux){
+
+        console.log(nextProps)
+
+        this.params = (nextProps.match.params as MessageRouterParams)
+        return true;
     }
 
     componentDidMount(){
@@ -40,9 +55,13 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         .then(res => res.json()) 
         .then((res : ResponseUserData )=> {
             if (!res.data[0]) return;
+            this.props.InitStorageAction({
+                users : res.data[0].Users,
+                channels : res.data[0].channelsStorage
+            })
 
             this.props.AppUserDataAction({
-                userName : res.data[0].UserName,
+                id : res.data[0].id,
                 Channels : res.data[0].Channels,
             })
             // this
@@ -63,9 +82,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 
     render(){
 
-        // if (this.props.IsLoading){
-        //     return <Preloader transitionHidden={this.state.transitionHidden}/>
-        // }
+        console.log(this.params)
 
         return (
             <React.StrictMode>
@@ -91,7 +108,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             </div>
                             <div className="column messageContainer">
                                 {this.props.UserData?.Channels?.map((channelID,index) => {
-                                   return <ChatRow to={'channel/' + channelID} key={'chat_' + channelID } />
+                                   return <ChatRow channel_users={this.props.Storage.channels[channelID]} to={'/channel/' + channelID} key={'chat_' + channelID } />
                                 })}
                             </div>
                         </div>
@@ -102,7 +119,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
                             <div className="column userInfo">
                                 <div className="column">
-                                    <span>{this.props.UserData.userName}</span>
+                                    <span>{this.GetUserDataByID(this.props.UserData?.id)?.username}</span>
                                     <span>В сети</span>
                                 </div>
                             </div>
@@ -135,7 +152,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
                     <div className="row mainContent">
                         <div className="messagesContainerMain column">
@@ -203,12 +220,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             </div>
                         </div>
 
-                        <div className="participants_block column">
-                            <div className="ParticianitsHeader row">
-                                <span>Участники — 4</span>
-                            </div>
-                            <UserRow/>
-                        </div>
+                        {this.params.ChannelID && this.props.Storage.channels[this.params.ChannelID] 
+                        && <Participants channels={this.props.Storage.channels[this.params.ChannelID] } />}
                     </div>
                  
                 </div>
@@ -222,13 +235,15 @@ const mapStateToProps = (state : RootState) => {
     return { 
         IsLoading:state.APPReducer.AppLoading,
         UserData : state.APPReducer.user, 
+        Storage : state.StorageReducer
     };
 }
 
 const connector = connect(mapStateToProps,{
         AppUpdateLoadingAction,
         AppUserDataAction, 
-        MessageSelectAction,   
+        MessageSelectAction,  
+        InitStorageAction, 
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

@@ -175,18 +175,6 @@
     justify-self: flex-start;
     margin-left: 10px;
 }
-.userName_status span{
-    font-size: 15px;
-    /* width: 100%; */
-    /* font-family: Source Sans Pro; */
-    letter-spacing: 1px;
-    font-weight: bold;
-    color: var(--default-color-messange);  
-    overflow: hidden hidden;
-    text-overflow:ellipsis;
-    text-align: left;
-    cursor: default;
-}
 
 .userRow img{
     width: 35px;

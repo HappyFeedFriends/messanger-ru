@@ -1,21 +1,56 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { UserLocalData } from '../../../global/types';
+import { RootState } from '../redux/rootReducer';
 import '../styles/userRow.css';
-class UserRow extends React.Component{
+
+interface UserRowProps {
+    id : number,
+    isOnline? : boolean,
+}
+
+interface UserRowStates{
+    user : UserLocalData,
+}
+
+class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
+
+    constructor(props : PropsFromRedux){
+        super(props)
+        this.state = {
+            user:  this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, }
+        }
+    }
+
+    GetUserDataByID(id : number){
+        return this.props.Storage.users.find((value) => value.id === id)
+    }
+
     render(){
         return (
             <div className="row userRow" >
                 <div className="ImageContainer">
-                    <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
+                    <img src={this.state.user.Url} alt="2"/>
                     <div className="OnlineStatusContainer">
                         <div className="OnlineStatus IsOnline" />
                     </div>
                 </div>
                 <div className="column userName_status">
-                    <span>HappyFeedFriends</span>
+                    <span>{this.state.user.username}</span>
                 </div>
             </div>
         );  
     }
 }
 
-export default UserRow;
+const mapStateToProps = (state : RootState) => {
+    return { 
+        Storage : state.StorageReducer
+    };
+}
+
+const connector = connect(mapStateToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector> & UserRowProps
+
+export default connector(UserRow)

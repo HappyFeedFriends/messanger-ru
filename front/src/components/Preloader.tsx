@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/Preloader.css';
+import gif from '../images/preloader.gif'
 
 interface PreloadProp{
     transitionHidden : boolean,
@@ -22,9 +23,9 @@ class Preloader extends React.Component<PreloadProp>{
     }
 
     render(){
-        return (
+        return ( 
             <div  className={"PreloadContainer column" + (this.props.transitionHidden ? ' hidden' : "")} >
-                <img src="./images/preloader.gif" alt="" className="Shark"/>
+                <img src={gif} alt="" className="Shark"/>
                 <span>{this.GetRandomTip()}</span>
             </div>
         );  

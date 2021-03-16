@@ -1,8 +1,12 @@
+import { UserLocalData,ChannelStorage } from "../../../global/types"
+
 export const APP_LOADING_STATE = 'APP_LOADING_STATE'
 export const APP_USER_INIT_STATE = 'APP_USER_INIT_STATE'
 
 export const MESSAGE_CHANNEL_ID_STATE = 'MESSAGE_CHANNEL_ID_STATE'
 export const MESSAGE_CHANNEL_MESSAGES = 'MESSAGE_CHANNEL_MESSAGES'
+
+export const STORAGE_INIT = 'STORAGE_USERS_INIT'
 
 interface ActionRedux{
     type : string,
@@ -31,16 +35,20 @@ interface UpdateMessagesForChat extends ActionRedux {
         content : MessageInterface[],
     }
 }
-
-export interface UserData{
-    userName : string,   
-    Channels : Array<number>, 
+ 
+interface InitStorage extends ActionRedux {
+    type: typeof STORAGE_INIT
+    payload: InitStorageInterface
 }
 
-export interface UserLocalData{
-    username : string,
+export interface InitStorageInterface{
+    users : UserLocalData[],
+    channels : ChannelStorage,
+}
+
+export interface UserData{
     id : number,
-    Url : string, // avatar_url
+    Channels : Array<number>, 
 }
 
 export interface MessageInterface{
@@ -55,15 +63,26 @@ export interface AppRedux{
     user : UserData,
 }
 
+export interface StorageRedux {
+    users : UserLocalData[],
+    channels : ChannelStorage,
+}
+
 export interface MessageRedux{
     SelectMessageID : number,
     MessagesByID : {
         [channelID : number] : MessageInterface[],
     },
 }
+
+
 export type UpdateMessageChannelTypes = UpdateMessageChannel
 export type UpdateMessagesForChatTypes = UpdateMessagesForChat
 export type UpdateMessageState = UpdateMessageChannelTypes | UpdateMessagesForChatTypes
+
+export type InitStorageTypes = InitStorage;
+export type UpdateStorageState = InitStorageTypes
+
 
 
 export type UpdateLoadingTypes = UpdateLoadingState
