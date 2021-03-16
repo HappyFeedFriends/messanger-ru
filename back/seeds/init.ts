@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import faker from 'faker';
 
 export async function seed(knex: Knex): Promise<void> {
     // Deletes ALL existing entries
@@ -13,7 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
     const channels = []
     for (let i = 0; i < 1000; i++) {
         channels.push({
-            created_at : new Date(),
+            created_at : faker.date.past(),
         }) 
     }
 
@@ -22,9 +23,16 @@ export async function seed(knex: Knex): Promise<void> {
     const min = 1
     const max = 1000
 
-    await knex("images").insert({
-        Url : 'https://sun9-31.userapi.com/impf/oq21VXB3oLdfGeC1GqwCGudVPlPPohqwFeKRuA/dSlFCSsz9UA.jpg?size=1144x1156&quality=96&sign=911e4bf785524d1e7eb1eb421a39aaa8&type=album',
-    }) 
+    const avatars = []
+
+    for (let i = 0; i < 150; i++) {
+        avatars.push({
+            Url : faker.image.image(),
+        })
+        
+    }
+
+    await knex('images').insert(avatars)
     await knex("messagechannels").insert(channels)
     for (let i = 0; i < 1; i++) {
 
@@ -32,8 +40,8 @@ export async function seed(knex: Knex): Promise<void> {
 
         for (let _i = 1; _i < 10000; _i++) {
             channelLists.push({
-                UserID : _i + i * 500,
-                MessageChannelID : Math.round(min - 0.5 + Math.random() * (max - min + 1)),
+                UserID : faker.random.number({max : _i + i * 500,min : i * 500 + 1}),
+                MessageChannelID : faker.random.number({max : 1000,min : 1}) ,
             })
             
         }
@@ -41,9 +49,10 @@ export async function seed(knex: Knex): Promise<void> {
         const users = []
         for (let _i = 0; _i < 10000; _i++) {
             users.push({
-                username : 'happy' + _i + i * 500,
-                password : 'qwerty',
-                email : 'test@mail.ru',
+                username : faker.name.findName(),
+                password : faker.internet.password(16),
+                email : faker.internet.email(),
+                imageID : faker.random.number({min : 1, max : 150}),
             })
         }
         await knex('users').insert(users);

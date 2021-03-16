@@ -22,6 +22,16 @@ export interface UserLocalData{
     Url : string,
 }
 
+export interface MessageInterface{
+    created_at : Date,
+    id : number,
+    content : string,
+    AuthorID : number,
+}
+
 export interface ChannelStorage{
-    [storageID : string] : number[],
+    [storageID : string] : {
+        users : number[],
+        messages : MessageInterface[],
+    }
 }

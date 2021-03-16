@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import MessageRow from '../components/MessageRow';
 import UserRow from '../components/userRow';
 import '../styles/MessagesRouter.css';
-import TextareaAutosize from 'react-textarea-autosize';
+import TextareaAutosize, { TextareaAutosizeProps } from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
@@ -17,6 +17,8 @@ interface MessageRouterParams{
 }
  
 class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean }>{
+
+    messageInput : string = ''
 
     constructor(props : PropsFromRedux){
         super(props);
@@ -67,6 +69,22 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         })
     }
 
+    OnSendMessage(){
+        
+        
+
+    }
+
+    onKeyPressed(e : React.KeyboardEvent){
+        if (e.key.toLowerCase() === 'enter'){
+            this.OnSendMessage();
+        }
+    }
+
+    onChangeMessage(event : React.ChangeEvent<HTMLTextAreaElement>){
+        this.messageInput = event.currentTarget.value 
+    }
+
     render(){
 
         const params = (this.props.match.params as MessageRouterParams)
@@ -95,7 +113,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             </div>
                             <div className="column messageContainer">
                                 {this.props.UserData?.Channels?.map((channelID,index) => {
-                                   return <ChatRow channel_users={this.props.Storage.channels[channelID]} to={'/channel/' + channelID} key={'chat_' + channelID } />
+                                   return <ChatRow channel_users={this.props.Storage.channels[channelID].users} to={'/channel/' + channelID} key={'chat_' + channelID } />
                                 })}
                             </div>
                         </div>
@@ -201,14 +219,14 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             <div className="InputMessage row">
                                 <div className="InputMessageBlock row">
                                     <button className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></button>
-                                    <TextareaAutosize spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
+                                    <TextareaAutosize onChange={(e) => this.onChangeMessage(e)} onKeyDown={this.onKeyPressed} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
                                     <div className="emoji_smile_icon_vector"></div>
                                 </div>
                             </div>
                         </div>
 
                         {params.ChannelID && this.props.Storage.channels[params.ChannelID] 
-                        && <Participants channels={this.props.Storage.channels[params.ChannelID] } />}
+                        && <Participants channels={this.props.Storage.channels[params.ChannelID].users } />}
                     </div>
                  
                 </div>
