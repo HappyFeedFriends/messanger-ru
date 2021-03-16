@@ -19,7 +19,7 @@ class App extends React.Component {
         <div className="App">
           <Switch>
             <Route exact path="/" component={MainPage} />
-            <Route exact path='/messages' component={MessagesRouter} />
+            <Route exact path='/channel/:ChannelID?' component={MessagesRouter} />
             <Route exact path='/signin' component={signIn} />
             <Route path="*" component={Error_404}/>
           </Switch>

@@ -11,6 +11,8 @@
     "exclude": ["migrations","dist"],
     "include": [
         "./src/**/*",
-        "../global/types.ts"
     ],
+    "files": [
+        "../global/types.ts"
+    ]
 }

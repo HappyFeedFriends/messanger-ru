@@ -6,11 +6,26 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction } from '../redux/actions';
+import { AppUpdateLoadingAction, AppUserDataAction, MessageSelectAction } from '../redux/actions';
 import { RouteComponentProps } from 'react-router-dom';
+import { ResponseUserData } from '../../../global/types';
+import ChatRow from '../components/chatRow';
 
+interface MessageRouterParams{
+    ChannelID? : string
+}
  
-class MessagesRouter extends React.Component<PropsFromRedux>{
+class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean },RouteComponentProps<MessageRouterParams>>{
+
+    constructor(props : PropsFromRedux){
+        super(props);
+        this.state = {
+            transitionHidden : false,
+        }
+        
+        // const params = (this.props.match.params as MessageRouterParams)
+        // console.log(params.ChannelID) channel id
+    }
 
     componentDidMount(){
         fetch('http://localhost:8080/api/user_data',{
@@ -21,10 +36,25 @@ class MessagesRouter extends React.Component<PropsFromRedux>{
                 throw new Error(res.status.toString())
             }
             return res;
-        })
+        }) 
         .then(res => res.json()) 
-        .then(res => {
-            this.props.AppUpdateLoadingAction(!res.status)
+        .then((res : ResponseUserData )=> {
+            if (!res.data[0]) return;
+
+            this.props.AppUserDataAction({
+                userName : res.data[0].UserName,
+                Channels : res.data[0].Channels,
+            })
+            // this
+            // wtf
+            setTimeout(() => {
+                setTimeout(() => {
+                    this.props.AppUpdateLoadingAction(!res.status)
+                }, 600);
+                this.setState({
+                    transitionHidden : true,
+                })
+            },1500 - 600)
         })
         .catch(err => {
             this.props.history.push('/signin')
@@ -33,11 +63,13 @@ class MessagesRouter extends React.Component<PropsFromRedux>{
 
     render(){
 
-        if (this.props.IsLoading){
-            return <Preloader/>
-        }
+        // if (this.props.IsLoading){
+        //     return <Preloader transitionHidden={this.state.transitionHidden}/>
+        // }
 
         return (
+            <React.StrictMode>
+            {this.props.IsLoading ? <Preloader transitionHidden={this.state.transitionHidden}/> : ''}
             <div className="MessagesBlock row">
                 <div className="column leftElement">
                     <div className="headerBlock searchContainer row" >
@@ -58,38 +90,21 @@ class MessagesRouter extends React.Component<PropsFromRedux>{
                                 </div>
                             </div>
                             <div className="column messageContainer">
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
-                                <UserRow />
+                                {this.props.UserData?.Channels?.map((channelID,index) => {
+                                   return <ChatRow to={'channel/' + channelID} key={'chat_' + channelID } />
+                                })}
                             </div>
                         </div>
 
                     </div>
                     <div className="row userBottomElement">
-                        <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
-                        <div className="column">
-                            <div className="column userName_status">
-                                <span>HappyFeedFriends</span>
-                                <span>Статус</span>
+                        <div className="row" >
+                            <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
+                            <div className="column userInfo">
+                                <div className="column">
+                                    <span>{this.props.UserData.userName}</span>
+                                    <span>В сети</span>
+                                </div>
                             </div>
                         </div>
                         <div className="row buttonsRight">
@@ -108,7 +123,7 @@ class MessagesRouter extends React.Component<PropsFromRedux>{
 
                         <div className="toolbar row">
                             <button data-tooltip="Добавить в друзья" className="addFriendInChat row tooltipGlobal bottomTooltip">
-                                <div><svg x="0" y="0" className="icon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" fillRule="evenodd" clip-rule="evenodd" d="M21 3H24V5H21V8H19V5H16V3H19V0H21V3ZM10 12C12.205 12 14 10.205 14 8C14 5.795 12.205 4 10 4C7.795 4 6 5.795 6 8C6 10.205 7.795 12 10 12ZM10 13C5.289 13 2 15.467 2 19V20H18V19C18 15.467 14.711 13 10 13Z"></path></svg></div>
+                                <div><svg x="0" y="0" className="icon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" fillRule="evenodd" clipRule="evenodd" d="M21 3H24V5H21V8H19V5H16V3H19V0H21V3ZM10 12C12.205 12 14 10.205 14 8C14 5.795 12.205 4 10 4C7.795 4 6 5.795 6 8C6 10.205 7.795 12 10 12ZM10 13C5.289 13 2 15.467 2 19V20H18V19C18 15.467 14.711 13 10 13Z"></path></svg></div>
                             </button>
                             <div className="SearchContainer row">
                                 <input placeholder="Поиск"/>
@@ -193,122 +208,27 @@ class MessagesRouter extends React.Component<PropsFromRedux>{
                                 <span>Участники — 4</span>
                             </div>
                             <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
-                            <UserRow/>
                         </div>
                     </div>
                  
                 </div>
             </div>
+            </React.StrictMode>
         );  
     }
 }
 
 const mapStateToProps = (state : RootState) => {
     return { 
-        IsLoading:state.APPReducer.AppLoading, 
+        IsLoading:state.APPReducer.AppLoading,
+        UserData : state.APPReducer.user, 
     };
 }
 
 const connector = connect(mapStateToProps,{
-        AppUpdateLoadingAction,        
+        AppUpdateLoadingAction,
+        AppUserDataAction, 
+        MessageSelectAction,   
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

@@ -167,8 +167,14 @@
 .messageContainer{
     padding-right: 9px;
 }
-
-
+.userInfo span{
+    color: var(--default-color-messange);
+    align-self: flex-start;
+}
+.userInfo {
+    justify-self: flex-start;
+    margin-left: 10px;
+}
 .userName_status span{
     font-size: 15px;
     /* width: 100%; */
@@ -228,7 +234,7 @@
 }
 
 .userBottomElement{
-    justify-content: center;
+    justify-content: space-around;
     justify-items: center;
     align-items: center;
 }

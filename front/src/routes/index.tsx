@@ -5,6 +5,8 @@ import {
     NavLink,
   } from "react-router-dom";
 class MainPage extends React.Component{
+
+
     render(){
         return (
             <div className="MainPage column">
@@ -19,7 +21,7 @@ class MainPage extends React.Component{
                         <ul className="row">
                             <li><NavLink className="column" to="/" >Главная</NavLink></li>
                             <li className="HiddenPhone" ><NavLink className="column" to="/about" >О нас</NavLink></li>
-                            <li className="HiddenPhone" ><NavLink className="column" to="/messages" >Контакты</NavLink></li>
+                            <li className="HiddenPhone" ><NavLink className="column" to="/channel" >Контакты</NavLink></li>
                             <li><NavLink className="column" to="/signup" >Регистрация</NavLink></li>                            
                         </ul>
                     </div>

@@ -26,3 +26,9 @@ export interface MessagesTable{
     update_at : Date; 
     created_at : Date;
 }
+
+export interface ChannelListTable{
+    id  : number;
+    UserID  : number; 
+    MessageChannelID  : number;
+}
