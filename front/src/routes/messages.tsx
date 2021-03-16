@@ -18,28 +18,15 @@ interface MessageRouterParams{
  
 class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean }>{
 
-    params : MessageRouterParams
-
     constructor(props : PropsFromRedux){
         super(props);
         this.state = {
             transitionHidden : false,
         }
-
-        this.params = (this.props.match.params as MessageRouterParams)
-
     }
 
     GetUserDataByID(id : number){
         return this.props.Storage.users.find((value) => value.id === id)
-    }
-
-    shouldComponentUpdate(nextProps : PropsFromRedux){
-
-        console.log(nextProps)
-
-        this.params = (nextProps.match.params as MessageRouterParams)
-        return true;
     }
 
     componentDidMount(){
@@ -82,7 +69,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 
     render(){
 
-        console.log(this.params)
+        const params = (this.props.match.params as MessageRouterParams)
 
         return (
             <React.StrictMode>
@@ -220,8 +207,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             </div>
                         </div>
 
-                        {this.params.ChannelID && this.props.Storage.channels[this.params.ChannelID] 
-                        && <Participants channels={this.props.Storage.channels[this.params.ChannelID] } />}
+                        {params.ChannelID && this.props.Storage.channels[params.ChannelID] 
+                        && <Participants channels={this.props.Storage.channels[params.ChannelID] } />}
                     </div>
                  
                 </div>
