@@ -1,4 +1,4 @@
-.MessageRow > img{
+.mainInfo > img{
     width: 55px;
     height: 55px;
     border-radius: 50%;
@@ -9,6 +9,7 @@
 .MessageRow{
     margin-top: 10px;
     padding: 4px;
+    justify-content: space-between;
 }
 
 .MessageRow.isDuplicate{
@@ -26,11 +27,24 @@
     padding-right: 10px;
     padding-left: 10px;
 }
-.MessageContent > h2{
+.MessageContent  h2{
     font-size: 16px;
     color: white;
 }
-.MessageContent > * {
+ 
+.dateFormat{
+    color: var(--default-color-messange-hover);
+    margin-left: 20px;
+}
+.MessageContent *.dateFormat{
+    font-size: 12px;
+}
+
+.MessageContent > .row{
+    align-items: flex-end;
+}
+
+.MessageContent * {
     text-align: left;
     font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
@@ -40,7 +54,9 @@
     background-color: var(--default-color-messange-background);
 }
 
-.messageContent{
+.mainText{
+    text-align: left;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
     color: rgb(190, 190, 190);
 }
-

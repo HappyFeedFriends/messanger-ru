@@ -12,6 +12,7 @@ import { MessageInterface, MessageSendInterface, ResponseMessageData, ResponseUs
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 
+
 interface MessageRouterParams{
     ChannelID? : string
 }
@@ -241,7 +242,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                                             <span>UniBridge</span>
                                             <span className="subHeader row">Это начало истории ваших сообщений с<h1>@UniBridge</h1></span>
                                         </div> */}
-                                        {messages && messages?.map((messageData,index,arr) => {
+                                        {messages && messages?.sort((a,b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((messageData,index,arr) => {
                                             return <MessageRow key={'message_id_' + messageData.id} messageData={messageData} IsDuplicate={arr[index -1]?.AuthorID === arr[index]?.AuthorID}/>
                                         })
                                         }

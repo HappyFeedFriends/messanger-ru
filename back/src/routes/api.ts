@@ -72,7 +72,7 @@ routerAPI.get('/messages/:id/:offset?',async (req : Request, res : Response,next
   const offset = Number(req.params.offset) || 0
 
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseMessageData;
-  data.data.push(await knexQuery('messages').select('AuthorID','MessageChannelID','created_at','content','id').where('MessageChannelID',channel_id).limit(50).offset(offset))
+  data.data.push(await knexQuery('messages').select('AuthorID','MessageChannelID','created_at','content','id').where('MessageChannelID',channel_id).orderBy('created_at','desc').limit(50).offset(offset))
   res.send( data )
 })
 

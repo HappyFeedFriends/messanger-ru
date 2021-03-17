@@ -3,6 +3,8 @@ import { connect, ConnectedProps } from 'react-redux';
 import { MessageInterface, UserLocalData } from '../../../global/types';
 import { RootState } from '../redux/rootReducer';
 import '../styles/MessageRow.css';
+import dateformat from 'dateformat';
+
 
 interface MessageRowProps{
     IsDuplicate : boolean,
@@ -20,7 +22,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
         return (
             <div className="MessageRow row isDuplicate">
                 <div className="MessageContent column">
-                    <span className="messageContent">{this.props.messageData.content}</span>
+                    <span className="messageContent mainText">{this.props.messageData.content}</span>
                 </div>
             </div> 
         );
@@ -47,10 +49,15 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
 
         return (
             <div className="MessageRow row">
-                <img src={this.state.user.Url} alt="2"/>
-                <div className="MessageContent column">
-                    <h2>{this.state.user.username}</h2>
-                    <span className="messageContent">{this.props.messageData.content}</span>
+                <div className="row mainInfo">
+                    <img src={this.state.user.Url} alt="2"/>
+                    <div className="MessageContent column">
+                        <div className="row">
+                            <h2>{this.state.user.username}</h2>
+                            <span className="dateFormat">{dateformat(this.props.messageData.created_at,'dd ddd in HH:MM mmmm yyyy')}</span>
+                        </div>
+                        <span className="messageContent mainText">{this.props.messageData.content}</span>
+                    </div>
                 </div>
             </div> 
         );  

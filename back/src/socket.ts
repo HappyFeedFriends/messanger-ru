@@ -2,7 +2,7 @@ import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
 import { MessageSendInterface } from "../../global/types";
 import { knexQuery } from "./database/pg";
-import { ChannelListTable } from "./database/table";
+import { ChannelListTable, MessagesTable } from "./database/table";
 
 function parseCookies(cookie_str : string) {
     var list = {} as { [cookieName : string] : string }
@@ -52,7 +52,17 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     console.log(`connect socket ${socket.id}`);
 
-    socket.on('message_send',(data : MessageSendInterface,callback) => {
+    socket.on('message_send',async (data : MessageSendInterface,callback) => {
+
+        const messageData = await knexQuery<MessagesTable>('messages').insert({
+            content : data.text,
+            AuthorID : Number(id),
+            MessageChannelID : data.ChannelID
+        }).returning(['AuthorID','MessageChannelID','created_at','content','id'])
+
+        console.log(messageData)
+
+        socket.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
 
     socket.on("disconnect", () => {
