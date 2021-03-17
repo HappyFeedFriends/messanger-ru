@@ -8,7 +8,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
 import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { MessageInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
+import { MessageInterface, MessageSendInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 
@@ -108,7 +108,17 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     }
 
     OnSendMessage(){
-        // this.ref!.scrollTop = 1500
+        const channelID = (this.props.match.params as MessageRouterParams).ChannelID
+        if (!channelID) return;
+        this.props.socket.emit('message_send',{
+            text : this.state.inputValue,
+            ChannelID : Number(channelID),
+        } as MessageSendInterface)
+
+        this.setState({
+            inputValue : ''
+        })
+        
     }
 
     GenerateHeader(messages : MessageInterface[]){
@@ -119,9 +129,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         },'')
 
     }
-
+    
     onKeyPressed(e : React.KeyboardEvent){
-        if (e.key.toLowerCase() === 'enter'){
+        if (e.key.toLowerCase() === 'enter' && !e.shiftKey){
+            e.preventDefault()
             this.OnSendMessage();
         }
     }
@@ -260,6 +271,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 const mapStateToProps = (state : RootState) => {
     return { 
         IsLoading:state.APPReducer.AppLoading,
+        socket : state.APPReducer.Socket,
         UserData : state.APPReducer.user, 
         Storage : state.StorageReducer
     };

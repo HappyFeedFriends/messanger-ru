@@ -39,3 +39,8 @@ export interface ChannelStorage{
 export interface ResponseMessageData extends ResponseDataExample{
     data : Array<MessageInterface[]>,
 }
+
+export interface MessageSendInterface {
+    text : string,
+    ChannelID : number,
+}

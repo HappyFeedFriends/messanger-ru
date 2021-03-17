@@ -6,7 +6,10 @@ import loggerMiddleware from "./middleWare/loggerMiddleWare";
 import routerAPI from "./routes/api";
 import AuthRouter from "./routes/auth";
 import cors from 'cors';
- 
+import { Server, Socket } from "socket.io";
+import { socket_connect } from "./socket";
+
+
 const corsOptions : cors.CorsOptions = {
     credentials: true, // This is important.
     origin: (origin, callback ) => {
@@ -31,10 +34,28 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(loggerMiddleware)
 app.use('/api',routerAPI);
 app.use('/auth',AuthRouter)
+
 app.use(function(req : Express.Request, res, next : NextFunction){
     res.sendStatus(404);
 });
 
-app.listen( port, () => {
+
+
+const server = app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );
-} );
+});
+
+
+const io = new Server(server,{
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true
+    }
+});
+
+ 
+io.on("connect", (socket: Socket) => socket_connect(socket,io));
+
+
+
+

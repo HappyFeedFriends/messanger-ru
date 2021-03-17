@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client"
 import { UserLocalData,ChannelStorage, MessageInterface } from "../../../global/types"
 
 export const APP_LOADING_STATE = 'APP_LOADING_STATE'
@@ -58,6 +59,7 @@ export interface UserData{
 export interface AppRedux{
     AppLoading : boolean,
     user : UserData,
+    Socket : Socket,
 }
 
 export interface StorageRedux {

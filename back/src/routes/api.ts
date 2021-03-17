@@ -63,12 +63,6 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     channelsStorage : channels,
   } as UserDataResponse   
 
-  console.log(knexQuery('users')
-  .join('images','users.imageID','=','images.id')
-  .select('users.username','users.id','images.Url')
-  .whereIn('users.id',query_user_channels)
-  .orWhereIn('users.id',knexQuery('channellist').select('UserID').whereIn('MessageChannelID',query_channels).distinctOn('UserID')).toQuery())
-
   data.data.push( obj )
   res.send(data)
 })
