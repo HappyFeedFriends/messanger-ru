@@ -35,3 +35,7 @@ export interface ChannelStorage{
         messages : MessageInterface[],
     }
 }
+
+export interface ResponseMessageData extends ResponseDataExample{
+    data : Array<MessageInterface[]>,
+}

@@ -6,9 +6,9 @@ import TextareaAutosize, { TextareaAutosizeProps } from 'react-textarea-autosize
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, MessageSelectAction } from '../redux/actions';
-import { RouteComponentProps } from 'react-router-dom';
-import { ResponseUserData } from '../../../global/types';
+import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction } from '../redux/actions';
+import { NavLink, RouteComponentProps } from 'react-router-dom';
+import { MessageInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 
@@ -16,19 +16,51 @@ interface MessageRouterParams{
     ChannelID? : string
 }
  
-class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean }>{
+class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean, inputValue : string}>{
 
     messageInput : string = ''
+    uploadMessageForChannel : boolean = false;
 
     constructor(props : PropsFromRedux){
         super(props);
         this.state = {
             transitionHidden : false,
+            inputValue : '',
         }
     }
 
     GetUserDataByID(id : number){
         return this.props.Storage.users.find((value) => value.id === id)
+    }
+
+    UploadMessagesForChannel(channelID : string){
+        this.uploadMessageForChannel = true
+        fetch('http://localhost:8080/api/messages/' + channelID,{
+            credentials : 'include',
+        }).then(res => res.json()).then((res : ResponseMessageData) => {
+            console.log(res)
+            this.props.InitStorageMessagesAction({
+                channelID : Number(channelID),
+                messages : res.data[0]
+            })
+        })
+
+    }
+
+    GetMessagesForChannel(channelID : string){
+
+        if (!this.props.Storage.channels[channelID]){
+            return false
+        }
+
+        if (!this.props.Storage.channels[channelID].messages){
+
+            this.UploadMessagesForChannel(channelID);
+
+            return false;
+        }
+
+        return this.props.Storage.channels[channelID].messages
     }
 
     componentDidMount(){
@@ -70,8 +102,14 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     }
 
     OnSendMessage(){
-        
-        
+
+    }
+
+    GenerateHeader(messages : MessageInterface[]){
+        messages.length = 3
+        return messages.reduce((prev, current,index) =>{
+            return prev + (index === 0 ? ''  : ', ') + this.GetUserDataByID(current.AuthorID)?.username
+        },'')
 
     }
 
@@ -82,12 +120,28 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     }
 
     onChangeMessage(event : React.ChangeEvent<HTMLTextAreaElement>){
-        this.messageInput = event.currentTarget.value 
+        this.setState({
+            inputValue : event.currentTarget.value 
+        })
+    }
+
+    componentDidUpdate(props : PropsFromRedux){
+        const params_new = (props.match.params as MessageRouterParams)
+        const params = (this.props.match.params as MessageRouterParams)
+
+        if (params_new.ChannelID !== params.ChannelID){
+            this.setState({
+                inputValue : '',
+            })
+        }
+
+        return true;
     }
 
     render(){
 
         const params = (this.props.match.params as MessageRouterParams)
+        const messages = params.ChannelID && this.GetMessagesForChannel(params.ChannelID)
 
         return (
             <React.StrictMode>
@@ -100,7 +154,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 
                     <div className="row friendsLink">
                         <svg className="linkButtonIcon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fillRule="evenodd"><path id="main" fill="var(--default-color-messange)" fillRule="nonzero" d="M0.5,0 L0.5,1.5 C0.5,5.65 2.71,9.28 6,11.3 L6,16 L21,16 L21,14 C21,11.34 15.67,10 13,10 C13,10 12.83,10 12.75,10 C8,10 4,6 4,1.5 L4,0 L0.5,0 Z M13,0 C10.790861,0 9,1.790861 9,4 C9,6.209139 10.790861,8 13,8 C15.209139,8 17,6.209139 17,4 C17,1.790861 15.209139,0 13,0 Z" transform="translate(2 4)"></path><path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path></g></svg>
-                        <div className="column"><span>Друзья</span></div>
+                        <NavLink to='/channel' className="column"><span>Друзья</span></NavLink>
                     </div>
 
                     <div className="Messages-Friends column">
@@ -139,8 +193,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                 <div className="column MessageContainer">
                     <div className="headerMainText headerBlock row">
                         <div className="row userInfoHeader">
-                            <span>HappyFeedFriends</span>
-                            <div className="OnlineStatusMessages IsOnline" />
+                            <span>{ params.ChannelID && messages ?  this.GenerateHeader(messages) : ''}</span> 
+                            <div className={(!params.ChannelID ? 'hidden ' : '') + "OnlineStatusMessages IsOnline"} />
                         </div>
 
                         <div className="toolbar row">
@@ -164,62 +218,22 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             <div className="MessagesBlocksMain">
                                 <div className="column">
                                     <div className="column">
-                                        <div className="MessagesStartContainer column">
+                                        {/* <div className="MessagesStartContainer column">
                                             <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
                                             <span>UniBridge</span>
                                             <span className="subHeader row">Это начало истории ваших сообщений с<h1>@UniBridge</h1></span>
-                                        </div>
-                                        <MessageRow IsDuplicate={false}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={false}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
-                                        <MessageRow IsDuplicate={true}/>
+                                        </div> */}
+                                        {messages && messages?.map((messageData,index,arr) => {
+                                            return <MessageRow key={'message_id_' + messageData.id} messageData={messageData} IsDuplicate={arr[index -1]?.AuthorID === arr[index]?.AuthorID}/>
+                                        })
+                                        }
                                     </div>
                                 </div>
                             </div>
                             <div className="InputMessage row">
                                 <div className="InputMessageBlock row">
                                     <button className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></button>
-                                    <TextareaAutosize onChange={(e) => this.onChangeMessage(e)} onKeyDown={this.onKeyPressed} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
+                                    <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={this.onKeyPressed} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
                                     <div className="emoji_smile_icon_vector"></div>
                                 </div>
                             </div>
@@ -249,6 +263,7 @@ const connector = connect(mapStateToProps,{
         AppUserDataAction, 
         MessageSelectAction,  
         InitStorageAction, 
+        InitStorageMessagesAction,
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

@@ -61,7 +61,7 @@
 .friendsLink:hover span {
     color: var(--default-color-messange-hover);
 }
-.friendsLink div{
+.friendsLink a{
     margin-left: 10px;
     justify-content: flex-end;
 }
@@ -253,8 +253,11 @@
     letter-spacing: 1px;
     font-weight: bold;
     font-size: 21px;
+    text-overflow: ellipsis;
 }
-
+.OnlineStatusMessages.hidden{
+    display: none;
+}
 .OnlineStatusMessages{
     width: 13px;
     height: 13px;

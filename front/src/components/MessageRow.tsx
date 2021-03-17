@@ -1,21 +1,40 @@
 import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import { MessageInterface, UserLocalData } from '../../../global/types';
+import { RootState } from '../redux/rootReducer';
 import '../styles/MessageRow.css';
 
 interface MessageRowProps{
-    IsDuplicate : boolean
+    IsDuplicate : boolean,
+    messageData : MessageInterface
 }
 
-class MessageRow extends React.Component<MessageRowProps>{
+interface MessageRowState {
+    user : UserLocalData,
+}
+
+class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
 
 
     DuplicateAuthorMessage(){
         return (
             <div className="MessageRow row isDuplicate">
                 <div className="MessageContent column">
-                    <span className="messageContent">Моё первое сообщение!</span>
+                    <span className="messageContent">{this.props.messageData.content}</span>
                 </div>
             </div> 
         );
+    }
+
+    constructor(props : PropsFromRedux){
+        super(props)
+        this.state ={
+            user : this.GetUserDataByID(props.messageData.AuthorID) || { username : "WOW! Error!", Url : '',id : -1 }
+        }
+    }
+
+    GetUserDataByID(id : number){
+        return this.props.Storage.users.find((value) => value.id === id)
     }
 
     render(){
@@ -28,14 +47,24 @@ class MessageRow extends React.Component<MessageRowProps>{
 
         return (
             <div className="MessageRow row">
-                <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
+                <img src={this.state.user.Url} alt="2"/>
                 <div className="MessageContent column">
-                    <h2>HappyFeedFriends</h2>
-                    <span className="messageContent">Моё первое сообщение!</span>
+                    <h2>{this.state.user.username}</h2>
+                    <span className="messageContent">{this.props.messageData.content}</span>
                 </div>
             </div> 
         );  
     }
 }
 
-export default MessageRow;
+const mapStateToProps = (state : RootState) => {
+    return { 
+        UserData : state.APPReducer.user, 
+        Storage : state.StorageReducer
+    };
+}
+
+const connector = connect(mapStateToProps,{})
+type PropsFromRedux = ConnectedProps<typeof connector> & MessageRowProps
+
+export default connector(MessageRow)

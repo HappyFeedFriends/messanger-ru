@@ -41,7 +41,7 @@ export async function seed(knex: Knex): Promise<void> {
         for (let _i = 1; _i < 10000; _i++) {
             channelLists.push({
                 UserID : faker.random.number({max : _i + i * 500,min : i * 500 + 1}),
-                MessageChannelID : faker.random.number({max : 1000,min : 1}) ,
+                MessageChannelID : faker.random.number({max : 1000,min : 1}),
             })
             
         }

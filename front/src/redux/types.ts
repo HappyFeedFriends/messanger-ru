@@ -7,6 +7,7 @@ export const MESSAGE_CHANNEL_ID_STATE = 'MESSAGE_CHANNEL_ID_STATE'
 export const MESSAGE_CHANNEL_MESSAGES = 'MESSAGE_CHANNEL_MESSAGES'
 
 export const STORAGE_INIT = 'STORAGE_USERS_INIT'
+export const STORAGE_MESSAGES_INIT = 'STORAGE_MESSAGES_INIT'
 
 interface ActionRedux{
     type : string,
@@ -41,6 +42,14 @@ interface InitStorage extends ActionRedux {
     payload: StorageRedux
 }
 
+interface InitStorageMessages extends ActionRedux {
+    type: typeof STORAGE_MESSAGES_INIT
+    payload: {
+        channelID : number,
+        messages : MessageInterface[]
+    }
+}
+
 export interface UserData{
     id : number,
     Channels : Array<number>, 
@@ -69,7 +78,8 @@ export type UpdateMessagesForChatTypes = UpdateMessagesForChat
 export type UpdateMessageState = UpdateMessageChannelTypes | UpdateMessagesForChatTypes
 
 export type InitStorageTypes = InitStorage;
-export type UpdateStorageState = InitStorageTypes
+export type InitStorageMessagesTypes = InitStorageMessages;
+export type UpdateStorageState = InitStorageTypes | InitStorageMessages
 
 
 
