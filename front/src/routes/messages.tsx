@@ -21,12 +21,52 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     messageInput : string = ''
     uploadMessageForChannel : boolean = false;
 
+    ref : HTMLDivElement | null | undefined
+
     constructor(props : PropsFromRedux){
         super(props);
         this.state = {
             transitionHidden : false,
             inputValue : '',
         }
+
+        fetch('http://localhost:8080/api/user_data',{
+            credentials : 'include',
+        })
+        .then(res => {
+            if (res.status !== 200){
+                throw new Error(res.status.toString())
+            }
+            return res;
+        }) 
+        .then(res => res.json()) 
+        .then((res : ResponseUserData )=> {
+            if (!res.data[0]) return;
+            this.props.InitStorageAction({
+                users : res.data[0].Users,
+                channels : res.data[0].channelsStorage
+            })
+
+            this.props.AppUserDataAction({
+                id : res.data[0].id,
+                Channels : res.data[0].Channels,
+            })
+            // this
+            // wtf
+            setTimeout(() => {
+                setTimeout(() => {
+                    this.props.AppUpdateLoadingAction(!res.status)
+                }, 600);
+                this.setState({
+                    transitionHidden : true,
+                })
+            },1500 - 600)
+        })
+        .catch(err => {
+            this.props.history.push('/signin')
+        })
+
+
     }
 
     GetUserDataByID(id : number){
@@ -64,50 +104,17 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     }
 
     componentDidMount(){
-        fetch('http://localhost:8080/api/user_data',{
-            credentials : 'include',
-        })
-        .then(res => {
-            if (res.status !== 200){
-                throw new Error(res.status.toString())
-            }
-            return res;
-        }) 
-        .then(res => res.json()) 
-        .then((res : ResponseUserData )=> {
-            if (!res.data[0]) return;
-            this.props.InitStorageAction({
-                users : res.data[0].Users,
-                channels : res.data[0].channelsStorage
-            })
-
-            this.props.AppUserDataAction({
-                id : res.data[0].id,
-                Channels : res.data[0].Channels,
-            })
-            // this
-            // wtf
-            setTimeout(() => {
-                setTimeout(() => {
-                    this.props.AppUpdateLoadingAction(!res.status)
-                }, 600);
-                this.setState({
-                    transitionHidden : true,
-                })
-            },1500 - 600)
-        })
-        .catch(err => {
-            this.props.history.push('/signin')
-        })
+        this.ref!.scrollTop = this.ref!.scrollHeight
     }
 
     OnSendMessage(){
-
+        // this.ref!.scrollTop = 1500
     }
 
     GenerateHeader(messages : MessageInterface[]){
-        messages.length = 3
-        return messages.reduce((prev, current,index) =>{
+        const msgs = [...messages]
+        msgs.length = 3
+        return msgs.reduce((prev, current,index) =>{
             return prev + (index === 0 ? ''  : ', ') + this.GetUserDataByID(current.AuthorID)?.username
         },'')
 
@@ -134,7 +141,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                 inputValue : '',
             })
         }
-
+        this.ref!.scrollTop = this.ref!.scrollHeight
         return true;
     }
 
@@ -214,8 +221,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                     </div> 
 
                     <div className="row mainContent">
-                        <div className="messagesContainerMain column">
-                            <div className="MessagesBlocksMain">
+                        <div  className="messagesContainerMain column">
+                            <div ref={(e) => {this.ref = e}} className="MessagesBlocksMain">
                                 <div className="column">
                                     <div className="column">
                                         {/* <div className="MessagesStartContainer column">
@@ -233,7 +240,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             <div className="InputMessage row">
                                 <div className="InputMessageBlock row">
                                     <button className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></button>
-                                    <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={this.onKeyPressed} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
+                                    <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={(e) => this.onKeyPressed(e)} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
                                     <div className="emoji_smile_icon_vector"></div>
                                 </div>
                             </div>
