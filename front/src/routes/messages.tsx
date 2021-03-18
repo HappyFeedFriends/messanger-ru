@@ -224,7 +224,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                     </div>
                     <div className="row userBottomElement">
                         <div className="row" >
-                            <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
+                            <img src={this.GetUserDataByID(this.props.UserData?.id)?.Url} alt="2"/>
                             <div className="column userInfo">
                                 <div className="column">
                                     <span>{this.GetUserDataByID(this.props.UserData?.id)?.username}</span>
