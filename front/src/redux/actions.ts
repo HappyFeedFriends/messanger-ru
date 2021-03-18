@@ -1,5 +1,5 @@
 import { MessageInterface } from "../../../global/types";
-import { APP_LOADING_STATE, APP_USER_INIT_STATE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_INIT, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
+import { APP_LOADING_STATE, APP_USER_INIT_STATE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
  
 export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{
     return {
@@ -41,4 +41,11 @@ export function InitStorageMessagesAction(data : { channelID : number,messages :
         type: STORAGE_MESSAGES_INIT,
         payload:data, 
     }
+}
+
+export function StorageMessageAdded(data : { channelID : number,message : MessageInterface }) : StorageMessageAddedTypes{
+    return {
+        type: STORAGE_MESSAGES_ADDED,
+        payload:data, 
+    } 
 }

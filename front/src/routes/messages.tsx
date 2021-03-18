@@ -1,14 +1,13 @@
 import React, { ChangeEvent } from 'react';
 import MessageRow from '../components/MessageRow';
-import UserRow from '../components/userRow';
 import '../styles/MessagesRouter.css';
 import TextareaAutosize, { TextareaAutosizeProps } from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction } from '../redux/actions';
+import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { MessageInterface, MessageSendInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
+import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 
@@ -65,9 +64,41 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         })
         .catch(err => {
             this.props.history.push('/signin')
+        });
+
+        this.props.socket.on('add_message',(data : MessageSocketAddedInterface)  => {
+            this.props.StorageMessageAdded({
+                channelID : data.MessageChannelID,
+                message : {
+                    AuthorID : data.AuthorID,
+                    id : data.id,
+                    created_at : data.created_at,
+                    content : data.content
+                }
+            })
         })
 
+    }
 
+    OnScrolling() {
+        const scrollTop = this.ref?.scrollTop
+        const channelID = (this.props.match.params as MessageRouterParams).ChannelID
+        const offset = this.ref?.querySelector('.messagesContainerElements')?.children.length
+        if (!scrollTop || !channelID || !offset) return;
+
+        if (scrollTop < 50){
+            fetch(`http://localhost:8080/api/messages/${channelID}/${offset}`,{
+                credentials : 'include',
+            }).then(res => res.json()).then((res : ResponseMessageData) => {
+                const messages = this.props.Storage.channels[channelID]?.messages
+                if (!messages) return;
+                messages.push(...res.data[0])
+                this.props.InitStorageMessagesAction({
+                    channelID : Number(channelID),
+                    messages : messages
+                })
+            })
+        }
     }
 
     GetUserDataByID(id : number){
@@ -79,7 +110,6 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         fetch('http://localhost:8080/api/messages/' + channelID,{
             credentials : 'include',
         }).then(res => res.json()).then((res : ResponseMessageData) => {
-            console.log(res)
             this.props.InitStorageMessagesAction({
                 channelID : Number(channelID),
                 messages : res.data[0]
@@ -231,12 +261,12 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                             </div>
                         </div>
                     </div> 
-
+ 
                     <div className="row mainContent">
                         <div  className="messagesContainerMain column">
-                            <div ref={(e) => {this.ref = e}} className="MessagesBlocksMain">
+                            <div onScroll={() => this.OnScrolling()} ref={(e) => {this.ref = e}} className="MessagesBlocksMain">
                                 <div className="column">
-                                    <div className="column">
+                                    <div className="column messagesContainerElements">
                                         {/* <div className="MessagesStartContainer column">
                                             <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
                                             <span>UniBridge</span>
@@ -278,12 +308,15 @@ const mapStateToProps = (state : RootState) => {
     };
 }
 
+
+
 const connector = connect(mapStateToProps,{
         AppUpdateLoadingAction,
         AppUserDataAction, 
         MessageSelectAction,  
         InitStorageAction, 
         InitStorageMessagesAction,
+        StorageMessageAdded,
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

@@ -1,6 +1,6 @@
 import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
-import { MessageSendInterface } from "../../global/types";
+import { MessageSendInterface, MessageSocketAddedInterface } from "../../global/types";
 import { knexQuery } from "./database/pg";
 import { ChannelListTable, MessagesTable } from "./database/table";
 
@@ -46,23 +46,20 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     const userChannels = await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)
 
-    Object.values(userChannels).forEach(data => {
+    userChannels.forEach(data => {
         socket.join('channel_room_' + data.MessageChannelID)
     })
 
     console.log(`connect socket ${socket.id}`);
-
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
 
-        const messageData = await knexQuery<MessagesTable>('messages').insert({
+        const messageData = (await knexQuery<MessagesTable>('messages').insert({
             content : data.text,
             AuthorID : Number(id),
             MessageChannelID : data.ChannelID
-        }).returning(['AuthorID','MessageChannelID','created_at','content','id'])
+        }).returning(['AuthorID','MessageChannelID','created_at','content','id']))[0] as MessageSocketAddedInterface
 
-        console.log(messageData)
-
-        socket.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
+        io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
 
     socket.on("disconnect", () => {

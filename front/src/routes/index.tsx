@@ -4,6 +4,18 @@ import '../styles/MainPage.css';
 import {
     NavLink,
   } from "react-router-dom";
+
+import image1 from '../images/1.gif'
+import image2 from '../images/2.gif'
+import image3 from '../images/3.gif'
+import image4 from '../images/4.gif'
+import image5 from '../images/5.gif'
+import image6 from '../images/6.gif'
+import image7 from '../images/7.gif'
+import image8 from '../images/8.gif'
+import image9 from '../images/9.gif'
+import image10 from '../images/10.gif'
+
 class MainPage extends React.Component{
 
 
@@ -47,7 +59,7 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/1.gif" alt=""/>
+                                    <img src={image1} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Удобство</span>
                                 <span className="cardDescription"><span>Простой</span>, интуитивный интерфейс.</span>
@@ -55,7 +67,7 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/2.gif" alt=""/>
+                                    <img src={image2} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Любовь</span>
                                 <span className="cardDescription">Наша <span>команда</span> любит каждого своего пользователя, а также маленькие детали</span>
@@ -63,7 +75,7 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/3.gif" alt=""/>
+                                    <img src={image3} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Подарки</span>
                                 <span className="cardDescription">Отправляйте <span>подарки</span> своим друзьям и родственникам</span>
@@ -71,7 +83,7 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/4.gif" alt=""/>
+                                    <img src={image4} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Общение</span>
                                 <span className="cardDescription"><span>Общайтесь</span> о чём угодно и с кем угодно</span>
@@ -79,7 +91,7 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/5.gif" alt=""/>
+                                    <img src={image5} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Социальность</span>
                                 <span className="cardDescription">Групповые чаты до <span>200 000 участников</span> одновременно</span>
@@ -87,35 +99,35 @@ class MainPage extends React.Component{
 
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/6.gif" alt=""/>
+                                    <img src={image6} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Печеньки</span>
                                 <span className="cardDescription">У нас есть вкусные <span>печеньки</span> для каждого</span>
                             </div>
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/7.gif" alt=""/>
+                                    <img src={image7} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Мощность</span>
                                 <span className="cardDescription">Мощные  <span>сервера</span> которые выдержут любоё ваше сообщение</span>
                             </div>
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/8.gif" alt=""/>
+                                    <img src={image8} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Бесконечность</span>
                                 <span className="cardDescription">Бесконечный обмен <span>сообщениями</span> с друзьями и родственниками из любой страны</span>
                             </div>
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/9.gif" alt=""/>
+                                    <img src={image9} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Эволюция</span>
                                 <span className="cardDescription">Проект <span>эволюционирует</span> каждый день <span>специально для вас</span></span>
                             </div>
                             <div className="AdvantageContainer column">
                                 <div className="imageAdvantage">
-                                    <img src="./images/10.gif" alt=""/>
+                                    <img src={image10} alt=""/>
                                 </div>
                                 <span className="cardHeader" >Акула</span>
                                 <span className="cardDescription">А также у нас есть <span>АКУЛА</span></span>

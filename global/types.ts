@@ -44,3 +44,8 @@ export interface MessageSendInterface {
     text : string,
     ChannelID : number,
 }
+
+export interface MessageSocketAddedInterface extends MessageInterface{
+    MessageChannelID : number,
+
+}
