@@ -2,7 +2,7 @@ import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
 import { MessageSendInterface, MessageSocketAddedInterface } from "../../global/types";
 import { knexQuery } from "./database/pg";
-import { ChannelListTable, MessagesTable } from "./database/table";
+import { ChannelListTable, MessagesTable, UsersTable } from "./database/table";
 
 function parseCookies(cookie_str : string) {
     var list = {} as { [cookieName : string] : string }
@@ -43,8 +43,11 @@ export const socket_connect = async (socket : Socket, io : Server) => {
         return;
     }
 
-
     const userChannels = await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)
+
+    await knexQuery<UsersTable>('users').update({
+        onlinestatus : true
+    }).where('id',id)
 
     userChannels.forEach(data => {
         socket.join('channel_room_' + data.MessageChannelID)
@@ -52,7 +55,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
-// TODO: Added validations
+        // TODO: Added validations
         const messageData = (await knexQuery<MessagesTable>('messages').insert({
             content : data.text,
             AuthorID : Number(id),
@@ -62,8 +65,13 @@ export const socket_connect = async (socket : Socket, io : Server) => {
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
         console.log(`disconnect ${socket.id}`);
+
+        await knexQuery<UsersTable>('users').update({
+            onlinestatus : false
+        }).where('id',id)
+
     });
 
 }

@@ -18,7 +18,7 @@ class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
     constructor(props : PropsFromRedux){
         super(props)
         this.state = {
-            user:  this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, }
+            user:  this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, onlinestatus : false }
         }
     }
 
@@ -32,7 +32,7 @@ class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
                 <div className="ImageContainer">
                     <img src={this.state.user.Url} alt="2"/>
                     <div className="OnlineStatusContainer">
-                        <div className="OnlineStatus IsOnline" />
+                        <div data-online={this.state.user.onlinestatus} className="OnlineStatus" />
                     </div>
                 </div>
                 <div className="column userName_status">

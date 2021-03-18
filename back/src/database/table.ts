@@ -5,6 +5,7 @@ export interface UsersTable{
     imageID : number,
     email : string,
     created_at : Date,
+    onlinestatus : boolean,
 }
 
 export interface ImagesTable{

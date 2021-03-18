@@ -45,7 +45,7 @@
     bottom: 5px;
 }
 
-.OnlineStatus.IsOnline{
+.OnlineStatus[data-online=true]{
     border: none;
     background-color: rgb(31, 156, 31);
 }

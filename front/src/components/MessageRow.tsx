@@ -31,7 +31,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
     constructor(props : PropsFromRedux){
         super(props)
         this.state ={
-            user : this.GetUserDataByID(props.messageData.AuthorID) || { username : "WOW! Error!", Url : '',id : -1 }
+            user : this.GetUserDataByID(props.messageData.AuthorID) || { username : "WOW! Error!", Url : '',id : -1,onlinestatus : false }
         }
     }
 

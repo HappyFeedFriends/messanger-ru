@@ -20,6 +20,7 @@ export interface UserLocalData{
     username : string,
     id : number,
     Url : string,
+    onlinestatus : boolean,
 }
 
 export interface MessageInterface{
