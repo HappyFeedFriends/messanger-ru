@@ -12,7 +12,7 @@ export interface  UserDataResponse {
     channelsStorage : ChannelStorage,
 }
 
-export interface SignInResponse{
+export interface SignResponse{
     errorDescription : string,
     errorCode : number,
 }
@@ -22,7 +22,11 @@ export interface ResponseUserData extends ResponseDataExample{
 }
 
 export interface ResponseSignIn extends ResponseDataExample{
-    data : Array<SignInResponse>
+    data : Array<SignResponse>
+}
+
+export interface ResponseSignUp extends ResponseDataExample{
+    data : Array<SignResponse>
 }
 
 
@@ -70,5 +74,10 @@ export interface SignInFormData{
     username : string,
     date : Date,
     email : string,
+    password : string,
+}
+
+export interface SignUpFormData{
+    username : string,
     password : string,
 }

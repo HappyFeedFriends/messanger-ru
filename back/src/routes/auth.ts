@@ -1,7 +1,7 @@
 
-import express, { NextFunction,Request,Response} from "express";
+import express, { Request,Response} from "express";
 import * as jwt from "jsonwebtoken";
-import { ResponseDataExample, ResponseSignIn, ResponseUserData, SignInFormData } from "../../../global/types";
+import { ResponseDataExample, ResponseSignIn, ResponseSignUp, SignInFormData, SignUpFormData } from "../../../global/types";
 import { knexQuery } from "../database/pg";
 import validator from 'validator';
 import { UsersTable } from "../database/table";
@@ -92,5 +92,30 @@ AuthRouter.post('/signin',async (req : Request, res : Response) => {
 
 
 })
-   
+
+
+AuthRouter.post('/signup',async (req : Request, res : Response) => {
+    const signupData = req.body as SignUpFormData
+    const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseSignUp;
+
+    if (!signupData.password || !signupData.username){
+        return res.sendStatus(500)
+    }
+
+    const userData = await knexQuery<UsersTable>('users').select('id')
+    .where('password',(new sha256().update(signupData.password).digest('hex')))
+    .andWhere('username',signupData.username)
+
+    if (userData.length < 1){
+        data.errorCode = 0
+        data.data.push({
+            errorCode : 10,
+            errorDescription : 'Неверные данные для входа или пароль'
+        })
+    }
+
+    return res.send(data)
+
+})
+
 export default AuthRouter;  

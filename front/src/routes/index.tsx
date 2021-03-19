@@ -32,9 +32,9 @@ class MainPage extends React.Component{
                     <div className="links">
                         <ul className="row">
                             <li><NavLink className="column" to="/" >Главная</NavLink></li>
-                            <li className="HiddenPhone" ><NavLink className="column" to="/about" >О нас</NavLink></li>
-                            <li className="HiddenPhone" ><NavLink className="column" to="/channel" >Контакты</NavLink></li>
-                            <li><NavLink className="column" to="/signin" >Регистрация</NavLink></li>                            
+                            <li className="HiddenPhone" ><NavLink className="column" to="/channel" >Начать общение</NavLink></li>
+                            <li><NavLink className="column" to="/signin" >Регистрация</NavLink></li>  
+                            <li><NavLink className="column" to="/signup" >Авторизация</NavLink></li>                           
                         </ul>
                     </div>
                 </header>
