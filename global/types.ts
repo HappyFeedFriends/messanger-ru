@@ -1,6 +1,6 @@
 export interface ResponseDataExample {
     data : Array<any>,
-    error : number,
+    errorCode : number,
     errorMessage : string,
     status : boolean,
 }
@@ -11,8 +11,18 @@ export interface  UserDataResponse {
     Users : Array<UserLocalData>,
     channelsStorage : ChannelStorage,
 }
+
+export interface SignInResponse{
+    errorDescription : string,
+    errorCode : number,
+}
+
 export interface ResponseUserData extends ResponseDataExample{
     data : Array<UserDataResponse>
+}
+
+export interface ResponseSignIn extends ResponseDataExample{
+    data : Array<SignInResponse>
 }
 
 
@@ -49,4 +59,16 @@ export interface MessageSendInterface {
 export interface MessageSocketAddedInterface extends MessageInterface{
     MessageChannelID : number,
 
+}
+
+export interface  UpdateOnlineStatisSocket{
+    id : string,
+    onlinestatus : boolean,
+}
+
+export interface SignInFormData{
+    username : string,
+    date : Date,
+    email : string,
+    password : string,
 }

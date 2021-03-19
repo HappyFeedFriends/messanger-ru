@@ -1,6 +1,6 @@
 import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
-import { MessageSendInterface, MessageSocketAddedInterface } from "../../global/types";
+import { MessageSendInterface, MessageSocketAddedInterface, UpdateOnlineStatisSocket } from "../../global/types";
 import { knexQuery } from "./database/pg";
 import { ChannelListTable, MessagesTable, UsersTable } from "./database/table";
 
@@ -35,7 +35,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
         id = verify.id
     }else{
         id = verify
-    }
+    } 
 
     if (!isAuth || !id){
         socket.disconnect();
@@ -51,8 +51,15 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     userChannels.forEach(data => {
         socket.join('channel_room_' + data.MessageChannelID)
+
+        io.to('channel_room_' + data.MessageChannelID).emit('update_online_status',{
+            id : id,
+            onlinestatus : true,
+        } as UpdateOnlineStatisSocket)
     })
 
+
+    
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
@@ -72,6 +79,13 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             onlinestatus : false
         }).where('id',id)
 
+        socket.rooms.forEach(room_id => {
+            if (room_id.indexOf('channel_room_') === -1) return; // only for channel rooms
+            io.to(room_id).emit('update_online_status',{
+                id : id,
+                onlinestatus : false,
+            } as UpdateOnlineStatisSocket)
+        })
     });
 
 }

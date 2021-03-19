@@ -36,11 +36,18 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
   const query_channels = knexQuery('channellist').select('MessageChannelID').where('UserID',id)
   const query_user_channels = knexQuery('messages').select('AuthorID').whereIn('MessageChannelID',query_channels).distinctOn('AuthorID')
   const query_messages = knexQuery('messages').select('AuthorID','MessageChannelID','created_at','content','id').whereIn('MessageChannelID',query_channels)
-  const users = await knexQuery<UsersTable>('users')
+  let users = await knexQuery<UsersTable>('users')
   .join('images','users.imageID','=','images.id')
   .select('users.username','users.id','images.Url','users.onlinestatus')
   .whereIn('users.id',query_user_channels)
   .orWhereIn('users.id',knexQuery('channellist').select('UserID').whereIn('MessageChannelID',query_channels).distinctOn('UserID'))
+
+  if (users.length < 1){
+    users = await knexQuery<UsersTable>('users')
+    .join('images','users.imageID','=','images.id')
+    .select('users.username','users.id','images.Url','users.onlinestatus')
+    .where('users.id',id)
+  }
   
   const channels : ChannelStorage = Object.values(await knexQuery('channellist').select('UserID','MessageChannelID')
   .whereIn('MessageChannelID',query_channels)
