@@ -1,0 +1,41 @@
+.modal_window_created_channel{
+    width: 400px;
+    height: 600px;
+    background-color: rgb(31, 23, 23);
+    box-shadow: 0px 0px 4px #000000;
+    border-radius: 4px;
+    padding: 10px;
+    padding-top: 20px;
+}
+
+.modal_window_created_channel h1{
+    color: white;
+    font-size: 20px;
+}
+
+.modal_window_created_channel .containerModal{
+    overflow: hidden scroll;
+}
+
+.modal_window_created_channel .containerModal:-webkit-scrollbar{
+    width: 7px;
+    background-color: rgb(27, 25, 25);
+}
+
+.modal_window_created_channel .containerModal::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:black;
+}
+
+.modal_window_created_channel .containerModal::-webkit-scrollbar{
+    width: 3px;
+    background-color: rgb(27, 25, 25);
+}
+
+
+.modal_window_created_channel .containerModal::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:black;
+}

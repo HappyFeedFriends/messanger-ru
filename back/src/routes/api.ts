@@ -3,7 +3,8 @@ import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
 import { ChannelListTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ChannelStorage, MessageInterface, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse } from '../../../global/types';
+import { ChannelStorage, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse } from '../../../global/types';
+import RouterTestAPI from "./api/test";
 const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 
 const routerAPI = express.Router()
@@ -20,7 +21,7 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
         isAuth = err === null;
     })
   }
-   
+
   if (isAuth){
     res.locals.id = ((await jwt.verify(req.cookies.auth,process.env.SECRET)) as jwtCookie).id
     next();
@@ -28,6 +29,10 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
     res.sendStatus(401)
   }
 }); 
+
+if (process.env.NODE_ENV == 'development'){
+  routerAPI.use('/test',RouterTestAPI)
+}
  
 routerAPI.get('/user_data',async (req : Request, res : Response) => {
   let id = res.locals.id
@@ -47,6 +52,11 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     .join('images','users.imageID','=','images.id')
     .select('users.username','users.id','images.Url','users.onlinestatus')
     .where('users.id',id)
+
+    if (users.length < 1){
+      res.clearCookie('auth')
+      return res.sendStatus(404);
+    }
   }
   
   const channels : ChannelStorage = Object.values(await knexQuery('channellist').select('UserID','MessageChannelID')
@@ -84,6 +94,35 @@ routerAPI.get('/messages/:id/:offset?',async (req : Request, res : Response,next
     {column : 'id',order : 'desc'},
   ]).limit(50).offset(offset))
   res.send( data )
+})
+
+routerAPI.post('/created_channel',async (req : Request, res : Response,next) => {
+  const userID = req.body.userID
+  const id = res.locals.id
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseCreatedChannel;
+  // TODO: added more validations
+
+  const query_channels = knexQuery('channellist').select('MessageChannelID').where('UserID',id)
+
+  const isRealUser = (await knexQuery<UsersTable>('users').select('*').where('id',userID)).length > 0
+  if (!isRealUser){
+    return res.sendStatus(500)
+  }
+
+  const channel_id = (await knexQuery<MessagechannelsTable>('messagechannels').insert({}).returning('id'))[0]
+  await knexQuery<ChannelListTable>('channellist').insert([
+    {
+      UserID : id,
+      MessageChannelID : channel_id
+    },
+    {
+      UserID : userID,
+      MessageChannelID : channel_id
+    },
+  ])
+
+  return res.send(data)
+
 })
 
 export default routerAPI; 

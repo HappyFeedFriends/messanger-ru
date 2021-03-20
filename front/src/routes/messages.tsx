@@ -1,7 +1,7 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import MessageRow from '../components/MessageRow';
 import '../styles/MessagesRouter.css';
-import TextareaAutosize, { TextareaAutosizeProps } from 'react-textarea-autosize';
+import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
@@ -10,16 +10,28 @@ import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
+import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';
 
+enum ModalWindowEnum{
+    MODAL_WINDOW_NOT_VALID = -1,
+    MODAL_WINDOW_CREATED_CHANNEL = 0,
+}
 
 interface MessageRouterParams{
     ChannelID? : string
 }
+
+interface MessageRouterStates{ 
+    transitionHidden : boolean, 
+    inputValue : string, 
+    modalWindow? : JSX.Element 
+}
  
-class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden : boolean, inputValue : string}>{
+class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates>{
 
     messageInput : string = ''
     uploadMessageForChannel : boolean = false;
+    windowContainer : HTMLDivElement | null | undefined;
 
     ref : HTMLDivElement | null | undefined
 
@@ -80,6 +92,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 
     }
 
+
     OnScrolling() {
         const scrollTop = this.ref?.scrollTop
         const channelID = (this.props.match.params as MessageRouterParams).ChannelID
@@ -136,6 +149,16 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
 
     componentDidMount(){
         this.ref!.scrollTop = this.ref!.scrollHeight
+
+        this.windowContainer?.addEventListener('click',(ev : MouseEvent) => {
+            if (!ev.target) return;
+            if (!this.state.modalWindow) return;
+            if (!this.windowContainer) return;
+            const modalWindow = this.windowContainer.children[0]
+            if (!modalWindow.contains(ev.target as Node)){
+                this.CloseModal()
+            }
+        })
     }
 
     OnSendMessage(){
@@ -153,13 +176,13 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
     }
 
     GenerateHeader(messages : MessageInterface[]){
-        const msgs = [...messages]
+        const msgs = [...messages].sort((a,b) => a.AuthorID - b.AuthorID).filter((value,index,arr) => arr[index - 1]?.AuthorID !== value.AuthorID)
         msgs.length = 3
         return msgs.reduce((prev, current,index) =>{
             return prev + (index === 0 ? ''  : ', ') + this.GetUserDataByID(current.AuthorID)?.username
         },'')
 
-    }
+    } 
     
     onKeyPressed(e : React.KeyboardEvent){
         if (e.key.toLowerCase() === 'enter' && !e.shiftKey){
@@ -187,14 +210,39 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
         return true;
     }
 
+    OpenModal(formID : ModalWindowEnum){
+
+        const modals = {
+            [ModalWindowEnum.MODAL_WINDOW_CREATED_CHANNEL]  : <ModalWindowCreatedChannel /> 
+        } as { [key : number] : JSX.Element }
+
+        this.setState({
+            modalWindow : modals[formID]
+        }) 
+
+    }
+
+    CloseModal(){
+        this.OpenModal(ModalWindowEnum.MODAL_WINDOW_NOT_VALID)
+    }
+
+    OnClickCreatedRoom(event : React.MouseEvent<HTMLDivElement, MouseEvent>){
+
+        this.OpenModal(ModalWindowEnum.MODAL_WINDOW_CREATED_CHANNEL)
+
+    }
+
     render(){
 
         const params = (this.props.match.params as MessageRouterParams)
-        const messages = params.ChannelID && this.GetMessagesForChannel(params.ChannelID)
+        const messages = !this.props.IsLoading && params.ChannelID && this.GetMessagesForChannel(params.ChannelID)
 
         return (
             <React.StrictMode>
             {this.props.IsLoading ? <Preloader transitionHidden={this.state.transitionHidden}/> : ''}
+            <div ref={(e) => {this.windowContainer = e}} className="column modalWindowContainer" data-close={!this.state.modalWindow}>
+                {this.state.modalWindow}
+            </div>
             <div className="MessagesBlock row">
                 <div className="column leftElement">
                     <div className="headerBlock searchContainer row" >
@@ -210,7 +258,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, { transitionHidden 
                         <div className="MessagesContainer column">
                             <div className="MessagesHeader row">
                                 <span>Личные Сообщения</span>
-                                <div  data-tooltip="Создать ЛС" className="tooltipGlobal AddedInMessages column">
+                                <div  data-tooltip="Создать ЛС" onClick={(e) => this.OnClickCreatedRoom(e)} className="tooltipGlobal AddedInMessages column">
                                     <svg x="0" y="0" className="PrivateChannelCreated" aria-hidden="false" width="18" height="18" viewBox="0 0 18 18"><polygon fillRule="nonzero" fill="var(--default-color-messange-hover)" points="15 10 10 10 10 15 8 15 8 10 3 10 3 8 8 8 8 3 10 3 10 8 15 8"></polygon></svg>
                                 </div>
                             </div>

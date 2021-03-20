@@ -29,6 +29,10 @@ export interface ResponseSignUp extends ResponseDataExample{
     data : Array<SignResponse>
 }
 
+export interface ResponseCreatedChannel extends ResponseDataExample{
+    data : Array<UserLocalData>
+}
+
 
 export interface UserLocalData{
     username : string,
@@ -81,3 +85,5 @@ export interface SignUpFormData{
     username : string,
     password : string,
 }
+
+

@@ -7,6 +7,7 @@ import '../styles/userRow.css';
 interface UserRowProps {
     id : number,
     isOnline? : boolean,
+    userData? : UserLocalData
 }
 
 interface UserRowStates{
@@ -18,7 +19,7 @@ class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
     constructor(props : PropsFromRedux){
         super(props)
         this.state = {
-            user:  this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, onlinestatus : false }
+            user:  this.props.userData || this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, onlinestatus : false }
         }
     }
 

@@ -9,6 +9,10 @@ export async function up(knex: Knex): Promise<void> {
         table.timestamp("created_at").defaultTo(knex.fn.now());
     });
 
+    await knex('images').insert({
+        Url : 'https://trikky.ru/wp-content/blogs.dir/1/files/2020/05/01/sobachki.jpg'
+    })
+
     await knex.schema.createTable("users", (table: Knex.TableBuilder) => {
         table.increments('id').primary()
         table.text('username').notNullable();
