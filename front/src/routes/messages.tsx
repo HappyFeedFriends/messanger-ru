@@ -98,13 +98,14 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         const channelID = (this.props.match.params as MessageRouterParams).ChannelID
         const offset = this.ref?.querySelector('.messagesContainerElements')?.children.length
         if (!scrollTop || !channelID || !offset) return;
-
+// TODO: added flag for checked full messages in room
         if (scrollTop < 50){
             fetch(`http://localhost:8080/api/messages/${channelID}/${offset}`,{
                 credentials : 'include',
             }).then(res => res.json()).then((res : ResponseMessageData) => {
                 const messages = this.props.Storage.channels[channelID]?.messages
                 if (!messages) return;
+                if (res.data[0].length < 1) return;
                 messages.push(...res.data[0])
                 this.props.InitStorageMessagesAction({
                     channelID : Number(channelID),

@@ -21,10 +21,12 @@
 .MessageContent{
     margin-left: 10px;
     justify-content: space-around;
+    width: 100%;
 }
 
 .MessagesBlocksMain > div > div > *{
     padding-right: 10px;
+    width: 100%;
     padding-left: 10px;
 }
 .MessageContent  h2{
@@ -59,4 +61,6 @@
     font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
     color: rgb(190, 190, 190);
+    width: 100%;
+    word-break:break-all;
 }
