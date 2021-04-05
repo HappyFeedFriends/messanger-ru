@@ -11,20 +11,32 @@ import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, Re
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';
+import ModalWindowFiles from '../components/modals/modal_window_files';
+import document from '../images/document.png'
 
 enum ModalWindowEnum{
     MODAL_WINDOW_NOT_VALID = -1,
     MODAL_WINDOW_CREATED_CHANNEL = 0,
+    MODAL_WINDOW_FILE_ADDED = 1,
 }
 
 interface MessageRouterParams{
     ChannelID? : string
 }
 
+interface FileLoader{
+    type : 'img' | 'document',
+    result : string,
+    name : string
+    file : File,
+}
+
 interface MessageRouterStates{ 
     transitionHidden : boolean, 
     inputValue : string, 
     modalWindow? : JSX.Element 
+    file? : FileLoader,
+    isDragFile : boolean,
 }
  
 class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates>{
@@ -32,7 +44,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
     messageInput : string = ''
     uploadMessageForChannel : boolean = false;
     windowContainer : HTMLDivElement | null | undefined;
-
+ 
     ref : HTMLDivElement | null | undefined
 
     constructor(props : PropsFromRedux){
@@ -40,6 +52,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         this.state = {
             transitionHidden : false,
             inputValue : '',
+            isDragFile : false,
         }
 
         fetch('http://localhost:8080/api/user_data',{
@@ -167,6 +180,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         if (!channelID) return;
         this.props.socket.emit('message_send',{
             text : this.state.inputValue,
+            file : this.state.file && {
+                filename : this.state.file.name,
+                file : this.state.file.file
+            },
             ChannelID : Number(channelID),
         } as MessageSendInterface)
 
@@ -208,17 +225,31 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             })
         }
         this.ref!.scrollTop = this.ref!.scrollHeight
-        return true;
+        return true; 
     }
 
     OpenModal(formID : ModalWindowEnum){
 
-        const modals = {
-            [ModalWindowEnum.MODAL_WINDOW_CREATED_CHANNEL]  : <ModalWindowCreatedChannel /> 
-        } as { [key : number] : JSX.Element }
-
+        let modal;
+        switch (formID) {
+            case ModalWindowEnum.MODAL_WINDOW_CREATED_CHANNEL:
+                modal = <ModalWindowCreatedChannel />
+                break;
+            case ModalWindowEnum.MODAL_WINDOW_FILE_ADDED:
+                modal = this.state.file ? <ModalWindowFiles  
+                OnSendMessage={() => this.OnSendMessage()} 
+                CloseModal={() => this.CloseModal()}
+                fileName={this.state.file.name}
+                inputValue={this.state.inputValue}
+                type={this.state.file.type} 
+                result={this.state.file.result} /> : undefined
+                break;
+            default:
+                modal = undefined
+                break;
+        }
         this.setState({
-            modalWindow : modals[formID]
+            modalWindow : modal
         }) 
 
     }
@@ -233,6 +264,46 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
     }
 
+    OnSendFile(file : File){
+        const reader = new FileReader();
+        const type = file.type.split('/')[0] === 'image' ? 'img' : 'document'
+        reader.onload = (event : ProgressEvent<FileReader>) => {
+            if (!event.target?.result) return;
+            this.setState({
+                file : {
+                    type : type, 
+                    result : type === 'document' ? document : event.target.result as string,
+                    name : file.name,
+                    file : file,
+                }
+            })
+            this.OpenModal(ModalWindowEnum.MODAL_WINDOW_FILE_ADDED)
+        };
+
+        reader.readAsDataURL(file);
+
+    }
+
+    OnChangeFile(e : React.ChangeEvent<HTMLInputElement>){
+        if (!e.target.files) return;
+        const file = e.target.files[0] 
+        if (!file) return;
+        if (file.size > 16000000) return;
+
+        this.OnSendFile(file)
+        e.target.value = ''
+
+
+    }
+
+    OnDropFile(e : React.DragEvent<HTMLDivElement>){
+        e.preventDefault()
+        console.log(e)
+        const target = e.dataTransfer.files[0]
+        if (!target || target.size > 16000000) return;
+        this.OnSendFile(target)
+    }
+
     render(){
 
         const params = (this.props.match.params as MessageRouterParams)
@@ -244,7 +315,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             <div ref={(e) => {this.windowContainer = e}} className="column modalWindowContainer" data-close={!this.state.modalWindow}>
                 {this.state.modalWindow}
             </div>
-            <div className="MessagesBlock row">
+            {/* TODO  onDrop={(e) => this.OnDropFile(e)} onDragLeave={e => this.setState({isDragFile : false})} onDragOver={e => this.setState({isDragFile : true})}*/}
+            <div data-drag-file={this.state.isDragFile} className="MessagesBlock row">
                 <div className="column leftElement">
                     <div className="headerBlock searchContainer row" >
                         <input placeholder="Найти Беседу"/>
@@ -328,9 +400,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                                     </div>
                                 </div>
                             </div>
-                            <div className="InputMessage row">
-                                <div className="InputMessageBlock row">
-                                    <button className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></button>
+                            <div  className="InputMessage column">
+                                <div onDrop={e => this.OnDropFile(e)} className="InputMessageBlock row">
+                                    <input multiple={false} onChange={(e) => this.OnChangeFile(e)} id="InputFile" hidden className="InputFile" type="file" />
+                                    <label htmlFor="InputFile" className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></label>
                                     <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={(e) => this.onKeyPressed(e)} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
                                     <div className="emoji_smile_icon_vector"></div>
                                 </div>

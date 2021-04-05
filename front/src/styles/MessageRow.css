@@ -51,7 +51,10 @@
     font-family: 'Ubuntu', sans-serif;
     font-size: 18px;
 }
-
+.MessageContentImage{
+    max-width: 300px;
+    height: auto;
+}
 .MessageRow:hover{
     background-color: var(--default-color-messange-background);
 }
@@ -63,4 +66,17 @@
     color: rgb(190, 190, 190);
     width: 100%;
     word-break:break-all;
+}
+.HoverUp{
+    z-index: 200;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.fileVisualize{
+    width: 100%;
+    justify-content: flex-start;
+    justify-items: flex-start;
+    align-items: flex-start;
 }

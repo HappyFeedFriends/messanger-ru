@@ -61,6 +61,10 @@ export interface ResponseMessageData extends ResponseDataExample{
 
 export interface MessageSendInterface {
     text : string,
+    file? :{
+        filename : string,
+        file : Buffer
+    },
     ChannelID : number,
 }
 

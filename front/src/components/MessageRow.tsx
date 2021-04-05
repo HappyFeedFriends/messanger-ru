@@ -57,6 +57,10 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
                             <span className="dateFormat">{dateformat(this.props.messageData.created_at,'dd ddd in HH:MM mmmm yyyy')}</span>
                         </div>
                         <span className="messageContent mainText">{this.props.messageData.content}</span>
+                        <div style={{position : 'relative'}}>
+                            <div className="HoverUp"/>
+                            <img  className="MessageContentImage" src="https://i.pinimg.com/736x/fb/61/71/fb6171eed67c51fa43b9c7a63090996f--flower-children-flower-girls.jpg" alt=""/>
+                        </div>
                     </div>
                 </div>
             </div> 

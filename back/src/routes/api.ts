@@ -23,7 +23,7 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
   }
 
   if (isAuth){
-    res.locals.id = ((await jwt.verify(req.cookies.auth,process.env.SECRET)) as jwtCookie).id
+    res.locals.id = (jwt.verify(req.cookies.auth, process.env.SECRET) as jwtCookie).id
     next();
   }else {
     res.sendStatus(401)
@@ -41,6 +41,7 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
   const query_channels = knexQuery('channellist').select('MessageChannelID').where('UserID',id)
   const query_user_channels = knexQuery('messages').select('AuthorID').whereIn('MessageChannelID',query_channels).distinctOn('AuthorID')
   const query_messages = knexQuery('messages').select('AuthorID','MessageChannelID','created_at','content','id').whereIn('MessageChannelID',query_channels)
+  // CODE REVIEW
   let users = await knexQuery<UsersTable>('users')
   .join('images','users.imageID','=','images.id')
   .select('users.username','users.id','images.Url','users.onlinestatus')
@@ -58,7 +59,7 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
       return res.sendStatus(404);
     }
   }
-  
+  // CODE REVIEW
   const channels : ChannelStorage = Object.values(await knexQuery('channellist').select('UserID','MessageChannelID')
   .whereIn('MessageChannelID',query_channels)
   ).reduce((prev,current) => {

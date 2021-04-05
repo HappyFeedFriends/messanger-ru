@@ -3,6 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { MessageSendInterface, MessageSocketAddedInterface, UpdateOnlineStatisSocket } from "../../global/types";
 import { knexQuery } from "./database/pg";
 import { ChannelListTable, MessagesTable, UsersTable } from "./database/table";
+import fs from "fs";
 
 function parseCookies(cookie_str : string) {
     var list = {} as { [cookieName : string] : string }
@@ -31,11 +32,15 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     const verify = jwt.verify(token,process.env.SECRET) as { id : string } | string
 
-    if (typeof verify == 'object'){
-        id = verify.id
-    }else{
-        id = verify
-    } 
+    try{
+        if (typeof verify == 'object'){
+            id = verify.id
+        }else{
+            id = verify
+        } 
+    }catch{
+
+    }
 
     if (!isAuth || !id){
         socket.disconnect();
@@ -63,6 +68,14 @@ export const socket_connect = async (socket : Socket, io : Server) => {
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
+        if (data.file && data.file.file){
+            const buffer = data.file.file
+            console.log(buffer)
+            fs.writeFileSync('./uploads/' + data.file.filename,buffer,{
+
+            })  
+            
+        }
         const messageData = (await knexQuery<MessagesTable>('messages').insert({
             content : data.text,
             AuthorID : Number(id),
@@ -71,7 +84,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
-
+ 
     socket.on("disconnect", async () => {
         console.log(`disconnect ${socket.id}`);
 
