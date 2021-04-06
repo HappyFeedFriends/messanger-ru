@@ -6,7 +6,7 @@ interface FilesComponentProps {
     result : string
     inputValue : string
     fileName : string
-    OnSendMessage : () => void;
+    OnSendMessage : (newMessage : string) => void;
     CloseModal : () => void;
 }
 
@@ -26,7 +26,7 @@ class ModalWindowFiles extends React.Component<FilesComponentProps,FilesComponen
     onKeyPressed(e : React.KeyboardEvent){
         if (e.key.toLowerCase() === 'enter' && !e.shiftKey){
             e.preventDefault()
-            this.props.OnSendMessage();
+            this.props.OnSendMessage(this.state.inputValue);
         }
     }
 
@@ -66,7 +66,7 @@ class ModalWindowFiles extends React.Component<FilesComponentProps,FilesComponen
                 </div>
                 <div className="footerModalWindowFile row"> 
                     <button onClick={() => this.props.CloseModal()} >Отмена</button>
-                    <button>Отправить</button> 
+                    <button onClick={() => this.props.OnSendMessage(this.state.inputValue)}>Отправить</button> 
                 </div>
             </div>
         );  

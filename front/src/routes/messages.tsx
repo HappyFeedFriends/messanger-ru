@@ -98,9 +98,11 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                     AuthorID : data.AuthorID,
                     id : data.id,
                     created_at : data.created_at,
-                    content : data.content
+                    content : data.content,
+                    Url : data.Url,
                 }
             })
+
         })
 
     }
@@ -111,7 +113,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         const channelID = (this.props.match.params as MessageRouterParams).ChannelID
         const offset = this.ref?.querySelector('.messagesContainerElements')?.children.length
         if (!scrollTop || !channelID || !offset) return;
-// TODO: added flag for checked full messages in room
+        // TODO: added flag for checked full messages in room
         if (scrollTop < 50){
             fetch(`http://localhost:8080/api/messages/${channelID}/${offset}`,{
                 credentials : 'include',
@@ -175,11 +177,11 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         })
     }
 
-    OnSendMessage(){
+    OnSendMessage(newMessage? : string){
         const channelID = (this.props.match.params as MessageRouterParams).ChannelID
         if (!channelID) return;
         this.props.socket.emit('message_send',{
-            text : this.state.inputValue,
+            text : newMessage || this.state.inputValue,
             file : this.state.file && {
                 filename : this.state.file.name,
                 file : this.state.file.file
@@ -188,8 +190,11 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         } as MessageSendInterface)
 
         this.setState({
-            inputValue : ''
+            inputValue : '',
+            file : undefined,
         })
+
+        this.CloseModal()
         
     }
 
@@ -237,7 +242,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 break;
             case ModalWindowEnum.MODAL_WINDOW_FILE_ADDED:
                 modal = this.state.file ? <ModalWindowFiles  
-                OnSendMessage={() => this.OnSendMessage()} 
+                OnSendMessage={(newMessage) => this.OnSendMessage(newMessage)} 
                 CloseModal={() => this.CloseModal()}
                 fileName={this.state.file.name}
                 inputValue={this.state.inputValue}

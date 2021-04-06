@@ -23,6 +23,7 @@ export interface MessagesTable{
     id : number;
     AuthorID : number;
     MessageChannelID : number;
+    imageID? : number,
     content : string;
     update_at : Date; 
     created_at : Date;

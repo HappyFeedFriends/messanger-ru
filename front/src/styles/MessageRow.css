@@ -52,7 +52,7 @@
     font-size: 18px;
 }
 .MessageContentImage{
-    max-width: 300px;
+    max-width: 150px;
     height: auto;
 }
 .MessageRow:hover{
@@ -79,4 +79,42 @@
     justify-content: flex-start;
     justify-items: flex-start;
     align-items: flex-start;
+}
+
+.fileContainerMessage{
+    justify-content: space-between;
+    max-width: 550px;
+    padding: 10px;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.DownloadButton{
+    align-self: flex-start;
+    justify-items: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.fileContainerMessage[data-isdocument=false] .MessageContentFileName{
+    display: none;
+}
+.fileContainerMessage[data-isdocument=true] .MessageContentImage{
+    width: 30px;
+}
+.fileContainerMessage[data-isdocument=true]{
+    background-color: #292b2f;
+}
+.MessageContentFileName{
+    width: 100%;
+    color: white;
+    align-self: flex-start;
+    justify-self: flex-start;
+    overflow: hidden;
+    text-overflow:ellipsis
 }

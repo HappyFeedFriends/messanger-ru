@@ -46,6 +46,7 @@ export interface MessageInterface{
     id : number,
     content : string,
     AuthorID : number,
+    Url? : string,
 }
 
 export interface ChannelStorage{

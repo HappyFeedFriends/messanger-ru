@@ -2,8 +2,9 @@ import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
 import { MessageSendInterface, MessageSocketAddedInterface, UpdateOnlineStatisSocket } from "../../global/types";
 import { knexQuery } from "./database/pg";
-import { ChannelListTable, MessagesTable, UsersTable } from "./database/table";
+import { ChannelListTable, ImagesTable, MessagesTable, UsersTable } from "./database/table";
 import fs from "fs";
+import { sha256 } from "sha.js";
 
 function parseCookies(cookie_str : string) {
     var list = {} as { [cookieName : string] : string }
@@ -68,20 +69,26 @@ export const socket_connect = async (socket : Socket, io : Server) => {
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
+        console.log('message_send event!')
+        let idImage,imageUrl;
         if (data.file && data.file.file){
-            const buffer = data.file.file
-            console.log(buffer)
-            fs.writeFileSync('./uploads/' + data.file.filename,buffer,{
+            const filetype = data.file.filename.split('.').pop() || '';
+            const fileName = new sha256().update(data.file.filename + id + (new Date().getTime())).digest('hex') + '.' + filetype
+            fs.writeFileSync('uploads/' + fileName,data.file.file) 
+            imageUrl = socket.handshake.headers.host + '/uploads/' +  fileName
+             
+            idImage = (await knexQuery<ImagesTable>('images').insert({
+                Url : imageUrl,
+            }).returning(['id']))[0].id
 
-            })  
-            
         }
         const messageData = (await knexQuery<MessagesTable>('messages').insert({
             content : data.text,
             AuthorID : Number(id),
-            MessageChannelID : data.ChannelID
+            MessageChannelID : data.ChannelID,
+            imageID : idImage,
         }).returning(['AuthorID','MessageChannelID','created_at','content','id']))[0] as MessageSocketAddedInterface
-
+        messageData.Url = imageUrl 
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
  

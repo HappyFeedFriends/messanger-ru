@@ -7,6 +7,8 @@ import AuthRouter from "./routes/auth";
 import cors from 'cors';
 import { Server, Socket } from "socket.io";
 import { socket_connect } from "./socket";
+import { Response } from "express-serve-static-core";
+import path from "path";
 
 
 const corsOptions : cors.CorsOptions = {
@@ -34,12 +36,26 @@ app.use(loggerMiddleware)
 app.use('/api',routerAPI);
 app.use('/auth',AuthRouter)
 
+app.use('/uploads/:filename/:scheme?',(req,res,next) => {
+    const name = req.params.filename
+    if (!name){
+        next()
+    }
+
+    if (req.params.scheme == 'download'){
+        return res.download('uploads/' + name,err => {
+            next()
+        })
+    }
+
+    res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')},err => {
+        next()
+    })
+})
 app.use(function(req : Express.Request, res, next : NextFunction){
     
     res.sendStatus(404);
 });
-
-
 
 const server = app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );

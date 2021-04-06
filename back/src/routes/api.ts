@@ -90,7 +90,11 @@ routerAPI.get('/messages/:id/:offset?',async (req : Request, res : Response,next
   const channel_id = req.params.id
   const offset = Number(req.params.offset) || 0
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseMessageData;
-  data.data.push(await knexQuery('messages').select('AuthorID','MessageChannelID','created_at','content','id').where('MessageChannelID',channel_id).orderBy([
+  data.data.push(await knexQuery('messages')
+  .select('messages.AuthorID','messages.MessageChannelID','messages.created_at','messages.content','messages.id','images.Url')
+  .leftJoin('images','messages.imageID','=','images.id')
+  .where('MessageChannelID',channel_id)
+  .orderBy([
     {column : 'created_at',order : 'desc'},
     {column : 'id',order : 'desc'},
   ]).limit(50).offset(offset))

@@ -15,7 +15,7 @@ class Error_404 extends React.Component{
             <div className="column" style={{backgroundColor:'#262D34',width:'100vw',height:'100vh'}}>
                 <div className="row mainContainer">
 
-                    <img src={img} />
+                    <img src={img} alt=''/>
                     <div className="column textContent">
                         <h1>404</h1>
                         <span>Похоже мы не нашли страницу в наших архивах</span>
