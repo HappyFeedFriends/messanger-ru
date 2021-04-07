@@ -7,16 +7,96 @@
 .UserProfileContainer{
     width: 100vw;
     height: 100vh;
-    visibility: hidden;
     background-color: $color-main-background;
     z-index: 2000;
     position: absolute;
+    // visibility: hidden;
 }
-
+.UserProfile > * {
+    padding-top: 60px;
+    padding-left: 20px;
+}
 .UserProfile {
     .navbar{
         width: 250px;
         height: 100%;
-        background-color: rgb(27, 25, 25);
+        background-color: $color-navbar;
     }  
+    .category{
+        padding-right: 10px;
+    }
+
+    .category::after{
+        content: '';
+        width: 100%;
+        height: 1px;
+        margin-top: 5px; 
+        margin-bottom: 5px;
+        background-color: $color-messange-background;
+    }
+
+    .category_header{
+        color: $color-messange;
+        font-family: $font-text-header;
+        // letter-spacing: 1px;
+        font-weight: bold;
+        text-align: left;
+        text-transform: uppercase;
+        padding-left: 10px;
+        font-size: 12px;
+        cursor: default;
+        letter-spacing: 1px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .category_list Button{
+        background-color: transparent;
+        text-align: left;
+        padding: 6px;
+        padding-left: 10px;
+        color: $color-messange;
+        border-radius: 4px;
+        font-size: 15px;
+        transition-property: color, background-color;
+        transition-duration: .05s;
+        cursor: pointer;
+        font-family: $font-text;
+        word-spacing: 1px;
+        margin-bottom: 3px;
+        margin-top: 3px;
+    }
+    .category_list Button:hover{
+        background-color: $color-messange-background;
+        color: $color-messange-hover;
+    }
+
+    .category_list Button.quit{
+        color: rgb(209, 62, 62);
+    }
+
+    .category_list Button.quit:hover{
+        background-color: rgba(209, 62, 62, 0.120);
+    }
+
+    .socialLinks{
+        margin-top: 10px;
+    }
+
+    .socialLinks {
+        a{
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+        a:hover{
+            path{
+                fill: $color-messange-hover;
+            }
+        }
+        path{
+            fill: $color-messange;
+            transition-property: fill;
+            transition-duration: .15s;
+        }
+    }
+    
 }

@@ -6,15 +6,16 @@
     overflow: hidden;
     font-family: 'Ubuntu', sans-serif;
 }
+
 /* TODO */
-.MessagesBlock[data-drag-file=true]{
+// .MessagesBlock[data-drag-file=true]{
  
-}
+// }
 
 .userBottomElement{
     width: 100%;
     height: 60px; 
-    background-color: rgb(17, 15, 15);
+    background-color: $color-user-bottom;
 }
 
 .headerBlock{
@@ -28,7 +29,7 @@
 .leftElement{
     width: 230px;
     min-height: 100%;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
     color: rgb(88, 88, 88);
     justify-content: space-between;
 }
@@ -198,7 +199,7 @@
 
 .participants_block::-webkit-scrollbar{
     width: 7px;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
 }
 
 .participants_block::-webkit-scrollbar-thumb {
@@ -209,7 +210,7 @@
 
 .messageContainer::-webkit-scrollbar{
     width: 3px;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
 }
 
 
@@ -243,7 +244,7 @@
 
 .headerMainText{
     width: 100%;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
     padding: 0;
     justify-content: space-between;
     align-items: center;
@@ -435,11 +436,11 @@ input:focus{
 
 .MessagesBlocksMain::-webkit-scrollbar{
     width: 9px;
-    background-color: color-main-background;
+    background-color: $color-main-background;
 }
 .MessagesBlocksMain::-webkit-scrollbar-track{
     border-radius: 15px;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
 }
 .MessagesBlocksMain::-webkit-scrollbar-thumb {
     -webkit-border-radius: 0px;
@@ -494,7 +495,7 @@ input:focus{
 
 .InputMessageBlock::-webkit-scrollbar{
     width: 7px;
-    background-color: rgb(27, 25, 25);
+    background-color: $color-navbar;
 }
 
 .InputMessageBlock::-webkit-scrollbar-thumb {

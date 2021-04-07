@@ -5,8 +5,13 @@
     --default-color-messange-background : #303235;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
+
 $color-messange : #8e9297;
 $color-messange-hover : #dbe2eb;
 $color-messange-background : #303235;
 $color-main-background : #262D34;
-$color-navbar : #1b1919;
+$color-navbar : #222020;
+$color-user-bottom : rgb(17, 15, 15);
+$font-text : 'Ubuntu', sans-serif;
+$font-text-header : 'Roboto', sans-serif;

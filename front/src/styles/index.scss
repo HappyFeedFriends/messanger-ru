@@ -42,7 +42,7 @@ code {
 }
 .tooltipGlobal::after {
   clip-path: polygon(0% 0%, 100% 0, 100% 75%, 57% 75%, 50% 100%, 38% 75%, 0% 75%);
-  background-color: rgb(27, 25, 25);
+  background-color: $color-navbar;
   color: var(--default-color-messange-hover);
 	content: attr(data-tooltip); 
   border: 1px solid black;
