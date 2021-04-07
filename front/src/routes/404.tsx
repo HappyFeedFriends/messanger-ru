@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/404.css';
+import '../styles/404.scss';
 
 import aaaa from '../images/aaaaa.gif'
 import facepalm from '../images/facepalm.gif'

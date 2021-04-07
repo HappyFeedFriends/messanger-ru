@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
+import './styles/index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Router } from "react-router-dom";
@@ -17,7 +17,7 @@ const history = createBrowserHistory({
 const store = createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk),
 ));
-
+ 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

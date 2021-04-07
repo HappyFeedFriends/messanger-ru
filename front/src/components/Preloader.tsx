@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Preloader.css';
+import '../styles/Preloader.scss';
 import gif from '../images/preloader.gif'
 
 interface PreloadProp{

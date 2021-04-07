@@ -32,7 +32,9 @@
     "start": "react-scripts start --watch",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:css": "node-sass src/ -o src/ ",
+    "watch:css": "npm run build:css && node-sass src/ -o src/ -w -r"
   },
   "eslintConfig": {
     "extends": [
@@ -53,6 +55,8 @@
     ]
   },
   "devDependencies": {
+    "@types/node-sass": "^4.11.1",
+    "node-sass": "^5.0.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }

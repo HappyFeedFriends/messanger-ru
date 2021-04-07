@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import { ResponseSignIn, SignResponse, SignUpFormData } from '../../../global/types';
-import '../styles/signin.css';
+import '../styles/signin.scss';
 
 interface SignInStates {
     isLoading : boolean,

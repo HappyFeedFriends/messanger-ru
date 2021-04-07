@@ -1,6 +1,6 @@
 import React from 'react';
-import './styles/App.css';
-import './styles/variables.css';
+import './styles/App.scss';
+import './styles/variables.scss';
 import {
   Switch,
   Route,

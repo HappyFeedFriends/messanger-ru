@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../components/LogoMini';
-import '../styles/MainPage.css';
+import '../styles/MainPage.scss';
 import {
     NavLink,
   } from "react-router-dom";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserLocalData } from '../../../../global/types';
 
-import '../../styles/modal_window_created_channel.css';
+import '../../styles/modal_window_created_channel.scss';
 import UserRow from '../userRow';
 
 interface ModalWindowCreatedChannelStates{

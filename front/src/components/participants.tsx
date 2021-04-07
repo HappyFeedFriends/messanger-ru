@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Logo.css';
+import '../styles/Logo.scss';
 import UserRow from '../components/userRow';
 interface ParticipantsProps {
     channels : number[],

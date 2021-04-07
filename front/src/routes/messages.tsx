@@ -1,6 +1,6 @@
 import React from 'react';
 import MessageRow from '../components/MessageRow';
-import '../styles/MessagesRouter.css';
+import '../styles/MessagesRouter.scss';
 import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
@@ -13,6 +13,7 @@ import Participants from '../components/participants';
 import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';
 import ModalWindowFiles from '../components/modals/modal_window_files';
 import document from '../images/document.png'
+import UserProfile from '../components/UserProfile';
 
 enum ModalWindowEnum{
     MODAL_WINDOW_NOT_VALID = -1,
@@ -319,6 +320,9 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             {this.props.IsLoading ? <Preloader transitionHidden={this.state.transitionHidden}/> : ''}
             <div ref={(e) => {this.windowContainer = e}} className="column modalWindowContainer" data-close={!this.state.modalWindow}>
                 {this.state.modalWindow}
+            </div>
+            <div className="UserProfileContainer">
+                <UserProfile />
             </div>
             {/* TODO  onDrop={(e) => this.OnDropFile(e)} onDragLeave={e => this.setState({isDragFile : false})} onDragOver={e => this.setState({isDragFile : true})}*/}
             <div data-drag-file={this.state.isDragFile} className="MessagesBlock row">

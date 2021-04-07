@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/modal_window_files.css';
+import '../../styles/modal_window_files.scss';
 import TextareaAutosize from 'react-textarea-autosize';
 interface FilesComponentProps {
     type : 'img' | 'document'
