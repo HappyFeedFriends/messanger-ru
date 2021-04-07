@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
-
+@import 'variables';
 
 .SignInPage{
     width: 100vw;
     height: 100vh;
-    background-color: #262D34;
+    background-color: $color-main-background;
     justify-content: center;
     align-items: center;
 }

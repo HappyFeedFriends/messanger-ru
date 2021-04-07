@@ -5,8 +5,6 @@ import { RootState } from '../redux/rootReducer';
 import '../styles/MessageRow.scss';
 import dateformat from 'dateformat';
 import documentIcon from '../images/document.png'
-import fileLoading from '../images/download_file.png'
-import { NavLink } from 'react-router-dom';
 
 interface MessageRowProps{
     IsDuplicate : boolean,

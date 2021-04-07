@@ -1,3 +1,4 @@
+@import 'variables';
 .UserProfile{
     width: 100%;
     height: 100%;
@@ -6,13 +7,16 @@
 .UserProfileContainer{
     width: 100vw;
     height: 100vh;
-    background-color: #262D34;
+    visibility: hidden;
+    background-color: $color-main-background;
     z-index: 2000;
     position: absolute;
 }
 
-.UserProfile .navbar{
-    width: 250px;
-    height: 100%;
-    background-color: rgb(27, 25, 25);
-}  
+.UserProfile {
+    .navbar{
+        width: 250px;
+        height: 100%;
+        background-color: rgb(27, 25, 25);
+    }  
+}
