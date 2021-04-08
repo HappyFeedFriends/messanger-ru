@@ -9,6 +9,7 @@ import documentIcon from '../images/document.png'
 interface MessageRowProps{
     IsDuplicate : boolean,
     messageData : MessageInterface
+    IsPseudoMessage? : boolean
 }
 
 interface MessageRowState {
@@ -23,7 +24,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
  
     DuplicateAuthorMessage(){
         return (
-            <div className="MessageRow row isDuplicate">
+            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row isDuplicate">
                 <div className="MessageContent column">
                     <span className="messageContent mainText">{this.props.messageData.content}</span>
                     {this.GetFileContainer()}
@@ -96,7 +97,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
         }
 
         return (
-            <div className="MessageRow row">
+            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
                 <div className="row mainInfo">
                     <img src={this.state.user.Url} alt="2"/>
                     <div className="MessageContent column">

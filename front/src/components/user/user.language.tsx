@@ -50,7 +50,7 @@ class UserLanguage extends React.Component<PropsFromRedux>{
             <div className="UserLanguage">
                 <h1 className="categoryHeader"><FormattedMessage id={'user_settings_app_lang'}/></h1>
                 <div className="LanguageContent column">
-                    <h2><FormattedMessage id={'user_settings_app_lang_sub'}/></h2>
+                    <h2 className="SubHeader" ><FormattedMessage id={'user_settings_app_lang_sub'}/></h2>
                     {this.languages().map(data => {
                         return this.LanguageComponent(data.flag,data.lang)
                     })}

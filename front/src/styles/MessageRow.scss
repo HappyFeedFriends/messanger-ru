@@ -11,6 +11,7 @@
     margin-top: 10px;
     padding: 4px;
     justify-content: space-between;
+    cursor: default;
 }
 
 .MessageRow.isDuplicate{
@@ -56,7 +57,8 @@
     max-width: 150px;
     height: auto;
 }
-.MessageRow:hover{
+
+.MessageRow:not([data-pseudo=true]):hover{
     background-color: var(--default-color-messange-background);
 }
 

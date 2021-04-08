@@ -1,4 +1,5 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
 import type { UserLocalData } from "../../../../global/types";
 import { ModalWindowEnum } from "../../enums";
@@ -30,7 +31,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
         return (
             <React.StrictMode>
             <div className="UserPersonalAccount column">
-                <h1 className="categoryHeader">МОЯ УЧЁТНАЯ ЗАПИСЬ</h1>
+                <h1 className="categoryHeader"><FormattedMessage id={'user_settings_account'}/></h1>
                 <div className="UserPersonalAccountCard column">
                     <div className="UserProfileMain row">
                         <div className="UserIcon column">
@@ -91,7 +92,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
             </div>
             
             <div className="AccountDelete column">
-                <h1>Удаление учётной записи</h1>
+                <h1 className="SubHeader" >Удаление учётной записи</h1>
                 <span>Удалив учётную запись, вы больше не сможете её восстановить</span>
                 {/* <span>Отключив учётную запись, вы в любой момент сможете её восстановить</span> */}
                 <div className="buttonsContainer row">

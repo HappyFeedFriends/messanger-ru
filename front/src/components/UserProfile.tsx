@@ -2,6 +2,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'
+import UserExternal from "./user/user.external";
 import UserLanguage from "./user/user.language";
 import UserPersonalAccount from "./user/user.personal_account";
  
@@ -20,7 +21,7 @@ enum UserCategory{
 }
 
 class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
-
+ 
     constructor(props : UserProfileProps){
         super(props)
 
@@ -33,6 +34,8 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
         switch (this.state.CategoryID) {
             case UserCategory.USER_CATEGORY_LANGUAGE:
                 return <UserLanguage/>;
+            case UserCategory.USER_CATEGORY_EXTERNAL:
+                return <UserExternal/>
             default:
                 return <UserPersonalAccount {...this.props} />;
         }
@@ -116,6 +119,12 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
 
                 <div className="user_content">
                     {this.GetCategoryComponent()}
+                </div>
+                {/* TODO: Added logic closed menu */}
+                <div className="close_container row">
+                    <button className="row">
+                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path fill="#dcddde" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
+                    </button>
                 </div>
             
             </div>
