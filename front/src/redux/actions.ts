@@ -1,5 +1,5 @@
 import { MessageInterface } from "../../../global/types";
-import { APP_LOADING_STATE, APP_USER_INIT_STATE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
+import { APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE_LANG, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateLanguageTypes, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
  
 export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{
     return {
@@ -12,6 +12,13 @@ export function AppUserDataAction(state : UserData) : UpdateUserTypes{
     return {
         type: APP_USER_INIT_STATE,
         payload:state,
+    }
+}
+
+export function AppUserLanguageAction(lang : string) : UpdateLanguageTypes{
+    return {
+        type: APP_USER_UPDATE_LANG,
+        payload:lang,
     }
 }
 

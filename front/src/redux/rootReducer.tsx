@@ -1,6 +1,6 @@
 import {combineReducers } from 'redux';
 import { APP_DEFAULT, STORAGE_DEFAULT } from './default';
-import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateAppState, UpdateStorageState } from './types';
+import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE_LANG, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateAppState, UpdateStorageState } from './types';
 
 function APPReducer(state = APP_DEFAULT,actions : UpdateAppState) : AppRedux{
     switch (actions.type) {
@@ -8,6 +8,8 @@ function APPReducer(state = APP_DEFAULT,actions : UpdateAppState) : AppRedux{
             return {...state,AppLoading : actions.payload}
         case APP_USER_INIT_STATE:
             return {...state,user : actions.payload}
+        case APP_USER_UPDATE_LANG:
+            return {...state,lang : actions.payload}
         default:
             return state;
     }

@@ -31,6 +31,12 @@ export const socket_connect = async (socket : Socket, io : Server) => {
       })
     }
 
+    if (!isAuth){
+        socket.disconnect();
+        console.log('socket not authentication')
+        return;
+    }
+
     const verify = jwt.verify(token,process.env.SECRET) as { id : string } | string
 
     try{
@@ -43,7 +49,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
 
     }
 
-    if (!isAuth || !id){
+    if (!id){
         socket.disconnect();
         console.log('socket not authentication')
         return;

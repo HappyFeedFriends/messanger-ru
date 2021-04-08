@@ -81,7 +81,6 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     Users : users,
     channelsStorage : channels,
   } as UserDataResponse   
-
   data.data.push( obj )
   res.send(data)
 })

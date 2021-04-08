@@ -10,10 +10,8 @@ import { rootReducer } from './redux/rootReducer'
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history'
-const history = createBrowserHistory({
 
-}) 
-
+const history = createBrowserHistory({}) 
 const store = createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk),
 ));
@@ -21,7 +19,7 @@ const store = createStore(rootReducer, composeWithDevTools(
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />
+      <App /> 
     </Router>
   </Provider>,
   document.getElementById('root')

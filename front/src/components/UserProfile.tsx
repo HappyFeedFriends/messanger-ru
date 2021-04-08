@@ -1,55 +1,102 @@
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'
+import UserLanguage from "./user/user.language";
 import UserPersonalAccount from "./user/user.personal_account";
  
 interface UserProfileProps{
     openModal : (id : ModalWindowEnum, ...args : any) => void;
 }
 
-class UserProfile extends React.Component<UserProfileProps>{
+interface UserProfileStates{
+    CategoryID : UserCategory
+}
+
+enum UserCategory{
+    USER_CATEGORY_PERSONAL_ACCOUNT = 0,
+    USER_CATEGORY_LANGUAGE = 1,
+    USER_CATEGORY_EXTERNAL = 2,
+}
+
+class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
+
+    constructor(props : UserProfileProps){
+        super(props)
+
+        this.state = {
+            CategoryID : UserCategory.USER_CATEGORY_PERSONAL_ACCOUNT,
+        }
+    }
+
+    GetCategoryComponent(){
+        switch (this.state.CategoryID) {
+            case UserCategory.USER_CATEGORY_LANGUAGE:
+                return <UserLanguage/>;
+            default:
+                return <UserPersonalAccount {...this.props} />;
+        }
+    }
+
+    OpenCategory(id : UserCategory){
+
+        this.setState({
+            CategoryID : id,
+        })
+
+    }
+
+    ButtonCategorySelect(categoryID : UserCategory,text : string){
+        return (
+            <button 
+            data-select={this.state.CategoryID === categoryID} 
+            onClick={(e) => this.OpenCategory(categoryID)}>
+                <FormattedMessage id={text}/>
+            </button>
+        )
+    }
 
     render(){
         return (
             <div className="row UserProfile">
                 <div className="navbar column">
                     <div className="category column">
-                        <span className="category_header">Настройки пользователя</span>
+                        <span className="category_header"><FormattedMessage id={'user_settings_header'}/></span>
                         <ul className="column category_list">
-                            <button radioGroup="user_page">Моя учётная запись</button>
-                            <button radioGroup="user_page">Конфиденциальность</button>
+                            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_PERSONAL_ACCOUNT,'user_settings_account')}
+                            {/* <button ><FormattedMessage id={'user_settings_privacy'}/></button> */}
                         </ul>
                     </div>
 
                     <div className="category column">
-                        <span className="category_header">Настройка приложения</span>
+                        <span className="category_header"><FormattedMessage id={'user_settings_app_header'}/></span>
                         <ul className="column category_list">
-                            <button radioGroup="user_page">Язык</button>
-                            <button radioGroup="user_page">Внешний вид</button>
+                            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_LANGUAGE,'user_settings_app_lang')}
+                            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_EXTERNAL,'user_settings_app_external')}
                         </ul>
                     </div>
 
                     <div className="category column">
-                        <span className="category_header">Обратная связь</span>
+                        <span className="category_header"><FormattedMessage id={'user_settings_feedback_header'}/></span>
                         <ul className="column category_list">
-                            <button radioGroup="user_page">Оставить отзыв</button>
-                            <button radioGroup="user_page">Отправить ошибку</button>
+                            <button ><FormattedMessage id={'user_settings_feedback_error'}/></button>
+                            <button ><FormattedMessage id={'user_settings_feedback_review'}/></button>
                         </ul>
                     </div>
 
                     <div className="category column">
                         <span className="category_header">Разработчик</span>
                         <ul className="column category_list">
-                            <button radioGroup="user_page" >Статистика</button>
-                            <button radioGroup="user_page">Администрирование</button>
-                            <button radioGroup="user_page">Bug Reports</button>
-                            <button radioGroup="user_page">Отладка</button>
+                            <button  >Статистика</button>
+                            <button >Администрирование</button>
+                            <button >Bug Reports</button>
+                            <button >Отладка</button>
                         </ul>
                     </div>
 
                     <div className="category column">
                         <ul className="column category_list">
-                            <button className="quit" >Выйти</button>
+                            <button className="quit" ><FormattedMessage id={'user_settings_quit'}/></button>
                         </ul>
                     </div>
 
@@ -68,7 +115,7 @@ class UserProfile extends React.Component<UserProfileProps>{
                 </div>
 
                 <div className="user_content">
-                    <UserPersonalAccount openModal={this.props.openModal}  />
+                    {this.GetCategoryComponent()}
                 </div>
             
             </div>

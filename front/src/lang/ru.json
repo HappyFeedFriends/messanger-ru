@@ -1,0 +1,19 @@
+
+{
+    "lang_ru": "Русский",
+    "lang_en": "Английский",
+    "real_lang_ru": "Русский",
+    "real_lang_en": "English",
+
+    "user_settings_header" : "Настройки пользователя",
+    "user_settings_account" : "Моя учётная запись",
+    "user_settings_privacy" : "Конфиденциальность",
+    "user_settings_app_header" : "Настройки приложения",
+    "user_settings_app_lang" : "Язык",
+    "user_settings_app_external" : "Внешний вид",
+    "user_settings_app_lang_sub" : "Выбери язык",
+    "user_settings_feedback_header" : "Обратная связь",
+    "user_settings_feedback_error" : "Оставить ошибку",
+    "user_settings_feedback_review" : "Оставить отзыв",
+    "user_settings_quit" : "Выйти"
+}

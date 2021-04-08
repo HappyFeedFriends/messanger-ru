@@ -3,6 +3,7 @@ import { UserLocalData,ChannelStorage, MessageInterface } from "../../../global/
 
 export const APP_LOADING_STATE = 'APP_LOADING_STATE'
 export const APP_USER_INIT_STATE = 'APP_USER_INIT_STATE'
+export const APP_USER_UPDATE_LANG = 'APP_USER_UPDATE_LANG'
 
 export const MESSAGE_CHANNEL_ID_STATE = 'MESSAGE_CHANNEL_ID_STATE'
 export const MESSAGE_CHANNEL_MESSAGES = 'MESSAGE_CHANNEL_MESSAGES'
@@ -19,6 +20,11 @@ interface ActionRedux{
 interface UpdateLoadingState extends ActionRedux {
     type: typeof APP_LOADING_STATE
     payload: boolean
+}
+
+interface UpdateLanguageState extends ActionRedux {
+    type: typeof APP_USER_UPDATE_LANG
+    payload: string
 }
 
 interface UpdateUserState extends ActionRedux {
@@ -69,6 +75,7 @@ export interface UserData{
 export interface AppRedux{
     AppLoading : boolean,
     user : UserData,
+    lang : string,
     Socket : Socket,
 }
 
@@ -98,4 +105,5 @@ export type UpdateStorageState = InitStorageTypes | InitStorageMessages | Storag
 
 export type UpdateLoadingTypes = UpdateLoadingState
 export type UpdateUserTypes = UpdateUserState
-export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes
+export type UpdateLanguageTypes = UpdateLanguageState;
+export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes | UpdateLanguageTypes

@@ -10,15 +10,6 @@ const ExampleJsonResponse = require('../../const/responseExample.json') as Respo
 
 const AuthRouter = express.Router(); 
   
-// AuthRouter.get('/user_data',async (req : Request,res : Response) => {
-
-//     const data = await knexQuery('users').select('*').where('id',2).first()
-//     res.cookie('auth',jwt.sign({id:data.id}, process.env.SECRET),{
-//         maxAge : 604800000, // 7 days
-//     })
-//     res.redirect('http://localhost:3000/channel')
-// })  
-
 AuthRouter.post('/signin',async (req : Request, res : Response) => {
     const signinData = req.body as SignInFormData
     const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseSignIn;
@@ -87,12 +78,10 @@ AuthRouter.post('/signin',async (req : Request, res : Response) => {
     res.cookie('auth',jwt.sign({id:userData[0]}, process.env.SECRET),{
         maxAge : 604800000, // 7 days
     })
-
     return res.send(data)
 
 
 })
-
 
 AuthRouter.post('/signup',async (req : Request, res : Response) => {
     const signupData = req.body as SignUpFormData
@@ -112,12 +101,12 @@ AuthRouter.post('/signup',async (req : Request, res : Response) => {
             errorCode : 10,
             errorDescription : 'Неверные данные для входа или пароль'
         })
+        return res.send(data)
     }
 
     res.cookie('auth',jwt.sign({id:userData[0].id}, process.env.SECRET),{
         maxAge : 604800000, // 7 days
     })
-
     return res.send(data)
 
 })
