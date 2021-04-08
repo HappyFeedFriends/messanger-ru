@@ -1,8 +1,13 @@
 import React from "react";
+import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'
+import UserPersonalAccount from "./user/user.personal_account";
  
-class UserProfile extends React.Component{
+interface UserProfileProps{
+    openModal : (id : ModalWindowEnum, ...args : any) => void;
+}
 
+class UserProfile extends React.Component<UserProfileProps>{
 
     render(){
         return (
@@ -11,10 +16,24 @@ class UserProfile extends React.Component{
                     <div className="category column">
                         <span className="category_header">Настройки пользователя</span>
                         <ul className="column category_list">
-                            <button>Моя учётная запись</button>
-                            <button>Конфиденциальность</button>
-                            <button>Язык</button>
-                            <button>Внешний вид</button>
+                            <button radioGroup="user_page">Моя учётная запись</button>
+                            <button radioGroup="user_page">Конфиденциальность</button>
+                        </ul>
+                    </div>
+
+                    <div className="category column">
+                        <span className="category_header">Настройка приложения</span>
+                        <ul className="column category_list">
+                            <button radioGroup="user_page">Язык</button>
+                            <button radioGroup="user_page">Внешний вид</button>
+                        </ul>
+                    </div>
+
+                    <div className="category column">
+                        <span className="category_header">Обратная связь</span>
+                        <ul className="column category_list">
+                            <button radioGroup="user_page">Оставить отзыв</button>
+                            <button radioGroup="user_page">Отправить ошибку</button>
                         </ul>
                     </div>
 
@@ -25,14 +44,6 @@ class UserProfile extends React.Component{
                             <button radioGroup="user_page">Администрирование</button>
                             <button radioGroup="user_page">Bug Reports</button>
                             <button radioGroup="user_page">Отладка</button>
-                        </ul>
-                    </div>
-
-                    <div className="category column">
-                        <span className="category_header">Feedback</span>
-                        <ul className="column category_list">
-                            <button radioGroup="user_page">Оставить отзыв</button>
-                            <button radioGroup="user_page">Отправить ошибку</button>
                         </ul>
                     </div>
 
@@ -55,6 +66,11 @@ class UserProfile extends React.Component{
                     </div>
 
                 </div>
+
+                <div className="user_content">
+                    <UserPersonalAccount openModal={this.props.openModal}  />
+                </div>
+            
             </div>
         );
     }

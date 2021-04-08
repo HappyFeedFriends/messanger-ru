@@ -14,12 +14,10 @@ import ModalWindowCreatedChannel from '../components/modals/modal_window_created
 import ModalWindowFiles from '../components/modals/modal_window_files';
 import document from '../images/document.png'
 import UserProfile from '../components/UserProfile';
-
-enum ModalWindowEnum{
-    MODAL_WINDOW_NOT_VALID = -1,
-    MODAL_WINDOW_CREATED_CHANNEL = 0,
-    MODAL_WINDOW_FILE_ADDED = 1,
-}
+import {ModalWindowEnum} from '../enums'
+import ModalWindowUpdateUserName from '../components/modals/modal_window_update_username';
+import ModalWindowUpdateEmail from '../components/modals/modal_window_update_username email';
+import ModalWindowUpdatePassword from '../components/modals/modal_window_update_password';
 
 interface MessageRouterParams{
     ChannelID? : string
@@ -234,7 +232,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         return true; 
     }
 
-    OpenModal(formID : ModalWindowEnum){
+    OpenModal(formID : ModalWindowEnum, ...args : any){
 
         let modal;
         switch (formID) {
@@ -249,6 +247,15 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 inputValue={this.state.inputValue}
                 type={this.state.file.type} 
                 result={this.state.file.result} /> : undefined
+                break;
+            case ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME :
+                modal = <ModalWindowUpdateUserName username={args} CloseModal={() => this.CloseModal()}  /> 
+                break;
+            case ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL:
+                modal = <ModalWindowUpdateEmail CloseModal={() => this.CloseModal()} />
+                break;
+            case ModalWindowEnum.MODAL_WINDOW_UPDATE_PASSWORD:
+                modal = <ModalWindowUpdatePassword CloseModal={() => this.CloseModal()} />
                 break;
             default:
                 modal = undefined
@@ -322,7 +329,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 {this.state.modalWindow}
             </div>
             <div className="UserProfileContainer">
-                <UserProfile />
+                {!this.props.IsLoading && <UserProfile openModal={(id : ModalWindowEnum,...args : any) => this.OpenModal(id,...args)} />}
             </div>
             {/* TODO  onDrop={(e) => this.OnDropFile(e)} onDragLeave={e => this.setState({isDragFile : false})} onDragOver={e => this.setState({isDragFile : true})}*/}
             <div data-drag-file={this.state.isDragFile} className="MessagesBlock row">

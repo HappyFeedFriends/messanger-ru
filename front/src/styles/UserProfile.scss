@@ -7,20 +7,24 @@
 .UserProfileContainer{
     width: 100vw;
     height: 100vh;
-    background-color: $color-main-background;
     z-index: 2000;
     position: absolute;
+    background-color: #222020;
     // visibility: hidden;
 }
 .UserProfile > * {
     padding-top: 60px;
-    padding-left: 20px;
 }
 .UserProfile {
+
+    justify-content: flex-end;
+
     .navbar{
         width: 250px;
         height: 100%;
         background-color: $color-navbar;
+        padding-left: 20px;
+        justify-self: flex-end;
     }  
     .category{
         padding-right: 10px;
@@ -49,25 +53,29 @@
         margin-top: 10px;
         margin-bottom: 10px;
     }
-    .category_list Button{
-        background-color: transparent;
-        text-align: left;
-        padding: 6px;
-        padding-left: 10px;
-        color: $color-messange;
-        border-radius: 4px;
-        font-size: 15px;
-        transition-property: color, background-color;
-        transition-duration: .05s;
-        cursor: pointer;
-        font-family: $font-text;
-        word-spacing: 1px;
-        margin-bottom: 3px;
-        margin-top: 3px;
-    }
-    .category_list Button:hover{
-        background-color: $color-messange-background;
-        color: $color-messange-hover;
+    .category_list {
+        Button{
+            background-color: transparent;
+            text-align: left;
+            padding: 6px;
+            padding-left: 10px;
+            color: $color-messange;
+            border-radius: 4px;
+            font-size: 15px;
+            transition-property: color, background-color;
+            transition-duration: .05s;
+            cursor: pointer;
+            font-family: $font-text;
+            word-spacing: 1px;
+            margin-bottom: 3px;
+            margin-top: 3px;
+        }
+        Button::selection,
+        Button:hover{
+            background-color: $color-messange-background;
+            color: $color-messange-hover;
+        }
+
     }
 
     .category_list Button.quit{
@@ -99,4 +107,19 @@
         }
     }
     
+    .user_content{
+        margin-left: 40px;
+        background-color: $color-main-background;
+        width: 70%;
+        padding-left: 40px;
+        justify-self: flex-end;
+
+
+        .categoryHeader{
+            color: white;
+            font-size: 16px;
+            text-align: left;
+        }
+    }
+
 }

@@ -1,0 +1,207 @@
+@import 'variables';
+$color-messange-account : #222429;
+
+.UserPersonalAccount::after{
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: $color-messange-background;
+    margin-top: 30px;
+    margin-bottom: 30px;
+} 
+
+.AccountDelete{
+    h1{
+        color: $color-messange;
+        font-size: 14px;
+        // font-weight: bold;
+        text-transform: uppercase;
+        text-align: left;
+        // font-family: $font-text-header;
+    }
+    span{
+        text-align: left;
+        color: $color-messange;
+        font-size: 13px;
+        font-family: $font-text;
+        margin-top: 6px;
+
+    }
+
+    .buttonsContainer{
+        margin-top: 15px;
+
+        Button{
+            margin-right: 10px;
+            margin-left: 10px;
+            background-color: transparent;
+            padding: 8px;
+            border: 1px solid #b93333;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            font-size: 12px;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        Button:nth-child(2){
+            color: #d13e3e;
+        }
+        Button:nth-child(1){
+            background-color: #d13e3e;
+            margin-left: 0;
+            transition-property: background-color;
+            transition-duration: .22s;
+        }
+        Button:nth-child(1):hover{
+            background-color: #b93333;
+        }
+    }
+}
+
+.UserPersonalAccount{
+
+    max-width: 800px;
+
+    .UserPersonalAccountCard{
+        border-radius: 5px;
+        background-color: $color-messange-account;
+        padding: 15px;
+        margin-top: 20px;
+        width: 100%;
+
+        .UserIcon{
+            position: relative;
+            width: 88px;
+            height: 88px;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .UserIcon:hover{
+            .avatar_update{
+                opacity: 1;
+            }
+        }
+
+        .avatar{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+        }
+        .avatar_update{
+            // position: absolute;
+            z-index: 200;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.473);
+            justify-content: center;
+            align-items: center;
+            // letter-spacing: 1px;
+            word-spacing: 1px;
+            opacity: 0;
+            transition-duration: .13s;
+            transition-property: opacity;
+
+            span{
+                // font-family: $font-text-header;
+                color: white;
+                font-size: 11px;
+                text-transform: uppercase;
+                line-height: 12px;
+                font-weight: bold;
+                // white-space: pre;
+                font-weight: 700;
+                // letter-spacing: 1px;
+                // word-spacing: 2px;
+                
+            }
+        }
+        .UploaderIndicator{
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            z-index: 20000;
+            background-color: #dcddde;
+            padding: 5px;
+            border-radius: 50%;
+        }
+        .UserProfileMain{
+            // align-items: center;
+        }
+
+        .Username{
+            margin-left: 10px;
+            color: white;
+            font-size: 21px;
+            font-weight: 700;
+            margin-top: 15px;
+            font-family: $font-text-header;
+            letter-spacing: 1px;
+        }
+
+        .settingsUpdate{
+            background-color: $color-messange-background;
+            padding: 10px;
+            padding-bottom: 5px;
+            padding-top: 5px;
+            margin-top: 15px;
+            border-radius: 5px;
+
+            .content{
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 15px;
+                margin-bottom: 15px;
+
+                button{
+                    padding: 3px;
+                    height: 35px;
+                    font-size: 14px;
+                    width: 90px;
+                    border-radius: 4px;
+                    color: white;
+                    background-color: #747f8d;
+                    cursor: pointer;
+                    transition-property: background-color;
+                    transition-duration: .23s;
+                }
+
+                button:hover{
+                    background-color: rgb(101, 108, 117);
+                }
+            }
+        }
+
+        .containerSetting{
+
+            width: 200px;
+
+            span{
+                text-align: left;
+            }
+            .settingsHeader{
+                color: $color-messange;
+                font-size: 12px;
+                // letter-spacing: 1px;
+                word-spacing: 2px;
+                font-weight: 600;
+                text-transform: uppercase;
+                margin-bottom: 2px;
+            }
+            .settingUsername{
+                color: white;
+                font-size: 16px;
+                font-family: $font-text;
+                letter-spacing: 0.5px;
+            }
+        }
+        
+    }
+}
