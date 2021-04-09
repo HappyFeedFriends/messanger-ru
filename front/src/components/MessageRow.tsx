@@ -26,7 +26,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
  
     DuplicateAuthorMessage(){
         return (
-            <div data-compact-mode={this.props.MessageFormat === 'compact'}  data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row isDuplicate">
+            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row isDuplicate">
                 <div className="MessageContent column">
                     <span className="messageContent mainText">{this.props.messageData.content}</span>
                     {this.GetFileContainer()}
@@ -78,12 +78,12 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
 
         return (
         <div data-isDocument={this.state.isDocument} className="row fileContainerMessage">
-            <div style={{position : 'relative'}}>
-                <div className="HoverUp"/>
+            <div style={{position : 'relative',left:0,right:0, bottom:0,top:0}}>
+                <div className="HoverUp"/> 
                 <img className="MessageContentImage" src={ (this.state.isDocument ? '' : document.location.protocol + '//') + this.state.url} alt=""/>
             </div>
             <span className="MessageContentFileName">{this.state.filename}</span>
-            <a href={document.location.protocol + '//' + this.props.messageData.Url + '/download'}>
+            <a href={document.location.protocol + '//' + this.props.messageData.Url}>
                 <svg className="DownloadButton" aria-hidden="false" width="32" height="32" viewBox="0 0 32 32"><path fill="#b9bbbe" fillRule="evenodd" clipRule="evenodd" d="M16.293 9.293L17.707 10.707L12 16.414L6.29297 10.707L7.70697 9.293L11 12.586V2H13V12.586L16.293 9.293ZM18 20V18H20V20C20 21.102 19.104 22 18 22H6C4.896 22 4 21.102 4 20V18H6V20H18Z"></path></svg>
             </a>
         </div>
@@ -94,26 +94,45 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
         return moment(this.props.messageData.created_at).locale(this.props.lang).calendar();
     }
 
+    MessageRowCompact(){
+
+        const time = moment(this.props.messageData.created_at).locale(this.props.lang).format('LT');
+
+        return (
+            <div data-compact-mode='true' data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
+                <div className="row mainInfo">
+                    <div className="MessageContent column">
+                        <div className="row">
+                            <span className="dateFormat">{time}</span>
+                            <h2>{this.state.user.username}</h2>
+                            <span className="messageContent mainText">{this.props.messageData.content}</span>
+                        </div>
+                        {this.GetFileContainer()}
+                    </div>
+                </div>
+            </div> 
+        )
+    }
+
     render(){
 
-        const { IsDuplicate } = this.props
-
-        if (IsDuplicate){
-            return this.DuplicateAuthorMessage()
+        if (this.props.MessageFormat === 'compact'){
+            return this.MessageRowCompact()
         }
 
+        if (this.props.IsDuplicate){
+            return this.DuplicateAuthorMessage()
+        }
         const time = this.TransfromDate()
 
         return (
-            <div data-compact-mode={this.props.MessageFormat === 'compact'}  data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
+            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
                 <div className="row mainInfo">
                     <img src={this.state.user.Url} alt="2"/>
                     <div className="MessageContent column">
                         <div className="row">
                             <h2>{this.state.user.username}</h2>
-                            <span className="dateFormat">
-                                {time}
-                            </span>
+                            <span className="dateFormat">{time}</span>
                         </div>
                         <span className="messageContent mainText">{this.props.messageData.content}</span>
                         {this.GetFileContainer()}

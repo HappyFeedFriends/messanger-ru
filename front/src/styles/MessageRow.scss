@@ -14,8 +14,25 @@
     cursor: default;
 }
 .MessageRow[data-compact-mode=true]{
-    img{
-        display: none;
+    margin-top: 2px;
+    .dateFormat{
+        margin-right: 5px;
+        margin-left: 0;
+
+    }
+
+    .mainText{
+        margin-left: 10px;
+        margin-bottom: -1px;
+        // font-weight: bold;
+    }
+    
+    .fileContainerMessage{
+        justify-content:flex-start;
+    }
+
+    .MessageContentImage{
+        max-width: 120px;
     }
 }
 .MessageRow.isDuplicate{
@@ -37,12 +54,14 @@
 }
 .MessageContent  h2{
     font-size: 16px;
+    letter-spacing: 1px;
     color: white;
 }
  
 .dateFormat{
     color: var(--default-color-messange-hover);
     margin-left: 20px;
+    margin-bottom: 2px;
 }
 .MessageContent *.dateFormat{
     font-size: 12px;
@@ -69,15 +88,15 @@
 .mainText{
     text-align: left;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 18px;
+    font-size: 14px;
     color: rgb(190, 190, 190);
     width: 100%;
     word-break:break-all;
 }
 .HoverUp{
     z-index: 200;
-    height: 100%;
     width: 100%;
+    height: 100%;
     position: absolute;
 }
 
@@ -98,6 +117,9 @@
     border-radius: 5px;
     margin-bottom: 5px;
     margin-top: 5px;
+    position: relative;
+    inset: 0;
+    height: auto;
 }
 
 .DownloadButton{
