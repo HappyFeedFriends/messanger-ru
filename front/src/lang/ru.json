@@ -25,5 +25,10 @@
 
     "message_visibility" : "Отображение сообщений",
     "text_visible_default" : "Уютно - современно, красиво и приятно для глаз",
-    "text_visible_compact" : "Компактно - на экране помещается больше сообщений"
+    "text_visible_compact" : "Компактно - на экране помещается больше сообщений",
+    "message_date_created" : "{expires, time, hard}",
+    "message_date_created_now" : "Сегодня в {expires, time, short}",
+    "message_date_created_yesterday" : "Вчера в {expires, time, short}",
+    "date_now" :    "Сегодня",
+    "date_yesterday" : "Вчера"
 }

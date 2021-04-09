@@ -3,8 +3,10 @@ import { connect, ConnectedProps } from 'react-redux';
 import { MessageInterface, UserLocalData } from '../../../global/types';
 import { RootState } from '../redux/rootReducer';
 import '../styles/MessageRow.scss';
-import dateformat from 'dateformat';
 import documentIcon from '../images/document.png'
+import moment from 'moment';
+import 'moment/locale/ru'
+import 'moment/locale/en-au'
 
 interface MessageRowProps{
     IsDuplicate : boolean,
@@ -24,7 +26,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
  
     DuplicateAuthorMessage(){
         return (
-            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row isDuplicate">
+            <div data-compact-mode={this.props.MessageFormat === 'compact'}  data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row isDuplicate">
                 <div className="MessageContent column">
                     <span className="messageContent mainText">{this.props.messageData.content}</span>
                     {this.GetFileContainer()}
@@ -88,6 +90,10 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
         )
     }
 
+    TransfromDate(){
+        return moment(this.props.messageData.created_at).locale(this.props.lang).calendar();
+    }
+
     render(){
 
         const { IsDuplicate } = this.props
@@ -96,14 +102,18 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
             return this.DuplicateAuthorMessage()
         }
 
+        const time = this.TransfromDate()
+
         return (
-            <div data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
+            <div data-compact-mode={this.props.MessageFormat === 'compact'}  data-pseudo={this.props.IsPseudoMessage === true} className="MessageRow row">
                 <div className="row mainInfo">
                     <img src={this.state.user.Url} alt="2"/>
                     <div className="MessageContent column">
                         <div className="row">
                             <h2>{this.state.user.username}</h2>
-                            <span className="dateFormat">{dateformat(this.props.messageData.created_at,'dd ddd in HH:MM mmmm yyyy')}</span>
+                            <span className="dateFormat">
+                                {time}
+                            </span>
                         </div>
                         <span className="messageContent mainText">{this.props.messageData.content}</span>
                         {this.GetFileContainer()}
@@ -117,7 +127,9 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
 const mapStateToProps = (state : RootState) => {
     return { 
         UserData : state.APPReducer.user, 
-        Storage : state.StorageReducer
+        Storage : state.StorageReducer,
+        MessageFormat : state.APPReducer.messageFormat,
+        lang : state.APPReducer.lang
     };
 }
 

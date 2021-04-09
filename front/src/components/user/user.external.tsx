@@ -1,6 +1,7 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { ConnectedProps,connect } from "react-redux";
+import { AppUserMessageVisibleAction } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/user_external.scss'
 import MessageRow from "../MessageRow";
@@ -17,7 +18,8 @@ class UserExternal extends React.Component<PropsFromRedux>{
         }
         data.push({...example,id : -1,content : 'Посмотрите на меня, я прекрасная акула!'})
         data.push({...example,id : -2,content : 'Я плаваю при свете солнца!'})
-        data.push({...example,id : -3,content : 'И жду, когда это закончится'}) 
+        data.push({...example,id : -3,content : 'И жду, когда закончится....'}) 
+        data.push({...example,id : -4,content : 'Поиск данного сообщения'})
 
         return data
     }
@@ -43,11 +45,11 @@ class UserExternal extends React.Component<PropsFromRedux>{
                         <RadioSelector isSelect={false} leftText={'theme_name_white'} />
                     </div>
                 </div>
-                <div className="ExternalMessageVisibilitySelect column categoryExternal">
+                <div className="ExternalMessageVisibilitySelect column">
                     <h1 className="SubHeader"><FormattedMessage id="message_visibility"/></h1>
                     <div className="column">
-                    <RadioSelector isSelect={true} leftText={'text_visible_default'} />
-                        <RadioSelector isSelect={false} leftText={'text_visible_compact'} />
+                        <RadioSelector onClick={() => this.props.AppUserMessageVisibleAction('cozy')} isSelect={this.props.MessageFormat === 'cozy'} leftText={'text_visible_default'} />
+                        <RadioSelector onClick={() => this.props.AppUserMessageVisibleAction('compact')} isSelect={this.props.MessageFormat === 'compact'} leftText={'text_visible_compact'} />
                     </div>
                 </div>
             </div>
@@ -59,10 +61,13 @@ class UserExternal extends React.Component<PropsFromRedux>{
 const mapStateToProps = (state : RootState) => {
     return { 
         UserData : state.APPReducer.user, 
+        MessageFormat : state.APPReducer.messageFormat
     };
 }
 
-const connector = connect(mapStateToProps,{})
+const connector = connect(mapStateToProps,{
+    AppUserMessageVisibleAction
+})
 type PropsFromRedux = ConnectedProps<typeof connector>
 
 export default connector(UserExternal)
