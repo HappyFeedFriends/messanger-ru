@@ -3,18 +3,40 @@
     --default-color-messange : #8e9297;
     --default-color-messange-hover : #dbe2eb;
     --default-color-messange-background : #303235;
+    --default-color-text : #fff;
+
+    --color-messange : #8e9297;
+    --color-messange-hover : #dbe2eb;
+    --color-messange-hover-select : #fff;
+    --color-messange-background : #303235;
+    --color-messange-background-select : #383a3d;
+    --color-main-background : #262D34;
+    --color-navbar : #222020;
+    --color-navbar-hover : #2b2828; 
+    --color-user-bottom : rgb(17, 15, 15);
+
 }
+
+.App[data-theme=light]{
+    --default-color-messange : #949494;
+    --default-color-messange-hover : #636464;
+    --default-color-messange-background : #b8babd;
+    --default-color-text : rgb(0, 0, 0);
+
+
+    --color-messange : #000000;
+    --color-messange-hover : #3b3b3b;
+    --color-messange-hover-select : rgb(0, 0, 0);
+    --color-messange-background : #c9cdd1;
+    --color-messange-background-select : #c6ccd4;
+    --color-main-background : #ffffff;
+    --color-navbar : #e4e4e4;
+    --color-navbar-hover : #ca4848; 
+    --color-user-bottom : rgb(221, 210, 210);
+}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
 
-$color-messange : #8e9297;
-$color-messange-hover : #dbe2eb;
-$color-messange-hover-select : #fff;
-$color-messange-background : #303235;
-$color-messange-background-select : #383a3d;
-$color-main-background : #262D34;
-$color-navbar : #222020;
-$color-navbar-hover : #2b2828; 
-$color-user-bottom : rgb(17, 15, 15);
 $font-text : 'Ubuntu', sans-serif;
 $font-text-header : 'Roboto', sans-serif;

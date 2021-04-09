@@ -22,7 +22,7 @@
     .navbar{
         width: 400px;
         // height: 100%;
-        background-color: $color-navbar;
+        background-color: var(--color-navbar);
         padding-left: 20px;
         // justify-self: flex-end;
     }  
@@ -36,11 +36,11 @@
         height: 1px;
         margin-top: 5px; 
         margin-bottom: 5px;
-        background-color: $color-messange-background;
+        background-color: var(--color-messange-background);
     }
 
     .category_header{
-        color: $color-messange;
+        color: var(--color-messange);
         font-family: $font-text-header;
         // letter-spacing: 1px;
         font-weight: bold;
@@ -59,7 +59,7 @@
             text-align: left;
             padding: 6px;
             padding-left: 10px;
-            color: $color-messange;
+            color: var(--color-messange);
             border-radius: 4px;
             font-size: 15px;
             transition-property: color, background-color;
@@ -72,13 +72,13 @@
         }
         Button::selection,
         Button:hover{
-            background-color: $color-messange-background;
-            color: $color-messange-hover;
+            background-color: var(--color-messange-background);
+            color: var(--color-messange-hover);
         }
 
         Button[data-select=true]{ 
-            background-color: $color-messange-background-select;
-            color: $color-messange-hover-select;
+            background-color: var(--color-messange-background-select);
+            color: var(--color-messange-hover-select);
         }
 
     }
@@ -102,11 +102,11 @@
         }
         a:hover{
             path{
-                fill: $color-messange-hover;
+                fill: var(--color-messange-hover);
             }
         }
         path{
-            fill: $color-messange;
+            fill: var(--color-messange);
             transition-property: fill;
             transition-duration: .15s;
         }
@@ -114,14 +114,14 @@
     
     .user_content{
         // margin-left: 40px;
-        background-color: $color-main-background;
+        background-color: var(--color-main-background);
         width: 1100px;
         padding-left: 40px;
         justify-self: flex-end;
 
 
         .categoryHeader{
-            color: white;
+            color: var(--default-color-text);
             font-size: 16px;
             text-align: left;
             text-transform: uppercase;
@@ -131,14 +131,14 @@
 
     .close_container{
         width: 800px;
-        background-color: $color-main-background;
+        background-color: var(--color-main-background);
 
         button{
             width: 40px;
             height: 40px;
             background-color: transparent;
-            border: 1px solid $color-messange;
-            color:$color-messange;
+            border: 1px solid var(--color-messange);
+            color:var(--color-messange);
             font-size: 24px;
             cursor: pointer;
             justify-content: center;
@@ -154,7 +154,7 @@
 
     .SubHeader{
         text-align: left;
-        color: $color-messange;
+        color: var(--color-messange);
         font-size: 15px;
         margin-top: 10px;
 

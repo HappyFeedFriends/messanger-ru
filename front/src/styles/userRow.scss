@@ -1,4 +1,4 @@
-@import 'variables';
+
 .userName_status{
     margin-left: 10px;
     justify-content: center;
@@ -59,7 +59,7 @@
     padding: 3px;
     /* padding-bottom: 0; */
     position: absolute;
-    background-color: $color-navbar;
+    background-color: var(--color-navbar);
     right: 0px;
     bottom: 0px;
     border-radius: 50%;

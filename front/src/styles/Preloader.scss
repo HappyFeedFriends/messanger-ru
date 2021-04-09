@@ -1,9 +1,9 @@
-@import 'variables';
+
 .PreloadContainer{
     width: 100vw;
     height: 100vh;
     z-index: 2000000;
-    background-color: $color-main-background;
+    background-color: var(--color-main-background);
     justify-content: center;
     align-items: center;
     transition-property: opacity,transform;

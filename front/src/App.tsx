@@ -35,7 +35,7 @@ class App extends React.Component<PropsFromRedux> {
     return (
       <IntlProvider locale={this.props.lang} defaultLocale="ru" messages={this.GetMessages()}>
       <BrowserRouter>
-        <div className="App">
+        <div className="App" data-theme={'dark'}>
           <Switch>
             <Route exact path="/" component={MainPage} />
             <Route path='/channel/:ChannelID?' component={MessagesRouter} />

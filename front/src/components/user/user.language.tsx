@@ -6,6 +6,7 @@ import { FormattedMessage } from "react-intl"
 import { connect, ConnectedProps } from "react-redux"
 import { RootState } from "../../redux/rootReducer"
 import { AppUserLanguageAction } from "../../redux/actions"
+import RadioSelector from "../selector"
 
 class UserLanguage extends React.Component<PropsFromRedux>{
 
@@ -22,26 +23,27 @@ class UserLanguage extends React.Component<PropsFromRedux>{
         ]
     }
 
+    FlagComponent(flag : string, code : string){
+        return (
+            <div className="translateName_flag row">
+                <span className="translateName"> 
+                    <FormattedMessage id={'lang_' + code}/> 
+                </span>
+                <img src={flag} alt=""/>
+            </div>
+        )
+    }
+
     LanguageComponent(flag : string, code : string){
         return (
-            <div key={'lang_' + code} onClick={(e) => this.props.AppUserLanguageAction(code)} data-select={code === this.props.lang} className="LanguageSelectorContainer column">
-                <div className="languageContainer row">
-                    <div className="dot_realName row">
-                        <div className="dot" >
-                            <div className="dot_ring" />
-                        </div>
-                        <span className="realName"> 
-                            <FormattedMessage id={'real_lang_' + code}/>  
-                        </span>
-                    </div>
-                    <div className="translateName_flag row">
-                        <span className="translateName"> 
-                            <FormattedMessage id={'lang_' + code}/> 
-                        </span>
-                        <img src={flag} alt=""/>
-                    </div>
-                </div>
-            </div>
+
+            <RadioSelector 
+            key={'lang_' + code} 
+            onClick={() => this.props.AppUserLanguageAction(code)} 
+            isSelect={code === this.props.lang}
+            leftText={'real_lang_' + code}
+            rightElement={this.FlagComponent(flag,code)}
+            />
         )
     }
 

@@ -15,5 +15,15 @@
     "user_settings_feedback_header" : "Обратная связь",
     "user_settings_feedback_error" : "Оставить ошибку",
     "user_settings_feedback_review" : "Оставить отзыв",
-    "user_settings_quit" : "Выйти"
+    "user_settings_quit" : "Выйти",
+
+    "theme_name_dark" :  "Тёмная",
+    "theme_name_white" :  "Светлая",
+    "theme" : "Тема",
+
+    "status_0": "В разработке",
+
+    "message_visibility" : "Отображение сообщений",
+    "text_visible_default" : "Уютно - современно, красиво и приятно для глаз",
+    "text_visible_compact" : "Компактно - на экране помещается больше сообщений"
 }

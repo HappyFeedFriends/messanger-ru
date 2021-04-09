@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap');
-@import 'variables';
 
 body {
   margin: 0;
@@ -43,7 +42,7 @@ code {
 }
 .tooltipGlobal::after {
   clip-path: polygon(0% 0%, 100% 0, 100% 75%, 57% 75%, 50% 100%, 38% 75%, 0% 75%);
-  background-color: $color-navbar;
+  background-color: var(--color-navbar);
   color: var(--default-color-messange-hover);
 	content: attr(data-tooltip); 
   border: 1px solid black;
