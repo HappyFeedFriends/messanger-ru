@@ -1,0 +1,127 @@
+@import 'variables';
+
+.FeedBack{
+
+    .containerFeedBack{
+        margin-top: 20px;
+        
+        .headerFeedBack{
+
+            // align-items: flex-end;
+        }
+
+        h2{
+            color: var(--default-color-text);
+            font-size: 17px;
+            margin-right: 15px;
+            // font-family: $font-text;
+            letter-spacing: 1px;
+            font-weight: bold;
+            align-self: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .inputCustomTheme{
+            margin-top: 10px;
+            input{
+                width: 100%;
+                background-color: var(--color-navbar);
+                padding: 10px;
+                border-radius: 8px;
+                color: var(--default-color-messange);
+            }
+        }
+    }
+
+    .FeedBackMessageMainBlock{
+        margin-top: 10px;
+
+        textarea{
+            border-radius: 4px;
+            resize: none;
+            height: 400px;
+            padding: 10px;
+            color: var(--default-color-text);
+            background-color: var(--color-navbar);
+            letter-spacing: 1px;
+            line-height: 15px;
+            border: 1px solid black;
+        }
+
+        textarea::-webkit-scrollbar{
+            width: 9px;
+            background-color: var(--color-main-background);
+        }
+        textarea::-webkit-scrollbar-track{
+            border-radius: 15px;
+            background-color: var(--color-navbar);
+        }
+        textarea::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 0px;
+            border-radius: 15px;
+            background-color:black;
+        }
+    }
+
+    .buttons{
+        justify-content: flex-end;
+        margin-top: 20px;
+
+        button{
+            border: 1px solid var(--color-send-button);
+
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 120px;
+
+            span{
+                font-size: 14px;
+            }
+        }
+    }
+
+    .button_send{
+        background-color: var(--color-send-button);
+        transition-duration: .12s;
+        transition-property: background-color;
+
+        span{
+            color: var(--default-color-text); 
+        }
+
+        
+    }
+
+    .button_send:hover{
+        background-color: var(--color-send-button-hover);
+    }
+
+    .button_clear{
+        margin-right: 10px;
+        background-color: transparent;
+
+        span{
+            color: var(--color-send-button); 
+        }
+    }
+
+    .errorBlock{
+        text-align: left;
+        color: #d13e3e;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: #d13e3e2d;
+        padding: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .errorBlock:hover{
+        background-color: #d13e3e46;
+    }
+
+    .DropMenu {
+        margin-bottom: 10px;
+    }
+}

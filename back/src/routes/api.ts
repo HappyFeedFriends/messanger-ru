@@ -1,9 +1,9 @@
 import express, { NextFunction,Request,Response} from "express";
 import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
-import { ChannelListTable, MessagechannelsTable, UsersTable } from "../database/table";
+import { ChannelListTable, feedbackTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ChannelStorage, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse } from '../../../global/types';
+import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse } from '../../../global/types';
 import RouterTestAPI from "./api/test";
 const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 
@@ -124,6 +124,38 @@ routerAPI.post('/created_channel',async (req : Request, res : Response,next) => 
       MessageChannelID : channel_id
     },
   ])
+
+  return res.send(data)
+
+})
+
+routerAPI.post('/feedback/:type',async (req : Request, res : Response,next) =>{
+
+  const type = req.params.type
+
+  if (type != 'error' && type != 'review') return res.sendStatus(500);
+  if (!res.locals.id) return res.sendStatus(500);
+
+
+  const feedback = req.body as FeedbackData
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  if (!feedback.text || feedback.text == ''){
+    data.errorCode = 0
+    data.errorMessage = 'Поле обязательно для заполнения!'
+    return res.send(data)
+  }
+
+  if (!feedback.theme || feedback.theme == ''){
+    data.errorCode = 1
+    data.errorMessage = 'Поле обязательно для заполнения!'
+    return res.send(data)
+  }
+  knexQuery<feedbackTable>('feedback').insert({
+    text : feedback.text,
+    theme : feedback.theme,
+    AuthorID : res.locals.id,
+    type : type,
+  })
 
   return res.send(data)
 

@@ -14,6 +14,15 @@ export interface ImagesTable{
     created_at : Date,
 }
 
+export interface feedbackTable{
+    id : number,
+    theme : string,
+    text : string,
+    type : 'error' | 'review',
+    AuthorID : number,
+    created_at : Date,
+}
+
 export interface MessagechannelsTable{
     id : number;
     created_at : Date,

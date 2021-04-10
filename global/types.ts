@@ -91,4 +91,8 @@ export interface SignUpFormData{
     password : string,
 }
 
+export interface FeedbackData{
+    theme : string,
+    text : string,
+}
 

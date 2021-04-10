@@ -1,0 +1,92 @@
+.DropMenu[data-open=true]{
+        
+    ul{
+        display: inherit;
+    }
+
+    .DropMenuSelectedValue{
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .DropMenuArrow{
+        transform: rotate(270deg);
+    }
+
+}
+
+.DropMenu{
+
+    // padding: 9px;
+    color: var(--default-color-messange);
+    border: none;
+    font-size: 15px;
+    border-radius: 4px;
+    position: relative;
+
+    .DropMenuRow{
+        height: 40px;
+        cursor: pointer;
+        padding: 10px;
+        background-color: var(--color-navbar);
+        border-radius: 8px;
+        transition-property: background-color;
+        transition-duration: .13s;
+
+
+    }
+    
+    .DropMenuSelectedValue{
+        justify-content: space-between;
+        border: 1px solid black;
+    }
+
+    ul{
+        display: none;
+        position: absolute;
+        right: 0;
+        left: 0;
+
+        .DropMenuRow{
+            border-radius: 0px;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+        }
+
+        .DropMenuRow:nth-last-child(1){
+            border-radius: 8px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom: 1px solid black;
+        }
+    }
+
+    .DropMenuRowText{
+        color: var(--default-color-messange);
+        border: none;
+        font-size: 15px;
+        text-align: left;
+        align-self: flex-start;
+        justify-self: flex-start;
+    }
+    .DropMenuRow:hover{
+        background-color: var(--color-navbar-hover);
+
+    }
+
+    .DropMenuArrow{
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        transform: rotate(90deg);
+        transition-property: transform;
+        transition-duration: .1s;
+
+        path{
+            fill: #337AB7;
+            transition: fill 0.5s ease-out;
+        }
+    }
+
+
+}

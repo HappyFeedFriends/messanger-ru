@@ -3,6 +3,8 @@ import { FormattedMessage } from "react-intl";
 import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'
 import UserExternal from "./user/user.external";
+import UserFeedBackError from "./user/user.feedback_error";
+import UserFeedBackReview from "./user/user.feedback_review";
 import UserLanguage from "./user/user.language";
 import UserPersonalAccount from "./user/user.personal_account";
  
@@ -18,6 +20,8 @@ enum UserCategory{
     USER_CATEGORY_PERSONAL_ACCOUNT = 0,
     USER_CATEGORY_LANGUAGE = 1,
     USER_CATEGORY_EXTERNAL = 2,
+    USER_CATEGORY_FEEDBACK_ERROR = 3,
+    USER_CATEGORY_FEEDBACK_REVIEW = 4,
 }
 
 class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
@@ -36,6 +40,10 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                 return <UserLanguage/>;
             case UserCategory.USER_CATEGORY_EXTERNAL:
                 return <UserExternal/>
+            case UserCategory.USER_CATEGORY_FEEDBACK_ERROR:
+                return <UserFeedBackError />
+            case UserCategory.USER_CATEGORY_FEEDBACK_REVIEW:
+                return <UserFeedBackReview />
             default:
                 return <UserPersonalAccount {...this.props} />;
         }
@@ -82,8 +90,8 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                     <div className="category column">
                         <span className="category_header"><FormattedMessage id={'user_settings_feedback_header'}/></span>
                         <ul className="column category_list">
-                            <button ><FormattedMessage id={'user_settings_feedback_error'}/></button>
-                            <button ><FormattedMessage id={'user_settings_feedback_review'}/></button>
+                            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_FEEDBACK_ERROR,'user_settings_feedback_error')}
+                            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_FEEDBACK_REVIEW,'user_settings_feedback_review')}
                         </ul>
                     </div>
 

@@ -13,7 +13,7 @@
     "user_settings_app_external" : "Внешний вид",
     "user_settings_app_lang_sub" : "Выбери язык",
     "user_settings_feedback_header" : "Обратная связь",
-    "user_settings_feedback_error" : "Оставить ошибку",
+    "user_settings_feedback_error" : "Отправить ошибку",
     "user_settings_feedback_review" : "Оставить отзыв",
     "user_settings_quit" : "Выйти",
 
@@ -30,5 +30,18 @@
     "message_date_created_now" : "Сегодня в {expires, time, short}",
     "message_date_created_yesterday" : "Вчера в {expires, time, short}",
     "date_now" :    "Сегодня",
-    "date_yesterday" : "Вчера"
+    "date_yesterday" : "Вчера",
+
+
+    "feedback_theme_message"  : "Тема сообщения:",
+    "feedback_error_interface" : "Ошибки интерфейса",
+    "feedback_error_localize" : "Ошибки локализации",
+    "feedback_error_app" : "Ошибки приложения",
+    "feedback_error_not_found" : "Ни один из вариантов мне не подходит",
+
+    "feedback_review_friendly_interface" : "Дружелюбный интерфейс",
+    "feedback_review_happy" : "Весёлый интерфейс",
+
+    "send" :    "Отправить",
+    "clear_feedback" : "Очистить"
 }
