@@ -1,5 +1,5 @@
-import { MessageInterface } from "../../../global/types";
-import { APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, UpdateLanguageTypes, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessageFormatTypes, UpdateMessagesForChatTypes, UpdateUserTypes, UserData } from "./types";
+import { MessageInterface, UserData, UserLocalData } from "../../../global/types";
+import { APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, StorageUserUpdateTypes, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateLanguageTypes, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessageFormatTypes, UpdateMessagesForChatTypes, UpdateUserTypes } from "./types";
  
 export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{
     return {
@@ -11,6 +11,13 @@ export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{
 export function AppUserDataAction(state : UserData) : UpdateUserTypes{
     return {
         type: APP_USER_INIT_STATE,
+        payload:state,
+    }
+}
+
+export function AppUserDataUpdateAction(state : UserData) : UpdateUserTypes{
+    return {
+        type: APP_USER_UPDATE,
         payload:state,
     }
 }
@@ -60,6 +67,13 @@ export function InitStorageMessagesAction(data : { channelID : number,messages :
 export function StorageMessageAdded(data : { channelID : number,message : MessageInterface }) : StorageMessageAddedTypes{
     return {
         type: STORAGE_MESSAGES_ADDED,
+        payload:data, 
+    } 
+}
+
+export function StorageUserUpdate(data : UserLocalData) : StorageUserUpdateTypes{
+    return {
+        type: STORAGE_USER_UPDATE,
         payload:data, 
     } 
 }

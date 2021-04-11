@@ -52,9 +52,6 @@ class signUp extends React.Component<RouteComponentProps,SignInStates>{
             })
 
         })
-        .catch((msg) => {
-            console.log('error' + msg)
-        })
         .finally(() => {
             this.setState({
                 isLoading : false

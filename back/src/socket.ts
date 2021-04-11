@@ -75,7 +75,6 @@ export const socket_connect = async (socket : Socket, io : Server) => {
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
-        console.log('message_send event!')
         let idImage,imageUrl;
         if (data.file && data.file.file){
             const filetype = data.file.filename.split('.').pop() || '';

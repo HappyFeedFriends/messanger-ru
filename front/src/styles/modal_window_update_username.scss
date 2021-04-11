@@ -15,6 +15,20 @@ $button-go-color-hover : rgb(37, 101, 185);
     cursor: default;
     width: 450px;
 
+    .errorBlock{
+        text-align: left;
+        color: #d13e3e;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background-color: #d13e3e2d;
+        padding: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .errorBlock:hover{
+        background-color: #d13e3e46;
+    }
 
     h1{
         color: white;

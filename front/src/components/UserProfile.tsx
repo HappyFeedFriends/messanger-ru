@@ -1,5 +1,8 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
+import { connect } from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
+import Cookies from "universal-cookie";
 import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'
 import UserExternal from "./user/user.external";
@@ -8,9 +11,9 @@ import UserFeedBackReview from "./user/user.feedback_review";
 import UserLanguage from "./user/user.language";
 import UserPersonalAccount from "./user/user.personal_account";
  
-interface UserProfileProps{
+interface UserProfileProps {
     openModal : (id : ModalWindowEnum, ...args : any) => void;
-}
+} 
 
 interface UserProfileStates{
     CategoryID : UserCategory
@@ -107,7 +110,7 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
 
                     <div className="category column">
                         <ul className="column category_list">
-                            <button className="quit" ><FormattedMessage id={'user_settings_quit'}/></button>
+                            <button className="quit" onClick={e => { new Cookies().remove('auth'); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
                         </ul>
                     </div>
 

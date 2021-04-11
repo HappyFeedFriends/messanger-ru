@@ -2,43 +2,42 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
 import { ResponseDataExample } from "../../../../global/types";
-import { AppUserDataAction, StorageUserUpdate } from "../../redux/actions";
+import { AppUserDataUpdateAction, StorageUserUpdate } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/modal_window_update_username.scss'
 
 interface ModalWindowUpdateUserNameProps{
-    username : string
     CloseModal : () => void;
+    email : string
 }
 
-export interface ModalWindowUpdateUserNameStates{
+interface ModalWindowUpdateUserNameStates{
     isSubmit : boolean,
-    username : string,
+    email : string,
     password : string,
     errorCode : number,
     errorMessage : string,
 }
 
-class ModalWindowUpdateUserName extends React.Component<PropsFromRedux,ModalWindowUpdateUserNameStates>{
+class ModalWindowUpdateEmail extends React.Component<PropsFromRedux,ModalWindowUpdateUserNameStates>{
 
-    type = 'username'
+    type = 'email';
 
     constructor(props : PropsFromRedux){
         super(props)
 
         this.state = {
             isSubmit : false,
-            username : props.username,
+            email : props.email,
             password : '',
             errorCode : -1,
             errorMessage : '',
         }
     }
-
     OnSubmitData(){
         if (this.state.isSubmit) return;
 
-        if (this.state.username === ''){
+        if (this.state.email === ''){
 
             return this.setState({
                 errorCode : 1,
@@ -65,7 +64,7 @@ class ModalWindowUpdateUserName extends React.Component<PropsFromRedux,ModalWind
                 'Content-Type' : 'application/json',
             },
             body : JSON.stringify({
-                username : this.state.username,
+                email : this.state.email,
                 password : this.state.password,
             }),
         })        
@@ -76,7 +75,9 @@ class ModalWindowUpdateUserName extends React.Component<PropsFromRedux,ModalWind
         .then((res : ResponseDataExample) => {
 
             if (res.errorCode === -1){
-                this.props.StorageUserUpdate(res.data[0])
+                this.props.AppUserDataUpdateAction({
+                    email : res.data[0].email
+                } as any)
                 this.props.CloseModal();
                 return;
             }
@@ -98,15 +99,15 @@ class ModalWindowUpdateUserName extends React.Component<PropsFromRedux,ModalWind
     render(){
         return (
             <div className="ModalWindowUpdateUserName column">
-                <h1>Измените имя пользователя</h1>
-                <span>Введите новое имя пользователя и текущий пароль</span>
+                <h1>Измените адрес эл. почты</h1>
+                <span>Введите новый адрес электронной почты и пароль</span>
                 <div className="InputsContainer column">
                     <div className="column">
-                        <span>Имя пользователя</span>
+                        <span>Адрес электронной почты</span>
                         { this.state.errorCode === 1 && (
                             <div className="row"><span className="errorBlock" >{this.state.errorMessage}</span></div>
                         )}
-                        <input type="text" onChange={(e) => { if (this.state.isSubmit) return;  this.setState({username : e.currentTarget.value})} } value={this.state.username} />
+                        <input type="email" onChange={(e) => { if (this.state.isSubmit) return;  this.setState({email : e.currentTarget.value})} } value={this.state.email} />
                     </div>
                     <div className="column">
                         <span>Текущий пароль</span>
@@ -119,16 +120,17 @@ class ModalWindowUpdateUserName extends React.Component<PropsFromRedux,ModalWind
                 <div className="footerUpdateUsername row">
                     <button onClick={() => {if (this.state.isSubmit) return; this.props.CloseModal()}} >Отмена</button>
                     <button onClick={() => this.OnSubmitData()}>
-                    {
-                        this.state.isSubmit 
-                        ? (<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>)
-                        : <FormattedMessage id="done" />
-                    }
+                        {
+                            this.state.isSubmit 
+                            ? (<div className="lds-ellipsis"><div></div><div></div><div></div><div></div></div>)
+                            : <FormattedMessage id="done" />
+                        }
                     </button>
                 </div>
             </div>
         )
     }
+
 
 }
 
@@ -137,8 +139,8 @@ const mapStateToProps = (state : RootState) => {
 }
 
 const connector = connect(mapStateToProps,{
-    StorageUserUpdate
+    AppUserDataUpdateAction
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & ModalWindowUpdateUserNameProps
 
-export default connector(ModalWindowUpdateUserName)
+export default connector(ModalWindowUpdateEmail)

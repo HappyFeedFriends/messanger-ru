@@ -1,10 +1,12 @@
-import express, { NextFunction,Request,Response} from "express";
+import express, { NextFunction,Request,response,Response} from "express";
 import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
 import { ChannelListTable, feedbackTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse } from '../../../global/types';
+import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse, UserUpdateInfo } from '../../../global/types';
 import RouterTestAPI from "./api/test";
+import { sha256 } from "sha.js";
+import validator from "validator";
 const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 
 const routerAPI = express.Router()
@@ -72,6 +74,8 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     return prev;
   },{})
 
+  const user = {...users[0],email : (await knexQuery<UsersTable>('users').select('email').where('id',id).first()).email}
+
   const obj = {
     id : id,
     Channels : Object.values(await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)).reduce((prev,current) => {
@@ -79,10 +83,11 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
       return prev
     },[]),
     Users : users,
+    User : user,
     channelsStorage : channels,
   } as UserDataResponse   
   data.data.push( obj )
-  res.send(data)
+  return res.send(data)
 })
    
 routerAPI.get('/messages/:id/:offset?',async (req : Request, res : Response,next) => {
@@ -158,6 +163,53 @@ routerAPI.post('/feedback/:type',async (req : Request, res : Response,next) =>{
   })
 
   return res.send(data)
+
+})
+
+
+//CODE REVIEW
+routerAPI.post('/user_update/:type',async (req : Request, res : Response, next) => {
+
+  const type = req.params.type   
+  const body = req.body as UserUpdateInfo
+  const id = res.locals.id
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  if (!id) return res.sendStatus(401);
+  if (!body.password) return res.sendStatus(500);
+  if (type != 'username' && type != 'password' && type != 'email') return res.sendStatus(500);
+
+  const value = (() => {
+    switch (type) {
+      case 'username':
+        return body.username
+      case 'password':
+        return body.new_password && new sha256().update(body.new_password).digest('hex') || undefined;
+      case 'email' : 
+        return body.email
+      default:
+        return undefined;
+    }
+  })()
+
+  if (!value) return res.send({...data,errorCode : 1,errorMessage: 'Поле обязательно для ввода!'})
+
+  if (type == 'email' && !validator.isEmail(value)) return res.send({...data,errorCode : 1,errorMessage: 'Неккоректно указан адрес электронной почты'})
+  if (type == 'password' && !validator.isStrongPassword(value,{
+    minLength : 6,
+    minNumbers : 0,
+    minSymbols : 0,
+    minLowercase : 0,
+    minUppercase : 0,
+  })) return res.send({...data,errorCode : 1,errorMessage: 'Минимальная длина пароля - 6 символов'})
+
+  const password_user = (await knexQuery<UsersTable>('users').select('password').where('id',id).first()).password
+  const sha_password = new sha256().update(body.password).digest('hex')
+  if (password_user !== sha_password) return res.send({...data,errorCode : 0,errorMessage: 'Пароль введён неверно!'})  
+  const newData = (await knexQuery<UsersTable>('users').update(type,value).where('id',id).returning(['email','username','id']))[0]
+  data.data.push(newData)
+  return res.send(data)
+
+
 
 })
 

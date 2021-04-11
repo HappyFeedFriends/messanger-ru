@@ -68,6 +68,23 @@ class UserFeedBackError extends React.Component<{},UserFeedBackErrorStates>{
 
     OnSendForm(){
 
+        const themeName = this.state.theme === 'feedback_error_not_found' ? this.state.customTheme : this.state.theme
+        if (this.state.text === ''){
+
+            return this.setState({
+                errorType : 0,
+                errorMessage : 'Поле обязательно для ввода!'
+            })
+        }
+
+        if (themeName === ''){
+
+            return this.setState({
+                errorType : 1,
+                errorMessage : 'Поле обязательно для ввода!'
+            })
+        }
+
         this.setState({
             isRequest : true,
         })
@@ -80,7 +97,7 @@ class UserFeedBackError extends React.Component<{},UserFeedBackErrorStates>{
             },
             body : JSON.stringify({
                 text : this.state.text,
-                theme : this.state.theme === 'feedback_error_not_found' ? this.state.customTheme : this.state.theme
+                theme : themeName
             } as FeedbackData),
         })
         .then(res => {

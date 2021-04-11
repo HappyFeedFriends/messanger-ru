@@ -1,33 +1,22 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
-import type { UserLocalData } from "../../../../global/types";
 import { ModalWindowEnum } from "../../enums";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/UserPersonalAccount.scss'
-
-interface UserPersonalAccountState {
-    user : UserLocalData | undefined, 
-}
 
 interface UserPersonalAccountProps{
     openModal : (id : ModalWindowEnum,...args : any) => void;
 }
 
-class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAccountState>{
+class UserPersonalAccount extends React.Component<PropsFromRedux>{
     
     GetUserData(){
         return this.props.Users.find((data) => data.id === this.props.UserData.id)
     }
 
-    constructor(props : PropsFromRedux){
-        super(props);
-        this.state = {
-            user : this.GetUserData()
-        }
-    }
-
     render(){
+        const user = this.GetUserData()
         return (
             <React.StrictMode>
             <div className="UserPersonalAccount column">
@@ -35,7 +24,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                 <div className="UserPersonalAccountCard column">
                     <div className="UserProfileMain row">
                         <div className="UserIcon column">
-                            <img className="avatar" src={this.state.user?.Url} alt=""/> 
+                            <img className="avatar" src={user?.Url} alt=""/> 
                             <span className="avatar_update column">
                                 <span><FormattedMessage id='update_avatar' /></span>
                             </span>
@@ -49,7 +38,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                             </div>
                         </div>
                         <div className="Username">
-                            {this.state.user?.username}
+                            {user?.username}
                         </div>
                     </div>
 
@@ -60,10 +49,10 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                                     <span className="settingsHeader"><FormattedMessage id='username' /></span>
                                 </div>
                                 <div className="row">
-                                    <span className="settingUsername">{this.state.user?.username}</span>
+                                    <span className="settingUsername">{user?.username}</span>
                                 </div>
                             </div>
-                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME,this.state.user?.username)} ><FormattedMessage id='update' /></button>
+                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME,user?.username)} ><FormattedMessage id='update' /></button>
                         </div>
                         <div className="row content">
                             <div className="column containerSetting">
@@ -82,10 +71,10 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                                     <span className="settingsHeader"><FormattedMessage id='email' /></span>
                                 </div>
                                 <div className="row">
-                                    <span className="settingUsername">******@***.**</span>
+                                    <span className="settingUsername">{this.props.UserData.email}</span>
                                 </div>
                             </div>
-                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL)} ><FormattedMessage id='update' /></button>
+                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL,this.props.UserData.email)} ><FormattedMessage id='update' /></button>
                         </div>
                     </div>
                 </div>

@@ -16,13 +16,13 @@ import document from '../images/document.png'
 import UserProfile from '../components/UserProfile';
 import {ModalWindowEnum} from '../enums'
 import ModalWindowUpdateUserName from '../components/modals/modal_window_update_username';
-import ModalWindowUpdateEmail from '../components/modals/modal_window_update_username email';
+import ModalWindowUpdateEmail from '../components/modals/modal_window_update_email';
 import ModalWindowUpdatePassword from '../components/modals/modal_window_update_password';
 
 interface MessageRouterParams{
     ChannelID? : string
 }
-
+ 
 interface FileLoader{
     type : 'img' | 'document',
     result : string,
@@ -70,11 +70,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 users : res.data[0].Users,
                 channels : res.data[0].channelsStorage
             })
-
-            this.props.AppUserDataAction({
-                id : res.data[0].id,
-                Channels : res.data[0].Channels,
-            })
+ 
+            this.props.AppUserDataAction(res.data[0].User)
             // this
             // wtf
             setTimeout(() => {
@@ -249,10 +246,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 result={this.state.file.result} /> : undefined
                 break;
             case ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME :
-                modal = <ModalWindowUpdateUserName username={args} CloseModal={() => this.CloseModal()}  /> 
+                modal = <ModalWindowUpdateUserName username={args[0]} CloseModal={() => this.CloseModal()}  /> 
                 break;
             case ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL:
-                modal = <ModalWindowUpdateEmail CloseModal={() => this.CloseModal()} />
+                modal = <ModalWindowUpdateEmail email={args[0]} CloseModal={() => this.CloseModal()} />
                 break;
             case ModalWindowEnum.MODAL_WINDOW_UPDATE_PASSWORD:
                 modal = <ModalWindowUpdatePassword CloseModal={() => this.CloseModal()} />
@@ -311,7 +308,6 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
     OnDropFile(e : React.DragEvent<HTMLDivElement>){
         e.preventDefault()
-        console.log(e)
         const target = e.dataTransfer.files[0]
         if (!target || target.size > 16000000) return;
         this.OnSendFile(target)

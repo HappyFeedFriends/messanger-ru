@@ -9,7 +9,14 @@ export interface  UserDataResponse {
     id : number,
     Channels : Array<number>,
     Users : Array<UserLocalData>,
+    User : UserData,
     channelsStorage : ChannelStorage,
+}
+
+export interface UserData extends UserLocalData{
+    id : number,
+    Channels : Array<number>, 
+    email : string,
 }
 
 export interface SignResponse{
@@ -96,3 +103,11 @@ export interface FeedbackData{
     text : string,
 }
 
+
+export interface UserUpdateInfo{
+    password : string,
+    new_password? : string,
+    username? : string,
+    email? : string,
+
+}
