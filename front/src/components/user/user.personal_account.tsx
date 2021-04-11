@@ -37,7 +37,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                         <div className="UserIcon column">
                             <img className="avatar" src={this.state.user?.Url} alt=""/> 
                             <span className="avatar_update column">
-                                <span>Изменить аватар</span>
+                                <span><FormattedMessage id='update_avatar' /></span>
                             </span>
                             <div className="UploaderIndicator">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
@@ -57,47 +57,47 @@ class UserPersonalAccount extends React.Component<PropsFromRedux,UserPersonalAcc
                         <div className="row content">
                             <div className="column containerSetting">
                                 <div className="row">
-                                    <span className="settingsHeader">Имя пользователя</span>
+                                    <span className="settingsHeader"><FormattedMessage id='username' /></span>
                                 </div>
                                 <div className="row">
                                     <span className="settingUsername">{this.state.user?.username}</span>
                                 </div>
                             </div>
-                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME,this.state.user?.username)} >Изменить</button>
+                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_USER_NAME,this.state.user?.username)} ><FormattedMessage id='update' /></button>
                         </div>
                         <div className="row content">
                             <div className="column containerSetting">
                                 <div className="row">
-                                    <span className="settingsHeader">Пароль</span>
+                                    <span className="settingsHeader"><FormattedMessage id='password' /></span>
                                 </div>
                                 <div className="row">
                                     <span className="settingUsername">**********</span>
                                 </div>
                             </div>
-                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_PASSWORD)} >Изменить</button>
+                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_PASSWORD)} ><FormattedMessage id='update' /></button>
                         </div>
                         <div className="row content">
                             <div className="column containerSetting">
                                 <div className="row">
-                                    <span className="settingsHeader">Электронный адрес</span>
+                                    <span className="settingsHeader"><FormattedMessage id='email' /></span>
                                 </div>
                                 <div className="row">
                                     <span className="settingUsername">******@***.**</span>
                                 </div>
                             </div>
-                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL)} >Изменить</button>
+                            <button onClick={() => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_UPDATE_EMAIL)} ><FormattedMessage id='update' /></button>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div className="AccountDelete column">
-                <h1 className="SubHeader" >Удаление учётной записи</h1>
-                <span>Удалив учётную запись, вы больше не сможете её восстановить</span>
+                <h1 className="SubHeader" ><FormattedMessage id='delete_account' /></h1>
+                <span><FormattedMessage id='delete_account_sub' /></span>
                 {/* <span>Отключив учётную запись, вы в любой момент сможете её восстановить</span> */}
                 <div className="buttonsContainer row">
                     {/* <button>Отключить учётную запись</button> */}
-                    <button>Удалить уч. запись</button>
+                    <button><FormattedMessage id='delete_account_button' /></button>
                 </div>
             </div>
             

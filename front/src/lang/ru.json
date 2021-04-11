@@ -43,5 +43,14 @@
     "feedback_review_happy" : "Весёлый интерфейс",
 
     "send" :    "Отправить",
-    "clear_feedback" : "Очистить"
+    "clear_feedback" : "Очистить",
+
+    "update": "Обновить",
+    "username" :  "Имя пользователя",
+    "password" :  "Имя пользователя",
+    "email" :  "Имя пользователя",
+    "update_avatar" : "Изменить аватар",
+    "delete_account" : "Удаление учётной записи",
+    "delete_account_sub" : "Удалив учётную запись, вы больше не сможете её восстановить",
+    "delete_account_button" : "Удалить уч. запись"
 }
