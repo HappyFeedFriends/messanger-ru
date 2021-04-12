@@ -11,6 +11,7 @@ import UserPersonalAccount from "./user/user.personal_account";
  
 interface UserProfileProps {
     openModal : (id : ModalWindowEnum, ...args : any) => void;
+    CloseMenu : () => void;
 } 
 
 interface UserProfileStates{
@@ -131,8 +132,8 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                 </div>
                 {/* TODO: Added logic closed menu */}
                 <div className="close_container row">
-                    <button className="row">
-                    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path fill="#dcddde" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
+                    <button onClick={e => this.props.CloseMenu()} className="row">
+                        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24"><path fill="#dcddde" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
                     </button>
                 </div>
             
