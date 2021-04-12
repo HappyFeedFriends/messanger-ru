@@ -190,9 +190,8 @@ routerAPI.post('/user_update/:type',async (req : Request, res : Response, next) 
         return undefined;
     }
   })()
-
   if (!value) return res.send({...data,errorCode : 1,errorMessage: 'Поле обязательно для ввода!'})
-
+  if (type == 'username' && !!(await knexQuery<UsersTable>('users').select('username').where('username',value).first())) return res.send({...data,errorCode : 1,errorMessage: 'Данное имя пользователя уже занято'})
   if (type == 'email' && !validator.isEmail(value)) return res.send({...data,errorCode : 1,errorMessage: 'Неккоректно указан адрес электронной почты'})
   if (type == 'password' && !validator.isStrongPassword(value,{
     minLength : 6,
@@ -211,6 +210,14 @@ routerAPI.post('/user_update/:type',async (req : Request, res : Response, next) 
 
 
 
+})
+
+routerAPI.delete('/user_update',async (req : Request, res : Response, next) => {
+  if (!res.locals.id) return res.sendStatus(401);
+
+  await knexQuery<UsersTable>('users').where('id',res.locals.id).del()
+
+  return res.sendStatus(200)
 })
 
 export default routerAPI; 

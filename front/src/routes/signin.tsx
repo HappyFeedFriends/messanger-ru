@@ -52,11 +52,12 @@ class signIn extends React.Component<RouteComponentProps,SignInStates>{
             }
 
             this.setState({
-                dataErrorCodes : res.data
+                dataErrorCodes : res.data,
+                isLoading : false
             })
 
         })
-        .finally(() => {
+        .catch(() => {
             this.setState({
                 isLoading : false
             })

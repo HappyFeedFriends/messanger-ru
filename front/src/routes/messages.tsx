@@ -18,6 +18,7 @@ import {ModalWindowEnum} from '../enums'
 import ModalWindowUpdateUserName from '../components/modals/modal_window_update_username';
 import ModalWindowUpdateEmail from '../components/modals/modal_window_update_email';
 import ModalWindowUpdatePassword from '../components/modals/modal_window_update_password';
+import ModalWindowDeletePrifle from '../components/modals/modal_window_delete_profile';
 
 interface MessageRouterParams{
     ChannelID? : string
@@ -253,6 +254,9 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 break;
             case ModalWindowEnum.MODAL_WINDOW_UPDATE_PASSWORD:
                 modal = <ModalWindowUpdatePassword CloseModal={() => this.CloseModal()} />
+                break;
+            case ModalWindowEnum.MODAL_WINDOW_DELETE_PROFILE:
+                modal = <ModalWindowDeletePrifle closeModel={() => this.CloseModal()}/>
                 break;
             default:
                 modal = undefined

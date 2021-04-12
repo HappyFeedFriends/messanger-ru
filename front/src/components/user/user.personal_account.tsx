@@ -83,10 +83,8 @@ class UserPersonalAccount extends React.Component<PropsFromRedux>{
             <div className="AccountDelete column">
                 <h1 className="SubHeader" ><FormattedMessage id='delete_account' /></h1>
                 <span><FormattedMessage id='delete_account_sub' /></span>
-                {/* <span>Отключив учётную запись, вы в любой момент сможете её восстановить</span> */}
                 <div className="buttonsContainer row">
-                    {/* <button>Отключить учётную запись</button> */}
-                    <button><FormattedMessage id='delete_account_button' /></button>
+                    <button onClick={e => this.props.openModal(ModalWindowEnum.MODAL_WINDOW_DELETE_PROFILE)} ><FormattedMessage id='delete_account_button' /></button>
                 </div>
             </div>
             

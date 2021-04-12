@@ -2,7 +2,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
 import { ResponseDataExample } from "../../../../global/types";
-import { AppUserDataAction, StorageUserUpdate } from "../../redux/actions";
+import { StorageUserUpdate } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/modal_window_update_username.scss'
 
@@ -10,7 +10,7 @@ interface ModalWindowUpdateUserNameProps{
     username : string
     CloseModal : () => void;
 }
-
+ 
 export interface ModalWindowUpdateUserNameStates{
     isSubmit : boolean,
     username : string,

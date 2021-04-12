@@ -1,7 +1,5 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import { connect } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
 import Cookies from "universal-cookie";
 import type { ModalWindowEnum } from "../enums";
 import '../styles/UserProfile.scss'

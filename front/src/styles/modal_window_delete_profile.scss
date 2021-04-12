@@ -1,0 +1,58 @@
+.ModalWindowDeleteProfile{
+
+    background-color: var(--color-messange-background);
+    border-radius: 5px;
+    width: 400px;
+
+    span,
+    h1{
+        color: var(--default-color-text);
+    }
+
+    h1{
+        font-size: 18px;
+        text-align: left;
+    }
+
+    span{
+        text-align: left;
+        font-size: 15px;
+        line-height: 19px;
+        color: var(--default-color-messange);
+    }
+
+    .DeleteProfileFooter{
+        justify-content: flex-end;
+        padding-top: 20px;
+        background-color: var(--color-navbar);
+
+        button{
+            padding: 4px;
+            border-radius: 5px;
+            background-color: var(--color-send-button);
+            color: var(--default-color-text);
+            // text-transform: uppercase;
+            // letter-spacing: 1px;
+            border: 1px solid var(--color-send-button);
+            cursor: pointer;
+            width: 80px;
+            height: 30px;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        button:nth-child(1){
+            background-color: transparent;
+        }
+
+        button:nth-child(2):hover{
+            background-color: var(--color-send-button-hover);
+            color: var(--default-color-text);
+        }
+    }
+
+}
+
+.ModalWindowDeleteProfile > *{
+    padding: 10px;
+}
