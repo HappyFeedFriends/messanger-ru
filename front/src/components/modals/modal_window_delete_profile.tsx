@@ -1,6 +1,5 @@
 import React from "react"
 import { FormattedMessage } from "react-intl"
-import Cookies from "universal-cookie"
 import '../../styles/modal_window_delete_profile.scss'
 
 interface ModalWindowDeletePrifleProps{
@@ -16,7 +15,6 @@ class ModalWindowDeletePrifle extends React.Component<ModalWindowDeletePriflePro
             credentials : 'include',
         })
         .then(res => {
-            new Cookies().remove('auth')
             window.location.reload()
         })
 

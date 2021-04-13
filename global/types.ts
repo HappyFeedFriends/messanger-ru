@@ -109,5 +109,4 @@ export interface UserUpdateInfo{
     new_password? : string,
     username? : string,
     email? : string,
-
 }

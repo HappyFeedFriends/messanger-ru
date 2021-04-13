@@ -1,14 +1,17 @@
 import express, { NextFunction,Request,response,Response} from "express";
 import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
-import { ChannelListTable, feedbackTable, MessagechannelsTable, UsersTable } from "../database/table";
+import { ChannelListTable, feedbackTable, ImagesTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
 import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse, UserUpdateInfo } from '../../../global/types';
 import RouterTestAPI from "./api/test";
 import { sha256 } from "sha.js";
 import validator from "validator";
-const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
+import fs from "fs";
+import multer from 'multer';
 
+const upload = multer()
+const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 const routerAPI = express.Router()
 
 interface MessageInterfaceQuery extends MessageInterface{
@@ -23,7 +26,6 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
         isAuth = err === null;
     })
   }
-
   if (isAuth){
     res.locals.id = (jwt.verify(req.cookies.auth, process.env.SECRET) as jwtCookie).id
     next();
@@ -176,7 +178,7 @@ routerAPI.post('/user_update/:type',async (req : Request, res : Response, next) 
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
   if (!id) return res.sendStatus(401);
   if (!body.password) return res.sendStatus(500);
-  if (type != 'username' && type != 'password' && type != 'email') return res.sendStatus(500);
+  if (type != 'username' && type != 'password' && type != 'email' && type != 'avatar') return res.sendStatus(500);
 
   const value = (() => {
     switch (type) {
@@ -218,6 +220,32 @@ routerAPI.delete('/user_update',async (req : Request, res : Response, next) => {
   await knexQuery<UsersTable>('users').where('id',res.locals.id).del()
 
   return res.sendStatus(200)
+})
+
+routerAPI.post('/user_update_avatar',upload.single('avatar'),async (req : Request, res : Response,next) => {
+
+  const file = req.file
+  const id = res.locals.id
+  
+  if (!file || file.mimetype.split('/')[0] !== 'image' ) return res.sendStatus(500);
+  if (!id) return res.sendStatus(500)
+
+  const execFile = file.originalname.split('.').pop()
+  const fileName = new sha256().update(file.originalname + id + (new Date().getTime())).digest('hex') + '.' + execFile 
+  fs.writeFileSync('uploads/' + fileName,file.buffer) 
+  const imageUrl = req.protocol + '://' + req.headers.host + '/uploads/' + fileName 
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const idImage = (await knexQuery<ImagesTable>('images').insert({
+    Url : imageUrl,
+  }).returning('id'))[0]
+
+  await knexQuery<UsersTable>('users').update('imageID',idImage).where('id',id);
+  data.data.push({
+    Url :  imageUrl,
+    id : id,
+  })
+  return res.send(data)
+
 })
 
 export default routerAPI; 

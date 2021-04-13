@@ -102,13 +102,14 @@ $color-messange-account : #222429;
             transition-duration: .13s;
             transition-property: opacity;
 
-            span{
+            label{
                 // font-family: $font-text-header;
                 color: var(--default-color-text);;
                 font-size: 11px;
                 text-transform: uppercase;
                 line-height: 12px;
                 font-weight: bold;
+                cursor: pointer;
                 // white-space: pre;
                 font-weight: 700;
                 // letter-spacing: 1px;

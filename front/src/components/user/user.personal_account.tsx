@@ -1,7 +1,9 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
+import { ResponseDataExample } from "../../../../global/types";
 import { ModalWindowEnum } from "../../enums";
+import { AppUserDataUpdateAction, StorageUserUpdate } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/UserPersonalAccount.scss'
 
@@ -15,6 +17,28 @@ class UserPersonalAccount extends React.Component<PropsFromRedux>{
         return this.props.Users.find((data) => data.id === this.props.UserData.id)
     }
 
+    OnChangeAvatar(e : React.ChangeEvent<HTMLInputElement>){
+        if (!e.currentTarget.files) return;
+        const file = e.currentTarget.files[0]
+        var fd = new FormData();
+        fd.append('avatar', file, file.name);
+
+        console.log(fd)
+
+        fetch('http://localhost:8080/api/user_update_avatar',{
+            method : 'POST',
+            credentials : 'include',
+            body : fd,
+        }).then(res => res.json()).then((res : ResponseDataExample) => {
+            console.log(res.data[0])
+            this.props.StorageUserUpdate(res.data[0])
+
+
+        })
+
+        // fileReader.readAsArrayBuffer(file)
+    }
+
     render(){
         const user = this.GetUserData()
         return (
@@ -26,7 +50,8 @@ class UserPersonalAccount extends React.Component<PropsFromRedux>{
                         <div className="UserIcon column">
                             <img className="avatar" src={user?.Url} alt=""/> 
                             <span className="avatar_update column">
-                                <span><FormattedMessage id='update_avatar' /></span>
+                                <label htmlFor="avatar_file" ><FormattedMessage id='update_avatar' /></label>
+                                <input accept="image/x-png,image/gif,image/jpeg" onChange={e => this.OnChangeAvatar(e)} id="avatar_file" type="file" hidden/>
                             </span>
                             <div className="UploaderIndicator">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
@@ -100,7 +125,9 @@ const mapStateToProps = (state : RootState) => {
     };
 }
 
-const connector = connect(mapStateToProps,{})
+const connector = connect(mapStateToProps,{
+    StorageUserUpdate
+})
 type PropsFromRedux = ConnectedProps<typeof connector> & UserPersonalAccountProps
 
 export default connector(UserPersonalAccount)
