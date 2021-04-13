@@ -349,7 +349,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             <div data-drag-file={this.state.isDragFile} className="MessagesBlock row">
                 <div className="column leftElement">
                     <div className="headerBlock searchContainer row" >
-                        <input placeholder="Найти Беседу"/>
+                        {/* <input placeholder="Найти Беседу"/> */}
                     </div>
 
                     <div className="row friendsLink">

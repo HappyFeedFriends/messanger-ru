@@ -9,6 +9,7 @@ import { Server, Socket } from "socket.io";
 import { socket_connect } from "./socket";
 import { Response } from "express-serve-static-core";
 import path from "path";
+import fs from "fs";
 
 
 const corsOptions : cors.CorsOptions = {
@@ -39,7 +40,7 @@ app.use('/auth',AuthRouter)
 app.use('/uploads/:filename/:scheme?',(req,res,next) => {
     const name = req.params.filename
     if (!name){
-        next()
+        return next()
     }
 
     if (req.params.scheme == 'download'){
@@ -48,12 +49,16 @@ app.use('/uploads/:filename/:scheme?',(req,res,next) => {
         })
     }
 
-    res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')},err => {
-        next()
+    fs.stat('uploads/' + name,err => {
+        if (err){
+            next();
+        }
     })
+
+    return res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')})
+    
 })
 app.use(function(req : Express.Request, res, next : NextFunction){
-    
     res.sendStatus(404);
 });
 

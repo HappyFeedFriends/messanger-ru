@@ -30,10 +30,7 @@ class UserPersonalAccount extends React.Component<PropsFromRedux>{
             credentials : 'include',
             body : fd,
         }).then(res => res.json()).then((res : ResponseDataExample) => {
-            console.log(res.data[0])
             this.props.StorageUserUpdate(res.data[0])
-
-
         })
 
         // fileReader.readAsArrayBuffer(file)
