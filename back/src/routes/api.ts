@@ -77,7 +77,6 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
   },{})
 
   const user = {...users[0],email : (await knexQuery<UsersTable>('users').select('email').where('id',id).first()).email}
-
   const obj = {
     id : id,
     Channels : Object.values(await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)).reduce((prev,current) => {
@@ -244,6 +243,19 @@ routerAPI.post('/user_update_avatar',upload.single('avatar'),async (req : Reques
     Url :  imageUrl,
     id : id,
   })
+  return res.send(data)
+
+})
+
+routerAPI.get('/users_search/:text',async (req : Request, res : Response,next) => {
+
+  const id = res.locals.id
+  const searchName = req.params.text 
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const users = await knexQuery<UsersTable>('users').select('users.username','users.id','images.Url')
+  .join('images','users.imageID','=','images.id')
+  .where('users.username','ilike',`%${searchName}%`).limit(10)
+  data.data.push(users)
   return res.send(data)
 
 })

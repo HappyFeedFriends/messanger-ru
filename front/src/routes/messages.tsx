@@ -7,7 +7,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
 import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseMessageData, ResponseUserData } from '../../../global/types';
+import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseDataExample, ResponseMessageData, ResponseUserData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';
@@ -31,6 +31,12 @@ interface FileLoader{
     file : File,
 }
 
+interface UserSearch { 
+    id : number,
+    Url : string,
+    username : string
+}
+
 interface MessageRouterStates{ 
     transitionHidden : boolean, 
     inputValue : string, 
@@ -38,6 +44,8 @@ interface MessageRouterStates{
     file? : FileLoader,
     isDragFile : boolean,
     UserProfileShow : boolean,
+    UsersSearch : Array<UserSearch>,
+    searchText : string,
 }
  
 class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates>{
@@ -51,10 +59,12 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
     constructor(props : PropsFromRedux){
         super(props);
         this.state = {
-            transitionHidden : false,
             inputValue : '',
+            searchText : '',
+            transitionHidden : false,
             isDragFile : false,
             UserProfileShow : false,
+            UsersSearch : [],
         }
 
         fetch('http://localhost:8080/api/user_data',{
@@ -333,6 +343,34 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         )
     }
 
+    UserSearchComponent(username : string, urlAvatar : string,id : number){
+        return (
+        <div key={'user_search_' + id} className="SearchContainerUser row">
+            <div className="UserAvatarContainerSearch row">
+                <img src={urlAvatar} alt=""/>
+                <div className="usernameSearch row">
+                    <span>{username}</span>
+                </div>
+            </div>
+        </div>
+        )
+    }
+
+    OnChangeSearchText(searchText : string){
+        this.setState({
+            searchText : searchText,
+        })
+
+        fetch('http://localhost:8080/api/users_search/' + searchText,{
+            credentials : 'include',
+        }).then(res => res.json()).then((res : ResponseDataExample) => {
+            console.log(res)
+            this.setState({
+                UsersSearch : res.data[0]
+            })
+        })
+    }
+
     render(){
 
         const params = (this.props.match.params as MessageRouterParams)
@@ -340,7 +378,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
         return (
             <React.StrictMode>
-            {this.props.IsLoading ? <Preloader transitionHidden={this.state.transitionHidden}/> : ''}
+            {this.props.IsLoading && <Preloader transitionHidden={this.state.transitionHidden}/>}
             <div ref={(e) => {this.windowContainer = e}} className="column modalWindowContainer" data-close={!this.state.modalWindow}>
                 {this.state.modalWindow}
             </div>
@@ -379,7 +417,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                             <div className="column userInfo">
                                 <div className="column">
                                     <span>{this.GetUserDataByID(this.props.UserData?.id)?.username}</span>
-                                    <span>В сети</span>
+                                    {/* <span>В сети</span> */}
                                 </div>
                             </div>
                         </div>
@@ -401,13 +439,21 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                             <button data-tooltip="Добавить в друзья" className="addFriendInChat row tooltipGlobal bottomTooltip">
                                 <div><svg x="0" y="0" className="icon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" fillRule="evenodd" clipRule="evenodd" d="M21 3H24V5H21V8H19V5H16V3H19V0H21V3ZM10 12C12.205 12 14 10.205 14 8C14 5.795 12.205 4 10 4C7.795 4 6 5.795 6 8C6 10.205 7.795 12 10 12ZM10 13C5.289 13 2 15.467 2 19V20H18V19C18 15.467 14.711 13 10 13Z"></path></svg></div>
                             </button>
-                            <div className="SearchContainer row">
-                                <input placeholder="Поиск"/>
-                                <div className="clearSearch" role="button">
-                                    <div className="iconContainer">
-                                        <svg aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" d="M21.707 20.293L16.314 14.9C17.403 13.504 18 11.799 18 10C18 7.863 17.167 5.854 15.656 4.344C14.146 2.832 12.137 2 10 2C7.863 2 5.854 2.832 4.344 4.344C2.833 5.854 2 7.863 2 10C2 12.137 2.833 14.146 4.344 15.656C5.854 17.168 7.863 18 10 18C11.799 18 13.504 17.404 14.9 16.314L20.293 21.706L21.707 20.293ZM10 16C8.397 16 6.891 15.376 5.758 14.243C4.624 13.11 4 11.603 4 10C4 8.398 4.624 6.891 5.758 5.758C6.891 4.624 8.397 4 10 4C11.603 4 13.109 4.624 14.242 5.758C15.376 6.891 16 8.398 16 10C16 11.603 15.376 13.11 14.242 14.243C13.109 15.376 11.603 16 10 16Z"></path></svg>
-                                        <svg className="hidden" width="24" height="24" viewBox="0 0 24 24"><path fill="var(--default-color-messange)" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
+                            <div className="column SearchInput-Rows">
+                                <div className="SearchContainer row">
+                                    <input onChange={e => this.OnChangeSearchText(e.target.value)} value={this.state.searchText} placeholder="Поиск"/>
+                                    <div className="clearSearch" role="button">
+                                        <div className="iconContainer">
+                                            <svg aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" d="M21.707 20.293L16.314 14.9C17.403 13.504 18 11.799 18 10C18 7.863 17.167 5.854 15.656 4.344C14.146 2.832 12.137 2 10 2C7.863 2 5.854 2.832 4.344 4.344C2.833 5.854 2 7.863 2 10C2 12.137 2.833 14.146 4.344 15.656C5.854 17.168 7.863 18 10 18C11.799 18 13.504 17.404 14.9 16.314L20.293 21.706L21.707 20.293ZM10 16C8.397 16 6.891 15.376 5.758 14.243C4.624 13.11 4 11.603 4 10C4 8.398 4.624 6.891 5.758 5.758C6.891 4.624 8.397 4 10 4C11.603 4 13.109 4.624 14.242 5.758C15.376 6.891 16 8.398 16 10C16 11.603 15.376 13.11 14.242 14.243C13.109 15.376 11.603 16 10 16Z"></path></svg>
+                                            <svg className="hidden" width="24" height="24" viewBox="0 0 24 24"><path fill="var(--default-color-messange)" d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"></path></svg>
+                                        </div>
                                     </div>
+                                </div>
+
+                                <div className="SearchContainerUsers column">
+                                    {this.state.UsersSearch.map(value => {
+                                        return this.UserSearchComponent(value.username,value.Url,value.id)
+                                    })}
                                 </div>
                             </div>
                         </div>

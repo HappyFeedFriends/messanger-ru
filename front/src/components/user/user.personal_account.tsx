@@ -22,9 +22,6 @@ class UserPersonalAccount extends React.Component<PropsFromRedux>{
         const file = e.currentTarget.files[0]
         var fd = new FormData();
         fd.append('avatar', file, file.name);
-
-        console.log(fd)
-
         fetch('http://localhost:8080/api/user_update_avatar',{
             method : 'POST',
             credentials : 'include',

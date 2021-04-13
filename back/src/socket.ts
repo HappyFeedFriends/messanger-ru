@@ -75,6 +75,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
+        if (!data.ChannelID) return;
         let idImage,imageUrl;
         if (data.file && data.file.file){
             const filetype = data.file.filename.split('.').pop() || '';
@@ -83,7 +84,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             imageUrl = socket.handshake.headers.host + '/uploads/' +  fileName
              
             idImage = (await knexQuery<ImagesTable>('images').insert({
-                Url : imageUrl,
+                Url : 'http://' + imageUrl, // Temporary, TODO
             }).returning(['id']))[0].id
 
         }
@@ -93,7 +94,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             MessageChannelID : data.ChannelID,
             imageID : idImage,
         }).returning(['AuthorID','MessageChannelID','created_at','content','id']))[0] as MessageSocketAddedInterface
-        messageData.Url = imageUrl 
+        messageData.Url = 'http://' + imageUrl 
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
  
