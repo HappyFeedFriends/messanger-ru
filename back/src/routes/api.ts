@@ -1,10 +1,11 @@
 import express, { NextFunction,Request,response,Response} from "express";
 import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
-import { ChannelListTable, feedbackTable, ImagesTable, MessagechannelsTable, UsersTable } from "../database/table";
+import { ChannelListTable, feedbackTable, FriendsTable, ImagesTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserDataResponse, UserUpdateInfo } from '../../../global/types';
+import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserData,UserDataResponse, UserUpdateInfo } from '../../../global/types';
 import RouterTestAPI from "./api/test";
+import RouterFriendsAPI from "./api/friends";
 import { sha256 } from "sha.js";
 import validator from "validator";
 import fs from "fs";
@@ -19,7 +20,6 @@ interface MessageInterfaceQuery extends MessageInterface{
 }
 
 routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
-    
   let isAuth = !!req.cookies.auth;
   if (req.cookies.auth){
     jwt.verify(req.cookies.auth,process.env.SECRET,(err: any) => {
@@ -28,16 +28,20 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
   }
   if (isAuth){
     res.locals.id = (jwt.verify(req.cookies.auth, process.env.SECRET) as jwtCookie).id
-    next();
-  }else {
-    res.sendStatus(401)
+    if (!res.locals.id || typeof res.locals.id !== 'number'){
+      return res.sendStatus(401)
+    }
+    return next();
   }
+  res.sendStatus(401)
 }); 
+
+routerAPI.use('/friends',RouterFriendsAPI);
 
 if (process.env.NODE_ENV == 'development'){
   routerAPI.use('/test',RouterTestAPI)
 }
- 
+
 routerAPI.get('/user_data',async (req : Request, res : Response) => {
   let id = res.locals.id
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseUserData;
@@ -76,13 +80,12 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     return prev;
   },{})
 
-  const user = {...users[0],email : (await knexQuery<UsersTable>('users').select('email').where('id',id).first()).email}
+  const user : UserData = {...users.find(value => value.id == id),
+    Channels : Object.keys(channels).map(value => Number(value)),
+    friendsList : [],
+    email : (await knexQuery<UsersTable>('users').select('email').where('id',id).first()).email}
   const obj = {
     id : id,
-    Channels : Object.values(await knexQuery<ChannelListTable>('channellist').select('MessageChannelID').where('UserID',id)).reduce((prev,current) => {
-      prev.push(current.MessageChannelID)
-      return prev
-    },[]),
     Users : users,
     User : user,
     channelsStorage : channels,
@@ -112,14 +115,16 @@ routerAPI.post('/created_channel',async (req : Request, res : Response,next) => 
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseCreatedChannel;
   // TODO: added more validations
 
-  const query_channels = knexQuery('channellist').select('MessageChannelID').where('UserID',id)
-
-  const isRealUser = (await knexQuery<UsersTable>('users').select('*').where('id',userID)).length > 0
-  if (!isRealUser){
+  const userFind = await knexQuery<UsersTable>('users')
+  .join('images','images.id','=','users.imageID')
+  .select('users.onlinestatus','users.username','images.Url','users.id')
+  .where('users.id',userID)
+  if (userFind.length < 1){
     return res.sendStatus(500)
   }
 
   const channel_id = (await knexQuery<MessagechannelsTable>('messagechannels').insert({}).returning('id'))[0]
+  
   await knexQuery<ChannelListTable>('channellist').insert([
     {
       UserID : id,
@@ -131,6 +136,16 @@ routerAPI.post('/created_channel',async (req : Request, res : Response,next) => 
     },
   ])
 
+  const storage : ChannelStorage = {
+    [channel_id] : {
+      users : [id,userID],
+      messages : [],
+    }
+  }
+  data.data.push({
+    storage : storage,
+    user : userFind[0],
+  })
   return res.send(data)
 
 })
@@ -247,11 +262,16 @@ routerAPI.post('/user_update_avatar',upload.single('avatar'),async (req : Reques
 
 })
 
-routerAPI.get('/users_search/:text',async (req : Request, res : Response,next) => {
-
+routerAPI.get('/users_search',async (req : Request, res : Response,next) => {
   const id = res.locals.id
-  const searchName = req.params.text 
+  const searchName = req.query.text || ''
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+
+  if (!searchName){
+    data.data.push([])
+    return res.send(data)
+  }
+
   const users = await knexQuery<UsersTable>('users').select('users.username','users.id','images.Url')
   .join('images','users.imageID','=','images.id')
   .where('users.username','ilike',`%${searchName}%`).limit(10)
@@ -259,5 +279,7 @@ routerAPI.get('/users_search/:text',async (req : Request, res : Response,next) =
   return res.send(data)
 
 })
+
+
 
 export default routerAPI; 

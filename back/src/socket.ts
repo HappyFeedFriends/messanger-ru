@@ -81,10 +81,10 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             const filetype = data.file.filename.split('.').pop() || '';
             const fileName = new sha256().update(data.file.filename + id + (new Date().getTime())).digest('hex') + '.' + filetype
             fs.writeFileSync('uploads/' + fileName,data.file.file) 
-            imageUrl = socket.handshake.headers.host + '/uploads/' +  fileName
+            imageUrl = 'http://' + socket.handshake.headers.host + '/uploads/' +  fileName// Temporary, TODO
              
             idImage = (await knexQuery<ImagesTable>('images').insert({
-                Url : 'http://' + imageUrl, // Temporary, TODO
+                Url : imageUrl, 
             }).returning(['id']))[0].id
 
         }
@@ -94,7 +94,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             MessageChannelID : data.ChannelID,
             imageID : idImage,
         }).returning(['AuthorID','MessageChannelID','created_at','content','id']))[0] as MessageSocketAddedInterface
-        messageData.Url = 'http://' + imageUrl 
+        messageData.Url = imageUrl 
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
  

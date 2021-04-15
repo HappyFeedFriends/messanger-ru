@@ -1,5 +1,8 @@
 import React from 'react';
-import { UserLocalData } from '../../../../global/types';
+import { connect, ConnectedProps } from 'react-redux';
+import { ResponseCreatedChannel, UserLocalData } from '../../../../global/types';
+import { AppUserChannelsAction, StorageUserUpdate } from '../../redux/actions';
+import { RootState } from '../../redux/rootReducer';
 
 import '../../styles/modal_window_created_channel.scss';
 import UserRow from '../userRow';
@@ -9,9 +12,9 @@ interface ModalWindowCreatedChannelStates{
 }
 
 // TODO: swap random users list on friend list
-class ModalWindowCreatedChannel extends React.Component<{},ModalWindowCreatedChannelStates>{
+class ModalWindowCreatedChannel extends React.Component<PropsFromRedux,ModalWindowCreatedChannelStates>{
 
-    constructor(props : {}){
+    constructor(props : PropsFromRedux){
         super(props);
 
         this.state = {
@@ -21,18 +24,17 @@ class ModalWindowCreatedChannel extends React.Component<{},ModalWindowCreatedCha
 
     componentDidMount(){
 
-        fetch('http://localhost:8080/api/test/random_user_list',{
+        fetch('http://localhost:8080/api/friends/friendlist?isfull=1',{
             credentials : 'include',
         }).then(res => res.json()).then(res => {
             this.setState({
-                users : res.users
+                users : res.data
             })
         }) 
 
     }
 
     OnSelectChat(userData : UserLocalData){
-
         fetch('http://localhost:8080/api/created_channel',{
             credentials : 'include',
             method : 'POST',
@@ -49,8 +51,9 @@ class ModalWindowCreatedChannel extends React.Component<{},ModalWindowCreatedCha
 
             throw new Error(res.status.toString())
         })
-        .then(res => {
-
+        .then((res : ResponseCreatedChannel) => {
+            this.props.StorageUserUpdate(res.data[0].user)
+            this.props.AppUserChannelsAction(res.data[0])
         })
         .catch(err => {
 
@@ -63,8 +66,9 @@ class ModalWindowCreatedChannel extends React.Component<{},ModalWindowCreatedCha
                 <h1>С кем из них хочешь общаться?</h1>
                 <div className="column containerModal">
                     {this.state.users.map(userData => {
-                        return (<div onClick={e => this.OnSelectChat(userData)} > 
-                            <UserRow key={'user_row' + userData.id} id={userData.id} userData={userData} /> 
+                        return (
+                        <div key={'user_row' + userData.id} onClick={e => this.OnSelectChat(userData)} > 
+                            <UserRow id={userData.id} userData={userData} /> 
                         </div>)
                     })}
                 </div>
@@ -73,4 +77,16 @@ class ModalWindowCreatedChannel extends React.Component<{},ModalWindowCreatedCha
     }
 }
 
-export default ModalWindowCreatedChannel;
+const mapStateToProps = (state : RootState) => {
+    return {};
+}
+
+
+const connector = connect(mapStateToProps,{
+    AppUserChannelsAction,
+    StorageUserUpdate
+})
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(ModalWindowCreatedChannel)

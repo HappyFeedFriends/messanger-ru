@@ -27,8 +27,8 @@
 }  
 
 .leftElement{
-    width: 230px;
-    min-height: 100%;
+    width: 320px;
+    height: 100%;
     background-color: var(--color-navbar);
     color: rgb(88, 88, 88);
     justify-content: space-between;
@@ -51,6 +51,17 @@
     transition-duration: .33s;
     transition-property: background-color;
     padding-left:20px;
+}
+.friendsLink[data-friendselect=true]{
+    background-color: var(--default-color-messange-background);
+
+    #main{
+        fill: var(--default-color-messange-hover);
+    }
+
+    span{
+        color: var(--default-color-messange-hover);
+    }
 }
 .friendsLink:hover #main {
     fill: var(--default-color-messange-hover);
@@ -103,12 +114,24 @@
     justify-content: space-between;
     cursor:default;
     margin-top: 20px;
+    margin-bottom: 5px;
 }
 
 .MessagesHeader > span:nth-child(2){
     font-size: 18px;
     color: var(--default-color-messange-hover);
 }
+
+.ChatRow[data-selected-state=true]{
+    .userRow{
+        background-color: var(--default-color-messange-background);
+    }
+    
+    .userRow .userName_status span{
+        color: var(--default-color-messange-hover);   
+    }
+}
+
 .MessagesHeader:hover span{
     color: var(--default-color-messange-hover);
 }
@@ -227,9 +250,11 @@
 }
 
 .userBottomElement{
-    justify-content: space-around;
+    justify-content: space-between;
     justify-items: center;
     align-items: center;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .buttonsRight > button{
@@ -260,7 +285,7 @@
     font-size: 21px;
     text-overflow: ellipsis;
 }
-.OnlineStatusMessages.hidden{
+*[data-hidden=true]{
     display: none;
 }
 .OnlineStatusMessages{
@@ -270,7 +295,8 @@
     background-color: black;
     border: 3px solid rgb(87, 88, 87);
     border-radius: 50%;
-    margin-left: 10px;
+    // margin-left: 10px;
+    margin-right: 10px;
 }
 
 .OnlineStatusMessages.IsOnline{
@@ -594,5 +620,56 @@ input:focus{
             overflow: hidden;
             text-overflow:ellipsis
         }
+    }
+}
+.FriendList{
+    padding: 20px;
+}
+.FriendsOnline{
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    color: var(--color-messange);
+    font-family: 'Roboto', sans-serif;
+    // text-transform: uppercase;
+    font-size: 15px;
+}
+.usersContainer:before{
+    width: 100%;
+    height: 1px;
+    background: var(--default-color-messange-background);
+    content: '';
+    margin-bottom: 10px;
+}
+
+.usersContainer:hover{
+    background: var(--default-color-messange-background);
+}
+.usersContainer{
+    border-radius: 8px;
+    justify-content: center;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+.FriendRow{
+    margin-left: 10px;
+    .FriendRowImgContainer{
+        margin-right: 10px;
+        img{
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+        }
+    }
+    .UsernameFriend{
+        color: var(--default-color-text);
+        
+    }
+    .UserStatusFriend{
+        color: var(--default-color-text);
+        text-align: left;
+    }
+    .FriendName_status{
+        justify-content: space-around;
     }
 }

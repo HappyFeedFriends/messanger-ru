@@ -1,11 +1,13 @@
 import { Socket } from "socket.io-client"
-import { UserLocalData,ChannelStorage, MessageInterface, UserData } from "../../../global/types"
+import { UserLocalData,ChannelStorage, MessageInterface, UserData, FriendData, CreatedChannelData } from "../../../global/types"
 
 export const APP_LOADING_STATE = 'APP_LOADING_STATE'
 export const APP_USER_INIT_STATE = 'APP_USER_INIT_STATE'
 export const APP_USER_UPDATE = 'APP_USER_UPDATE'
 export const APP_USER_UPDATE_LANG = 'APP_USER_UPDATE_LANG'
 export const APP_USER_UPDATE_MESSAGE_VISIBLE = 'APP_USER_UPDATE_MESSAGE_VISIBLE'
+export const APP_USER_UPDATE_FRIENDLIST = 'APP_USER_UPDATE_FRIENDLIST'
+export const APP_USER_UPDATE_CHANNELS = 'APP_USER_UPDATE_CHANNELS'
 
 export const MESSAGE_CHANNEL_ID_STATE = 'MESSAGE_CHANNEL_ID_STATE'
 export const MESSAGE_CHANNEL_MESSAGES = 'MESSAGE_CHANNEL_MESSAGES'
@@ -18,6 +20,11 @@ export const STORAGE_USER_UPDATE = 'STORAGE_USER_UPDATE'
 interface ActionRedux{
     type : string,
     payload : any,
+}
+
+interface UpdateChannelsState extends ActionRedux {
+    type: typeof APP_USER_UPDATE_CHANNELS
+    payload: CreatedChannelData
 }
 
 interface UpdateLoadingState extends ActionRedux {
@@ -40,6 +47,10 @@ interface UpdateUserState extends ActionRedux {
     payload: UserData
 }
 
+interface UpdateUserFriendListState extends ActionRedux {
+    type: typeof APP_USER_UPDATE_FRIENDLIST
+    payload: Array<FriendData>
+}
 
 
 interface UpdateMessageChannel extends ActionRedux {
@@ -110,12 +121,14 @@ export type InitStorageTypes = InitStorage;
 export type InitStorageMessagesTypes = InitStorageMessages;
 export type StorageMessageAddedTypes = StorageMessageAdded;
 export type StorageUserUpdateTypes = StorageUserUpdate;
-export type UpdateStorageState = InitStorageTypes | InitStorageMessages | StorageMessageAdded | StorageUserUpdateTypes
+export type UpdateStorageState = InitStorageTypes | InitStorageMessages | StorageMessageAdded | StorageUserUpdateTypes | UpdateChannelsTypes
 
 
 
 export type UpdateLoadingTypes = UpdateLoadingState
+export type UpdateUserFriendListTypes = UpdateUserFriendListState
 export type UpdateUserTypes = UpdateUserState
 export type UpdateLanguageTypes = UpdateLanguageState;
 export type UpdateMessageFormatTypes = UpdateMessageVisibleState;
-export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes | UpdateLanguageTypes | UpdateMessageFormatTypes
+export type UpdateChannelsTypes = UpdateChannelsState;
+export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes | UpdateLanguageTypes | UpdateMessageFormatTypes | UpdateUserFriendListTypes | UpdateChannelsTypes

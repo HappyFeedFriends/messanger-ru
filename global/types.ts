@@ -7,23 +7,32 @@ export interface ResponseDataExample {
  
 export interface  UserDataResponse {
     id : number,
-    Channels : Array<number>,
     Users : Array<UserLocalData>,
     User : UserData,
     channelsStorage : ChannelStorage,
+}
+
+export interface FriendData {
+    Url : string,
+    username : string,
+    id : number,
+    onlinestatus : boolean,
 }
 
 export interface UserData extends UserLocalData{
     id : number,
     Channels : Array<number>, 
     email : string,
+    friendsList : Array<FriendData>,
 }
 
 export interface SignResponse{
     errorDescription : string,
     errorCode : number,
 }
-
+export interface ResponseUserFriendListData extends ResponseDataExample{
+    data : Array<FriendData> | Array<number>
+}
 export interface ResponseUserData extends ResponseDataExample{
     data : Array<UserDataResponse>
 }
@@ -36,8 +45,13 @@ export interface ResponseSignUp extends ResponseDataExample{
     data : Array<SignResponse>
 }
 
+export interface CreatedChannelData{
+    storage : ChannelStorage,
+    user : UserLocalData
+}
+
 export interface ResponseCreatedChannel extends ResponseDataExample{
-    data : Array<UserLocalData>
+    data : Array<CreatedChannelData>
 }
 
 

@@ -5,20 +5,21 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction, AppUserDataAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
+import { AppUpdateLoadingAction, AppUserDataAction, AppUserFriendListUpdateAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseDataExample, ResponseMessageData, ResponseUserData } from '../../../global/types';
+import { FriendData, MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseDataExample, ResponseMessageData, ResponseUserData, ResponseUserFriendListData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';
 import ModalWindowFiles from '../components/modals/modal_window_files';
 import document from '../images/document.png'
 import UserProfile from '../components/UserProfile';
-import {ModalWindowEnum} from '../enums'
+import { ModalWindowEnum } from '../enums'
 import ModalWindowUpdateUserName from '../components/modals/modal_window_update_username';
 import ModalWindowUpdateEmail from '../components/modals/modal_window_update_email';
 import ModalWindowUpdatePassword from '../components/modals/modal_window_update_password';
 import ModalWindowDeletePrifle from '../components/modals/modal_window_delete_profile';
+import { FormattedMessage } from 'react-intl';
 
 interface MessageRouterParams{
     ChannelID? : string
@@ -173,7 +174,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
     }
 
     componentDidMount(){
-        this.ref!.scrollTop = this.ref!.scrollHeight
+        if (this.ref)
+            this.ref!.scrollTop = this.ref.scrollHeight
 
         this.windowContainer?.addEventListener('click',(ev : MouseEvent) => {
             if (!ev.target) return;
@@ -238,7 +240,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 inputValue : '',
             })
         }
-        this.ref!.scrollTop = this.ref!.scrollHeight
+        if (this.ref)
+            this.ref!.scrollTop = this.ref.scrollHeight
         return true; 
     }
 
@@ -321,7 +324,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
 
     }
-
+    // not working
     OnDropFile(e : React.DragEvent<HTMLDivElement>){
         e.preventDefault()
         const target = e.dataTransfer.files[0]
@@ -341,11 +344,27 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 {!this.props.IsLoading && <UserProfile CloseMenu={() => this.UpdateProfileShow(false)} openModal={(id : ModalWindowEnum,...args : any) => this.OpenModal(id,...args)} />}
             </div>
         )
+    } 
+
+    OnAddedInFriend(id : number){
+
+        fetch('http://localhost:8080/api/friends/add_friend',{
+            credentials : 'include',
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({
+                user_id : id,
+            }),
+        }).then(res => res.json()).then(res => { // TODO
+            
+        })
     }
 
     UserSearchComponent(username : string, urlAvatar : string,id : number){
         return (
-        <div key={'user_search_' + id} className="SearchContainerUser row">
+        <div onClick={e => this.OnAddedInFriend(id)} key={'user_search_' + id} className="SearchContainerUser row">
             <div className="UserAvatarContainerSearch row">
                 <img src={urlAvatar} alt=""/>
                 <div className="usernameSearch row">
@@ -361,13 +380,85 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             searchText : searchText,
         })
 
-        fetch('http://localhost:8080/api/users_search/' + searchText,{
+        fetch('http://localhost:8080/api/users_search?text=' + searchText,{
             credentials : 'include',
         }).then(res => res.json()).then((res : ResponseDataExample) => {
-            console.log(res)
             this.setState({
                 UsersSearch : res.data[0]
             })
+        })
+    }
+
+    MessagesContainer(params : MessageRouterParams,messages : false | "" | MessageInterface[] | undefined){
+        return (
+            <div className="row mainContent">
+            <div  className="messagesContainerMain column">
+                <div onScroll={() => this.OnScrolling()} ref={(e) => {this.ref = e}} className="MessagesBlocksMain">
+                    <div className="column">
+                        <div className="column messagesContainerElements">
+                            {/* <div className="MessagesStartContainer column">
+                                <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
+                                <span>UniBridge</span>
+                                <span className="subHeader row">Это начало истории ваших сообщений с<h1>@UniBridge</h1></span>
+                            </div> */}
+                            {messages && messages?.sort((a,b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((messageData,index,arr) => {
+                                return <MessageRow key={'message_id_' + messageData.id} messageData={messageData} IsDuplicate={arr[index -1]?.AuthorID === arr[index]?.AuthorID}/>
+                            })
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div  className="InputMessage column">
+                    <div onDrop={e => this.OnDropFile(e)} className="InputMessageBlock row">
+                        <input multiple={false} onChange={(e) => this.OnChangeFile(e)} id="InputFile" hidden className="InputFile" type="file" />
+                        <label htmlFor="InputFile" className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></label>
+                        <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={(e) => this.onKeyPressed(e)} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
+                        <div className="emoji_smile_icon_vector"></div>
+                    </div>
+                </div>
+            </div>
+
+            {params.ChannelID && this.props.Storage.channels[params.ChannelID] 
+            && <Participants channels={this.props.Storage.channels[params.ChannelID].users } />}
+        </div>
+        )
+    }
+
+    FriendRowComponent(id : number, username : string, avatar : string,isOnline : boolean){
+        return (
+        <div key={'Friend_row_' + id} className="usersContainer column">
+            <div className="row FriendRow">
+                <div className="row FriendRowImgContainer">
+                    <img src={avatar} alt=""/>
+                </div>
+                <div className="column FriendName_status">
+                    <span className="UsernameFriend">{username}</span>
+                    <span className="UserStatusFriend"><FormattedMessage id={ !isOnline ? "Offline" : "Online"} /></span>
+                </div>
+            </div>
+        </div>
+        )
+    }
+
+    FriendsListContainer(){
+
+        return (
+            <div className="column FriendList">
+                <span className="FriendsOnline"> <FormattedMessage id="Online" /> — {this.props.friends.length}</span>
+                <div className="column">
+                    {this.props.friends.map(friend => {
+                        return this.FriendRowComponent(friend.id,friend.username,friend.Url,friend.onlinestatus)
+                    })}
+                </div>
+            </div>
+        )
+    }
+
+    LoadFriends(){
+        fetch('http://localhost:8080/api/friends/friendlist?isfull=1',{
+            credentials : 'include',
+        }).then(res => res.json()).then((res : ResponseUserFriendListData) => {
+            this.props.AppUserFriendListUpdateAction(res.data as Array<FriendData>)
         })
     }
 
@@ -375,6 +466,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
         const params = (this.props.match.params as MessageRouterParams)
         const messages = !this.props.IsLoading && params.ChannelID && this.GetMessagesForChannel(params.ChannelID)
+ 
+        if (!params.ChannelID && this.props.friends && this.props.friends.length < 1){
+            this.LoadFriends()
+        }
 
         return (
             <React.StrictMode>
@@ -390,22 +485,27 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                         {/* <input placeholder="Найти Беседу"/> */}
                     </div>
 
-                    <div className="row friendsLink">
+                    <NavLink to='/channel' className="row friendsLink" data-friendselect={!params.ChannelID}>
                         <svg className="linkButtonIcon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fillRule="evenodd"><path id="main" fill="var(--default-color-messange)" fillRule="nonzero" d="M0.5,0 L0.5,1.5 C0.5,5.65 2.71,9.28 6,11.3 L6,16 L21,16 L21,14 C21,11.34 15.67,10 13,10 C13,10 12.83,10 12.75,10 C8,10 4,6 4,1.5 L4,0 L0.5,0 Z M13,0 C10.790861,0 9,1.790861 9,4 C9,6.209139 10.790861,8 13,8 C15.209139,8 17,6.209139 17,4 C17,1.790861 15.209139,0 13,0 Z" transform="translate(2 4)"></path><path d="M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z M0,0 L24,0 L24,24 L0,24 L0,0 Z"></path></g></svg>
-                        <NavLink to='/channel' className="column"><span>Друзья</span></NavLink>
-                    </div>
+                        <div  className="column"><span><FormattedMessage id="Friends"/></span></div>
+                    </NavLink>
 
                     <div className="Messages-Friends column">
                         <div className="MessagesContainer column">
                             <div className="MessagesHeader row">
-                                <span>Личные Сообщения</span>
+                                <span><FormattedMessage id="PersonalMessages"/></span>
                                 <div  data-tooltip="Создать ЛС" onClick={(e) => this.OnClickCreatedRoom(e)} className="tooltipGlobal AddedInMessages column">
                                     <svg x="0" y="0" className="PrivateChannelCreated" aria-hidden="false" width="18" height="18" viewBox="0 0 18 18"><polygon fillRule="nonzero" fill="var(--default-color-messange-hover)" points="15 10 10 10 10 15 8 15 8 10 3 10 3 8 8 8 8 3 10 3 10 8 15 8"></polygon></svg>
                                 </div>
                             </div>
                             <div className="column messageContainer">
                                 {this.props.UserData?.Channels?.map((channelID,index) => {
-                                   return <ChatRow channel_users={this.props.Storage.channels[channelID].users} to={'/channel/' + channelID} key={'chat_' + channelID } />
+                                   return <ChatRow 
+                                   channel_users={this.props.Storage.channels[channelID].users} 
+                                   to={'/channel/' + channelID} 
+                                   key={'chat_' + channelID } 
+                                   isSelected={params.ChannelID === channelID.toString()}
+                                   />
                                 })}
                             </div>
                         </div>
@@ -431,8 +531,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 <div className="column MessageContainer">
                     <div className="headerMainText headerBlock row">
                         <div className="row userInfoHeader">
-                            <span>{ params.ChannelID && messages ?  this.GenerateHeader(messages) : ''}</span> 
-                            <div className={(!params.ChannelID ? 'hidden ' : '') + "OnlineStatusMessages IsOnline"} />
+                            <div  data-hidden={!params.ChannelID} className={"OnlineStatusMessages IsOnline"} />
+                            <span data-hidden={!params.ChannelID}> <FormattedMessage id='Channel_number' values={{id : params.ChannelID}} /> </span> 
                         </div>
 
                         <div className="toolbar row">
@@ -459,36 +559,8 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                         </div>
                     </div> 
  
-                    <div className="row mainContent">
-                        <div  className="messagesContainerMain column">
-                            <div onScroll={() => this.OnScrolling()} ref={(e) => {this.ref = e}} className="MessagesBlocksMain">
-                                <div className="column">
-                                    <div className="column messagesContainerElements">
-                                        {/* <div className="MessagesStartContainer column">
-                                            <img src="https://cdn.discordapp.com/avatars/603355055025815563/bd1b03dcbcf8c168b828cf59a329d62f.png?size=128" alt="2"/>
-                                            <span>UniBridge</span>
-                                            <span className="subHeader row">Это начало истории ваших сообщений с<h1>@UniBridge</h1></span>
-                                        </div> */}
-                                        {messages && messages?.sort((a,b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()).map((messageData,index,arr) => {
-                                            return <MessageRow key={'message_id_' + messageData.id} messageData={messageData} IsDuplicate={arr[index -1]?.AuthorID === arr[index]?.AuthorID}/>
-                                        })
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div  className="InputMessage column">
-                                <div onDrop={e => this.OnDropFile(e)} className="InputMessageBlock row">
-                                    <input multiple={false} onChange={(e) => this.OnChangeFile(e)} id="InputFile" hidden className="InputFile" type="file" />
-                                    <label htmlFor="InputFile" className="InputFile" ><svg width="24" height="24" viewBox="0 0 24 24"><path  fill="rgb(190, 190, 190)" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path></svg></label>
-                                    <TextareaAutosize value={this.state.inputValue} onChange={(e) => this.onChangeMessage(e)} onKeyDown={(e) => this.onKeyPressed(e)} tabIndex={0} spellCheck={true} placeholder="Message" maxLength={2000} className="InputText" wrap="soft"/>
-                                    <div className="emoji_smile_icon_vector"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {params.ChannelID && this.props.Storage.channels[params.ChannelID] 
-                        && <Participants channels={this.props.Storage.channels[params.ChannelID].users } />}
-                    </div>
+                    {params.ChannelID && this.MessagesContainer(params,messages)}
+                    {!params.ChannelID && this.FriendsListContainer()}
                  
                 </div>
             </div>
@@ -502,7 +574,8 @@ const mapStateToProps = (state : RootState) => {
         IsLoading:state.APPReducer.AppLoading,
         socket : state.APPReducer.Socket,
         UserData : state.APPReducer.user, 
-        Storage : state.StorageReducer
+        Storage : state.StorageReducer,
+        friends : state.APPReducer.user.friendsList || []
     };
 }
 
@@ -515,6 +588,7 @@ const connector = connect(mapStateToProps,{
         InitStorageAction, 
         InitStorageMessagesAction,
         StorageMessageAdded,
+        AppUserFriendListUpdateAction,
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

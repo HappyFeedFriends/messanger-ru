@@ -6,6 +6,7 @@ import UserRow from './userRow';
 
 interface ChatRowProps {
     to : string,
+    isSelected : boolean,
     channel_users : number[],
     
 }
@@ -22,7 +23,7 @@ class ChatRow extends React.Component<PropsFromRedux>{
     
     render(){
         return (
-            <NavLink to={this.props.to}>
+            <NavLink className="ChatRow" data-selected-state={this.props.isSelected} to={this.props.to}>
                 <UserRow id={this.GetAvatarID()} />
             </NavLink>
         );  

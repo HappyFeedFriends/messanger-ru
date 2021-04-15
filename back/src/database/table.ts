@@ -23,6 +23,13 @@ export interface feedbackTable{
     created_at : Date,
 }
 
+export interface FriendsTable{
+    id : number,
+    friend_1 : number,
+    friend_2 : number,
+    created_at : Date,
+}
+
 export interface MessagechannelsTable{
     id : number;
     created_at : Date,
