@@ -4,7 +4,7 @@
   "description": "messanger for diploma",
   "scripts": {
     "build": "cd back && npm install && npm run build && cd ../front && npm install && npm run build",
-    "start-server": "node ./back/dist/back/src"
+    "start-server": "node ./back/dist/"
   },
   "author": "HappyFeedFriends",
   "license": "ISC",
