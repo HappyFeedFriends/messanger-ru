@@ -8,9 +8,9 @@
         "sourceMap": true,
         "outDir": "./dist",
     },
-    "exclude": ["migrations","dist"],
+    "exclude": ["migrations","dist","seeds","uploads"],
     "include": [
         "./src/**/*",
-        "../global/*.ts"
+        "../global/*.ts",
     ],
 }

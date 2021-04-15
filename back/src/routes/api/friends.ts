@@ -3,7 +3,7 @@ import { ResponseDataExample, ResponseUserFriendListData } from "../../../../glo
 import { knexQuery } from "../../database/pg";
 import { FriendsTable } from "../../database/table";
 
-const ExampleJsonResponse = require('../../../const/responseExample.json') as ResponseDataExample;
+const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 const RouterFriendsAPI = express.Router()
 
 RouterFriendsAPI.post('/add_friend',async (req,res,next) => {
@@ -47,7 +47,7 @@ RouterFriendsAPI.get('/friendlist',async (req,res,next) => {
         .where('friendlist.friend_1',id)
         data.data = users
         return res.send(data) 
-    }
+    } 
 
     const users = (await knexQuery<FriendsTable>('friendlist').select('friend_2').where('friend_1',id)).map(value => value.friend_2)
     data.data = users

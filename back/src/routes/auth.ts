@@ -6,7 +6,7 @@ import { knexQuery } from "../database/pg";
 import validator from 'validator';
 import { UsersTable } from "../database/table";
 import { sha256 } from 'sha.js'
-const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
+const ExampleJsonResponse = require('../const/responseExample.json') as ResponseDataExample;
 
 const AuthRouter = express.Router(); 
   

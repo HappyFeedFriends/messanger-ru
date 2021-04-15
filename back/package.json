@@ -6,7 +6,7 @@
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc -p .",
     "prestart": "npm run build",
-    "start": "node ./src",
+    "start": "node ./dist/back/src",
     "dev": "nodemon -r dotenv/config ./src/index.ts",
     "knex:migrate:make": "npx knex migrate:make --migrations-directory . -x ts",
     "knex:migrate:latest": "npx knex migrate:latest --migrations-directory ts",

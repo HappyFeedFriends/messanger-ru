@@ -58,6 +58,7 @@ app.use('/uploads/:filename/:scheme?',(req,res,next) => {
     return res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')})
     
 })
+app.get('/',(req,res) => res.sendFile(path.join(__dirname, 'build', 'index.html')))
 app.use(function(req : Express.Request, res, next : NextFunction){
     res.sendStatus(404);
 });
@@ -65,7 +66,6 @@ app.use(function(req : Express.Request, res, next : NextFunction){
 const server = app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );
 });
-
 
 const io = new Server(server,{
     cors: {
