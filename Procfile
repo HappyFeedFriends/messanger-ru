@@ -1,1 +1,1 @@
-init: npm start
+start: npm run start-server
