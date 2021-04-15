@@ -12,9 +12,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history'
 
 const history = createBrowserHistory({}) 
-const store = createStore(rootReducer, composeWithDevTools(
+const store =  process.env.NODE_ENV === 'production' 
+? (
+  createStore(rootReducer, applyMiddleware(thunk))
+)
+: (createStore(rootReducer, composeWithDevTools(
   applyMiddleware(thunk),
-));
+)));
+
+
  
 ReactDOM.render(
   <Provider store={store}>
