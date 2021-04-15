@@ -1,5 +1,4 @@
 import { Socket } from "socket.io-client"
-import { UserLocalData,ChannelStorage, MessageInterface, UserData, FriendData, CreatedChannelData } from "../../../global/types"
 
 export const APP_LOADING_STATE = 'APP_LOADING_STATE'
 export const APP_USER_INIT_STATE = 'APP_USER_INIT_STATE'

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { UserLocalData } from '../../../global/types';
 import { RootState } from '../redux/rootReducer';
 import '../styles/userRow.scss';
 

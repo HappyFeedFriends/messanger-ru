@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { ResponseCreatedChannel, UserLocalData } from '../../../../global/types';
 import { AppUserChannelsAction, StorageUserUpdate } from '../../redux/actions';
 import { RootState } from '../../redux/rootReducer';
 

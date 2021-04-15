@@ -1,6 +1,5 @@
 import { Socket,Server } from "socket.io";
 import * as jwt from "jsonwebtoken";
-import { MessageSendInterface, MessageSocketAddedInterface, UpdateOnlineStatisSocket } from "../../global/types";
 import { knexQuery } from "./database/pg";
 import { ChannelListTable, ImagesTable, MessagesTable, UsersTable } from "./database/table";
 import fs from "fs";

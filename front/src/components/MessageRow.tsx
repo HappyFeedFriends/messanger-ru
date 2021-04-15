@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-import { MessageInterface, UserLocalData } from '../../../global/types';
 import { RootState } from '../redux/rootReducer';
 import '../styles/MessageRow.scss';
 import documentIcon from '../images/document.png'

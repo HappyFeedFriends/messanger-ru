@@ -1,4 +1,3 @@
-import { CreatedChannelData, FriendData, MessageInterface, UserData, UserLocalData } from "../../../global/types";
 import { APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE, APP_USER_UPDATE_CHANNELS, APP_USER_UPDATE_FRIENDLIST, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, InitStorageMessagesTypes, InitStorageTypes, MESSAGE_CHANNEL_ID_STATE, MESSAGE_CHANNEL_MESSAGES, StorageMessageAddedTypes, StorageRedux, StorageUserUpdateTypes, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateChannelsTypes, UpdateLanguageTypes, UpdateLoadingTypes, UpdateMessageChannelTypes, UpdateMessageFormatTypes, UpdateMessagesForChatTypes, UpdateUserFriendListTypes, UpdateUserTypes } from "./types";
  
 export function AppUpdateLoadingAction(state : boolean) : UpdateLoadingTypes{

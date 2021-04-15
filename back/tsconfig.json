@@ -5,12 +5,12 @@
         "target": "esnext",
         "noImplicitAny": true,
         "moduleResolution": "node",
-        "sourceMap": true,
         "outDir": "./dist",
+        "rootDir": "./src"
     },
     "exclude": ["migrations","dist","seeds","uploads"],
     "include": [
         "./src/**/*",
-        "../global/*.ts",
+        "../global/*.d.ts",
     ],
 }

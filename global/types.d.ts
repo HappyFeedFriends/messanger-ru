@@ -1,68 +1,68 @@
-export interface ResponseDataExample {
+declare interface ResponseDataExample {
     data : Array<any>,
     errorCode : number,
     errorMessage : string,
     status : boolean,
 }
  
-export interface  UserDataResponse {
+declare interface  UserDataResponse {
     id : number,
     Users : Array<UserLocalData>,
     User : UserData,
     channelsStorage : ChannelStorage,
 }
 
-export interface FriendData {
+declare interface FriendData {
     Url : string,
     username : string,
     id : number,
     onlinestatus : boolean,
 }
 
-export interface UserData extends UserLocalData{
+declare interface UserData extends UserLocalData{
     id : number,
     Channels : Array<number>, 
     email : string,
     friendsList : Array<FriendData>,
 }
 
-export interface SignResponse{
+declare interface SignResponse{
     errorDescription : string,
     errorCode : number,
 }
-export interface ResponseUserFriendListData extends ResponseDataExample{
+declare interface ResponseUserFriendListData extends ResponseDataExample{
     data : Array<FriendData> | Array<number>
 }
-export interface ResponseUserData extends ResponseDataExample{
+declare interface ResponseUserData extends ResponseDataExample{
     data : Array<UserDataResponse>
 }
 
-export interface ResponseSignIn extends ResponseDataExample{
+declare interface ResponseSignIn extends ResponseDataExample{
     data : Array<SignResponse>
 }
 
-export interface ResponseSignUp extends ResponseDataExample{
+declare interface ResponseSignUp extends ResponseDataExample{
     data : Array<SignResponse>
 }
 
-export interface CreatedChannelData{
+declare interface CreatedChannelData{
     storage : ChannelStorage,
     user : UserLocalData
 }
 
-export interface ResponseCreatedChannel extends ResponseDataExample{
+declare interface ResponseCreatedChannel extends ResponseDataExample{
     data : Array<CreatedChannelData>
 }
 
 
-export interface UserLocalData{
+interface UserLocalData{
     username : string,
     id : number,
     Url : string,
     onlinestatus : boolean,
 }
 
-export interface MessageInterface{
+declare interface MessageInterface{
     created_at : Date,
     id : number,
     content : string,
@@ -70,18 +70,18 @@ export interface MessageInterface{
     Url? : string,
 }
 
-export interface ChannelStorage{
+declare interface ChannelStorage{
     [storageID : string] : {
         users : number[],
         messages : MessageInterface[],
     }
 }
 
-export interface ResponseMessageData extends ResponseDataExample{
+declare interface ResponseMessageData extends ResponseDataExample{
     data : Array<MessageInterface[]>,
 }
 
-export interface MessageSendInterface {
+declare interface MessageSendInterface {
     text : string,
     file? :{
         filename : string,
@@ -90,35 +90,35 @@ export interface MessageSendInterface {
     ChannelID : number,
 }
 
-export interface MessageSocketAddedInterface extends MessageInterface{
+declare interface MessageSocketAddedInterface extends MessageInterface{
     MessageChannelID : number,
 
 }
 
-export interface  UpdateOnlineStatisSocket{
+declare interface  UpdateOnlineStatisSocket{
     id : string,
     onlinestatus : boolean,
 }
 
-export interface SignInFormData{
+declare interface SignInFormData{
     username : string,
     date : Date,
     email : string,
     password : string,
 }
 
-export interface SignUpFormData{
+declare interface SignUpFormData{
     username : string,
     password : string,
 }
 
-export interface FeedbackData{
+declare interface FeedbackData{
     theme : string,
     text : string,
 }
 
 
-export interface UserUpdateInfo{
+declare interface UserUpdateInfo{
     password : string,
     new_password? : string,
     username? : string,

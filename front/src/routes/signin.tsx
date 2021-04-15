@@ -1,6 +1,5 @@
 import React from 'react';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { ResponseSignIn, SignInFormData, SignResponse } from '../../../global/types';
 import '../styles/signin.scss';
 
 interface SignInStates {

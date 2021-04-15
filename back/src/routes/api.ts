@@ -3,7 +3,6 @@ import * as jwt from "jsonwebtoken";
 import { knexQuery } from "../database/pg";
 import { ChannelListTable, feedbackTable, FriendsTable, ImagesTable, MessagechannelsTable, UsersTable } from "../database/table";
 import { jwtCookie } from "../types/cookies";
-import { ChannelStorage, FeedbackData, MessageInterface, ResponseCreatedChannel, ResponseDataExample,ResponseMessageData,ResponseUserData,UserData,UserDataResponse, UserUpdateInfo } from '../../../global/types';
 import RouterTestAPI from "./api/test";
 import RouterFriendsAPI from "./api/friends";
 import { sha256 } from "sha.js";

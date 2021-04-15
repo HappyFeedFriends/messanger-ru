@@ -1,7 +1,6 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
-import { ResponseDataExample } from "../../../../global/types";
 import { ModalWindowEnum } from "../../enums";
 import { AppUserDataUpdateAction, StorageUserUpdate } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";

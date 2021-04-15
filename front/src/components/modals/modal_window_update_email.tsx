@@ -1,7 +1,6 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
-import { ResponseDataExample } from "../../../../global/types";
 import { AppUserDataUpdateAction } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/modal_window_update_username.scss'

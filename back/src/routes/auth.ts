@@ -1,7 +1,6 @@
 
 import express, { Request,Response} from "express";
 import * as jwt from "jsonwebtoken";
-import { ResponseDataExample, ResponseSignIn, ResponseSignUp, SignInFormData, SignUpFormData } from "../../../global/types";
 import { knexQuery } from "../database/pg";
 import validator from 'validator';
 import { UsersTable } from "../database/table";

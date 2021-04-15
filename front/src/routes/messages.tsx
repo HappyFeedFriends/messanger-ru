@@ -7,7 +7,6 @@ import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
 import { AppUpdateLoadingAction, AppUserDataAction, AppUserFriendListUpdateAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
-import { FriendData, MessageInterface, MessageSendInterface, MessageSocketAddedInterface, ResponseDataExample, ResponseMessageData, ResponseUserData, ResponseUserFriendListData } from '../../../global/types';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
 import ModalWindowCreatedChannel from '../components/modals/modal_window_created_channel';

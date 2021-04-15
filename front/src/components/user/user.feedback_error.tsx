@@ -1,6 +1,5 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
-import { FeedbackData, ResponseDataExample } from "../../../../global/types";
 import '../../styles/feedback.scss'
 import DropDownMenu, { DropMenuDataOnChange } from "../dropdown";
 

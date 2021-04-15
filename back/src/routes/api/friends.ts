@@ -1,9 +1,8 @@
 import express, { NextFunction,Request,Response} from "express";
-import { ResponseDataExample, ResponseUserFriendListData } from "../../../../global/types";
 import { knexQuery } from "../../database/pg";
 import { FriendsTable } from "../../database/table";
 
-const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
+const ExampleJsonResponse = require('../../../const/responseExample.json') as ResponseDataExample;
 const RouterFriendsAPI = express.Router()
 
 RouterFriendsAPI.post('/add_friend',async (req,res,next) => {
