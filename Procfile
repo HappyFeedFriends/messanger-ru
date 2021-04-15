@@ -1,0 +1,1 @@
+init: npm start
