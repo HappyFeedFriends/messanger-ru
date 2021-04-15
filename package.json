@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "messanger for diploma",
   "scripts": {
-    "build": "node ./back/dist/back/src",
+    "build": "cd back && npm install && npm run build && cd ../front && npm install && npm run build",
     "start-server": "node ./back/dist/back/src"
   },
   "author": "HappyFeedFriends",
