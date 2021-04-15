@@ -11,7 +11,7 @@ import fs from "fs";
 import multer from 'multer';
 
 const upload = multer()
-const ExampleJsonResponse = require('../const/responseExample.json') as ResponseDataExample;
+const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
 const routerAPI = express.Router()
 
 interface MessageInterfaceQuery extends MessageInterface{
