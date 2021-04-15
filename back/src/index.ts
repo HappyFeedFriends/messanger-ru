@@ -29,6 +29,7 @@ const app = express();
 dotenv.config();
 
 const port = process.env.SERVER_PORT;
+console.log(process.env)
 
 app.use(cors(corsOptions)); 
 app.use(cookieParser('dev'));
@@ -59,9 +60,9 @@ app.get('/uploads/:filename/:scheme?',(req,res,next) => {
     return res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')})
     
 })
-app.use('/',async (req,res,next) => {
+app.get('/*',async (req,res,next) => {
     const file = req.path == '/' ? 'index.html' : req.path
-    res.sendFile(path.join(__dirname, 'build',file))
+    return res.sendFile('../front/build/',file)
 })
 
 app.use(function(req : Express.Request, res, next : NextFunction){

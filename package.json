@@ -4,12 +4,11 @@
   "description": "messanger for diploma",
   "scripts": {
     "build": "cd front && npm run build && cd ../back && npm run build",
-    "start-server" : "node .back/dist/back/src"
+    "start-server": "node ./back/dist/back/src"
   },
   "author": "HappyFeedFriends",
   "license": "ISC",
   "dependencies": {
-    "react-redux": "^7.2.2",
     "typescript": "^4.2.2"
   },
   "engines": {
