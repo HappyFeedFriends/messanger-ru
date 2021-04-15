@@ -10,6 +10,7 @@ import { socket_connect } from "./socket";
 import { Response } from "express-serve-static-core";
 import path from "path";
 import fs from "fs";
+import { knexQuery } from "./database/pg";
 
 
 const corsOptions : cors.CorsOptions = {
@@ -37,7 +38,7 @@ app.use(loggerMiddleware)
 app.use('/api',routerAPI);
 app.use('/auth',AuthRouter)
 
-app.use('/uploads/:filename/:scheme?',(req,res,next) => {
+app.get('/uploads/:filename/:scheme?',(req,res,next) => {
     const name = req.params.filename
     if (!name){
         return next()
@@ -58,7 +59,11 @@ app.use('/uploads/:filename/:scheme?',(req,res,next) => {
     return res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')})
     
 })
-app.get('/',(req,res) => res.sendFile(path.join(__dirname, 'build', 'index.html')))
+app.use('/',async (req,res,next) => {
+    const file = req.path == '/' ? 'index.html' : req.path
+    res.sendFile(path.join(__dirname, 'build',file))
+})
+
 app.use(function(req : Express.Request, res, next : NextFunction){
     res.sendStatus(404);
 });
@@ -73,7 +78,6 @@ const io = new Server(server,{
         credentials: true
     }
 });
-
  
 io.on("connect", (socket: Socket) => socket_connect(socket,io));
 

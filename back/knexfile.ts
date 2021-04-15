@@ -22,10 +22,6 @@ export default {
       "password": process.env.PGPASSWORD,
       "port": process.env.PGPORT,
     },
-    pool: {
-      min: 2,
-      max: 10
-    },
     migrations: {
       tableName: 'knex_migrations'
     }
