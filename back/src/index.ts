@@ -28,7 +28,7 @@ const app = express();
 
 dotenv.config();
 
-const port = process.env.SERVER_PORT;
+const port = process.env.PORT;
 console.log(process.env)
 
 app.use(cors(corsOptions)); 
@@ -72,6 +72,10 @@ app.use(function(req : Express.Request, res, next : NextFunction){
 const server = app.listen( port, () => {
     console.log( `server started at http://localhost:${ port }` );
 });
+
+server.addListener('close',() => {
+    console.log('server closed')
+})
 
 const io = new Server(server,{
     cors: {
