@@ -112,7 +112,14 @@ routerAPI.post('/created_channel',async (req : Request, res : Response,next) => 
   const userID = req.body.userID
   const id = res.locals.id
   const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseCreatedChannel;
-  // TODO: added more validations
+
+  const userChannels = knexQuery<ChannelListTable>('channellist').select('MessageChannelID')
+  .where('UserID',userID)
+  const isDuplicate = await knexQuery<ChannelListTable>('channellist').select('*')
+  .where('UserID',id)
+  .whereIn('MessageChannelID',userChannels)
+
+  if (isDuplicate.length > 0) return res.sendStatus(500)
 
   const userFind = await knexQuery<UsersTable>('users')
   .join('images','images.id','=','users.imageID')

@@ -1,6 +1,6 @@
 import express, { NextFunction,Request,Response} from "express";
 import { knexQuery } from "../../database/pg";
-import { FriendsTable, UsersTable } from "../../database/table";
+import { ChannelListTable, FriendsTable, UsersTable } from "../../database/table";
 
 const ExampleJsonResponse = require('../../../const/responseExample.json') as ResponseDataExample;
 const RouterFriendsAPI = express.Router()
@@ -54,6 +54,29 @@ RouterFriendsAPI.get('/friendlist',async (req,res,next) => {
     const users = (await knexQuery<FriendsTable>('friendlist').select('friend_2').where('friend_1',id)).map(value => value.friend_2)
     data.data = users
     return res.send(data)
+})
+
+RouterFriendsAPI.post('/addFriendInChat',async (req,res) => {
+  const body : BodyAddFriendData = req.body
+
+  if (!body.user_id) return res.sendStatus(500)
+  if (await knexQuery<ChannelListTable>('channellist').select('*').where('MessageChannelID',body.channel_id).andWhere('UserID',body.user_id).first()) return res.sendStatus(500)
+  const user = await knexQuery<UsersTable>('users')
+  .join('images','images.id','=','users.imageID')
+  .select('users.username','users.onlinestatus','users.id','images.Url').where('users.id',body.user_id).first()
+  if (!user) return res.sendStatus(500)
+
+  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseGeneric<UserLocalData>;
+
+  await knexQuery<ChannelListTable>('channellist').insert({
+    MessageChannelID : body.channel_id,
+    UserID : body.user_id,
+  })
+  data.data.push(user)
+
+  return res.send(data)
+  
+
 })
 
 

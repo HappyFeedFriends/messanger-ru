@@ -109,7 +109,7 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
 
                     <div className="category column">
                         <ul className="column category_list">
-                            <button className="quit" onClick={e => { new Cookies().remove('auth'); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
+                            <button className="quit" onClick={e => {  new Cookies().remove('auth'); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
                         </ul>
                     </div>
 

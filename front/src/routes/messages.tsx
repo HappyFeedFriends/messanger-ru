@@ -19,6 +19,7 @@ import ModalWindowUpdateEmail from '../components/modals/modal_window_update_ema
 import ModalWindowUpdatePassword from '../components/modals/modal_window_update_password';
 import ModalWindowDeletePrifle from '../components/modals/modal_window_delete_profile';
 import { FormattedMessage } from 'react-intl';
+import ModalWindowFriendsInvite from '../components/modals/modal_window_friends_invite';
 
 interface MessageRouterParams{
     ChannelID? : string
@@ -276,6 +277,11 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             case ModalWindowEnum.MODAL_WINDOW_DELETE_PROFILE:
                 modal = <ModalWindowDeletePrifle closeModel={() => this.CloseModal()}/>
                 break;
+            case ModalWindowEnum.MODAL_WINDOW_FRIEND_INVITE_CHAT:
+                const channel_id = (this.props.match.params as MessageRouterParams).ChannelID
+                if (!channel_id) break;
+                modal = <ModalWindowFriendsInvite channel_id={channel_id} />
+                break;
             default:
                 modal = undefined
                 break;
@@ -427,7 +433,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
             </div>
 
             {params.ChannelID && this.props.Storage.channels[params.ChannelID] 
-            && <Participants channels={this.props.Storage.channels[params.ChannelID].users } />}
+            && <Participants openModal={(formID : ModalWindowEnum) => this.OpenModal(formID)} channels={this.props.Storage.channels[params.ChannelID].users } />}
         </div>
         )
     }

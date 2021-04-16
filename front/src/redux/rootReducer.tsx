@@ -1,7 +1,7 @@
 import {combineReducers } from 'redux';
 import Cookies from 'universal-cookie';
 import { APP_DEFAULT, STORAGE_DEFAULT } from './default';
-import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_PUSH_FRIENDLIST, APP_USER_UPDATE, APP_USER_UPDATE_CHANNELS, APP_USER_UPDATE_FRIENDLIST, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateAppState, UpdateStorageState } from './types';
+import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_PUSH_FRIENDLIST, APP_USER_UPDATE, APP_USER_UPDATE_CHANNELS, APP_USER_UPDATE_FRIENDLIST, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, StorageRedux, STORAGE_CHANNEL_ADD_USER, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateAppState, UpdateStorageState } from './types';
 
 function APPReducer(state = APP_DEFAULT,actions : UpdateAppState) : AppRedux{
     switch (actions.type) {
@@ -42,6 +42,13 @@ function StorageReducer(state = STORAGE_DEFAULT,actions : UpdateStorageState) : 
             return {...state,channels : channels}
         case APP_USER_UPDATE_CHANNELS : 
             return {...state,channels : {...state.channels,...actions.payload.storage}}
+        case STORAGE_CHANNEL_ADD_USER : 
+            const channelsPush = {...state.channels}
+            if (!channelsPush[actions.payload.channel_id] || channelsPush[actions.payload.channel_id].users.includes(actions.payload.user_id)){
+                return state
+            }
+            channelsPush[actions.payload.channel_id].users.push(actions.payload.user_id)
+            return {...state,channels : channelsPush}
         case STORAGE_MESSAGES_ADDED:
             const channel = state.channels
             channel[actions.payload.channelID].messages = channel[actions.payload.channelID].messages || []

@@ -4,7 +4,14 @@ declare interface ResponseDataExample {
     errorMessage : string,
     status : boolean,
 }
- 
+
+declare interface ResponseGeneric<T>{
+    data : Array<T>,
+    errorCode : number,
+    errorMessage : string,
+    status : boolean, 
+}
+
 declare interface  UserDataResponse {
     id : number,
     Users : Array<UserLocalData>,
@@ -123,4 +130,9 @@ declare interface UserUpdateInfo{
     new_password? : string,
     username? : string,
     email? : string,
+}
+
+declare interface BodyAddFriendData {
+    user_id : number
+    channel_id : number,
 }

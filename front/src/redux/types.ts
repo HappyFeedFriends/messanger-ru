@@ -16,10 +16,16 @@ export const STORAGE_INIT = 'STORAGE_USERS_INIT'
 export const STORAGE_MESSAGES_INIT = 'STORAGE_MESSAGES_INIT'
 export const STORAGE_MESSAGES_ADDED = 'STORAGE_MESSAGES_ADDED'
 export const STORAGE_USER_UPDATE = 'STORAGE_USER_UPDATE'
+export const STORAGE_CHANNEL_ADD_USER = 'STORAGE_CHANNEL_ADD_USER'
 
 interface ActionRedux{
     type : string,
     payload : any,
+}
+
+interface UpdateChannelsPushUserState extends ActionRedux {
+    type: typeof STORAGE_CHANNEL_ADD_USER
+    payload: StorageChannelUserPush
 }
 
 interface UpdateChannelsState extends ActionRedux {
@@ -105,6 +111,11 @@ export interface AppRedux{
     messageFormat : messageFormat
 }
 
+export interface StorageChannelUserPush{
+    user_id : number,
+    channel_id : number,
+}
+
 export interface StorageRedux {
     users : UserLocalData[],
     channels : ChannelStorage,
@@ -126,7 +137,8 @@ export type InitStorageTypes = InitStorage;
 export type InitStorageMessagesTypes = InitStorageMessages;
 export type StorageMessageAddedTypes = StorageMessageAdded;
 export type StorageUserUpdateTypes = StorageUserUpdate;
-export type UpdateStorageState = InitStorageTypes | InitStorageMessages | StorageMessageAdded | StorageUserUpdateTypes | UpdateChannelsTypes
+export type UpdateChannelsPushUserTypes = UpdateChannelsPushUserState;
+export type UpdateStorageState = InitStorageTypes | InitStorageMessages | StorageMessageAdded | StorageUserUpdateTypes | UpdateChannelsTypes | UpdateChannelsPushUserTypes
 
 
 
