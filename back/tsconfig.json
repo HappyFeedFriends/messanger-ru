@@ -6,11 +6,12 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "outDir": "./dist",
-        "rootDir": "./src"
+        "rootDir": "./src",
+        "declaration": true,
     },
     "exclude": ["migrations","dist","seeds","uploads"],
     "include": [
         "./src/**/*",
-        "../global/*.d.ts",
+        "../global/*.ts",
     ],
 }

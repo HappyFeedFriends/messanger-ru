@@ -2,7 +2,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { connect, ConnectedProps } from "react-redux";
 import { ModalWindowEnum } from "../../enums";
-import { AppUserDataUpdateAction, StorageUserUpdate } from "../../redux/actions";
+import { StorageUserUpdate } from "../../redux/actions";
 import { RootState } from "../../redux/rootReducer";
 import '../../styles/UserPersonalAccount.scss'
 

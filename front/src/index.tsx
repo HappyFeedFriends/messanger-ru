@@ -11,17 +11,21 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history'
 
+
 const history = createBrowserHistory({}) 
-const store =  process.env.NODE_ENV === 'production' 
-? (
-  createStore(rootReducer, applyMiddleware(thunk))
-)
-: (createStore(rootReducer, composeWithDevTools(
-  applyMiddleware(thunk),
-)));
+const store = (() => {
+  
+  if (process.env.NODE_ENV === 'production' ){
+    return createStore(rootReducer, applyMiddleware(thunk))
+  }
+
+  return (createStore(rootReducer, composeWithDevTools(
+    applyMiddleware(thunk),
+  )))
+})()
 
 
- 
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>

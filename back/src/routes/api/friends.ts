@@ -1,6 +1,6 @@
 import express, { NextFunction,Request,Response} from "express";
 import { knexQuery } from "../../database/pg";
-import { FriendsTable } from "../../database/table";
+import { FriendsTable, UsersTable } from "../../database/table";
 
 const ExampleJsonResponse = require('../../../const/responseExample.json') as ResponseDataExample;
 const RouterFriendsAPI = express.Router()
@@ -29,8 +29,11 @@ RouterFriendsAPI.post('/add_friend',async (req,res,next) => {
         friend_2 : id,
       }
     ])
-  
-    return res.sendStatus(200)
+    data.data.push(await knexQuery<UsersTable>('users')
+    .select('users.onlinestatus','users.username','users.id','users.onlinestatus','images.Url')
+    .join('images','images.id','=','users.imageID')
+    .where('users.id',user_id).first())
+    return res.send(data)
   
 })
    

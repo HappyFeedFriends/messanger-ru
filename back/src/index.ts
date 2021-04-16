@@ -29,16 +29,17 @@ const app = express();
 dotenv.config();
 
 const port = process.env.PORT || 3000;
-console.log(process.env)
+console.log('ENV SERVER = ',process.env.NODE_ENV)
+if (process.env.NODE_ENV == 'development')
+    app.use(cors(corsOptions)); 
 
-app.use(cors(corsOptions)); 
 app.use(cookieParser('dev'));
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(loggerMiddleware)
 app.use('/api',routerAPI);
 app.use('/auth',AuthRouter)
-
+ 
 app.get('/uploads/:filename/:scheme?',(req,res,next) => {
     const name = req.params.filename
     if (!name){
@@ -60,9 +61,25 @@ app.get('/uploads/:filename/:scheme?',(req,res,next) => {
     return res.sendFile('uploads/' + name,{ root: path.join(__dirname, '../')})
     
 })
+// CODE REVIEW
+app.get('/',async (req,res,next) => {
+    return res.sendFile(path.join(__dirname, '../../front/build/', 'index.html'));
+})
+
+app.get('/channel/:channelID?',async (req,res,next) => {
+    return res.sendFile(path.join(__dirname, '../../front/build/', 'index.html'));
+})
+
+app.get('/signup',async (req,res,next) => {
+    return res.sendFile(path.join(__dirname, '../../front/build/', 'index.html'));
+})
+
+app.get('/signin',async (req,res,next) => {
+    return res.sendFile(path.join(__dirname, '../../front/build/', 'index.html'));
+})
+
 app.get('/*',async (req,res,next) => {
-    const file = req.path == '/' ? 'index.html' : req.path
-    return res.sendFile(path.join(__dirname, '../../front/build/', file));
+    return res.sendFile(path.join(__dirname, '../../front/build/', req.path));
 })
 
 app.use(function(req : Express.Request, res, next : NextFunction){

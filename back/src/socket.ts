@@ -4,7 +4,7 @@ import { knexQuery } from "./database/pg";
 import { ChannelListTable, ImagesTable, MessagesTable, UsersTable } from "./database/table";
 import fs from "fs";
 import { sha256 } from "sha.js";
-
+// .....
 function parseCookies(cookie_str : string) {
     var list = {} as { [cookieName : string] : string }
 
@@ -68,9 +68,7 @@ export const socket_connect = async (socket : Socket, io : Server) => {
             onlinestatus : true,
         } as UpdateOnlineStatisSocket)
     })
-
-
-    
+  
     console.log(`connect socket ${socket.id}`);
     socket.on('message_send',async (data : MessageSendInterface,callback) => {
         // TODO: Added validations
@@ -97,13 +95,8 @@ export const socket_connect = async (socket : Socket, io : Server) => {
         io.to('channel_room_' + data.ChannelID).emit('add_message',messageData);
     })
  
-    socket.on("disconnect", async () => {
-        console.log(`disconnect ${socket.id}`);
-
-        await knexQuery<UsersTable>('users').update({
-            onlinestatus : false
-        }).where('id',id)
-
+    socket.on('disconnecting', async () => {
+        console.log(`disconnecting ${socket.id}`);
         socket.rooms.forEach(room_id => {
             if (room_id.indexOf('channel_room_') === -1) return; // only for channel rooms
             io.to(room_id).emit('update_online_status',{
@@ -111,6 +104,10 @@ export const socket_connect = async (socket : Socket, io : Server) => {
                 onlinestatus : false,
             } as UpdateOnlineStatisSocket)
         })
+
+        await knexQuery<UsersTable>('users').update({
+            onlinestatus : false
+        }).where('id',id)
     });
 
 }

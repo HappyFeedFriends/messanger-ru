@@ -15,6 +15,9 @@ class Participants extends React.Component<ParticipantsProps>{
                 {this.props.channels.map(user_id => {
                     return <UserRow id={user_id} key={'chat_' + user_id } />
                 })}
+                <div className="AddedFriendInChatContainer row">
+                    <span>Добавить участника</span>
+                </div> 
         </div>
         );  
     }

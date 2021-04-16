@@ -549,6 +549,24 @@ input:focus{
     padding-top: 25px;
     font-weight: bold;
     overflow-y: scroll;
+
+    .AddedFriendInChatContainer{
+        cursor: pointer;
+        span{
+            color: var(--color-messange);
+            font-size: 13px;
+            align-self: center;
+            margin-left: 5px;
+        }
+    }
+
+    .AddedFriendInChatContainer::before{ 
+        width: 32px;
+        height: 32px;
+        background-color: red;
+        align-self: center;
+        content: '';
+    }
 }
 .ParticianitsHeader > span{
     color: var(--default-color-messange);

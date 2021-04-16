@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Preloader from '../components/Preloader';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../redux/rootReducer';
-import { AppUpdateLoadingAction, AppUserDataAction, AppUserFriendListUpdateAction, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded } from '../redux/actions';
+import { AppUpdateLoadingAction, AppUserDataAction, AppUserFriendListUpdateAction, AppUserFriendsAdded, InitStorageAction, InitStorageMessagesAction, MessageSelectAction, StorageMessageAdded, StorageUserUpdate } from '../redux/actions';
 import { NavLink, RouteComponentProps } from 'react-router-dom';
 import ChatRow from '../components/chatRow';
 import Participants from '../components/participants';
@@ -53,7 +53,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
     messageInput : string = ''
     uploadMessageForChannel : boolean = false;
     windowContainer : HTMLDivElement | null | undefined;
- 
+    lockedLoadFriend : boolean = false;
     ref : HTMLDivElement | null | undefined
 
     constructor(props : PropsFromRedux){
@@ -112,6 +112,10 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 }
             })
 
+        })
+
+        this.props.socket.on('update_online_status',data => {
+            this.props.StorageUserUpdate(data)
         })
 
     }
@@ -357,7 +361,12 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                 user_id : id,
             }),
         }).then(res => res.json()).then(res => { // TODO
-            
+            this.props.AppUserFriendsAdded(res.data[0])
+        }).catch(err => {})
+
+        this.setState({
+            searchText : '',
+            UsersSearch : [],
         })
     }
 
@@ -457,6 +466,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         fetch('http://localhost:8080/api/friends/friendlist?isfull=1',{
             credentials : 'include',
         }).then(res => res.json()).then((res : ResponseUserFriendListData) => {
+            if (res.data.length > 0)
             this.props.AppUserFriendListUpdateAction(res.data as Array<FriendData>)
         })
     }
@@ -466,8 +476,9 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
         const params = (this.props.match.params as MessageRouterParams)
         const messages = !this.props.IsLoading && params.ChannelID && this.GetMessagesForChannel(params.ChannelID)
  
-        if (!params.ChannelID && this.props.friends && this.props.friends.length < 1){
+        if (!params.ChannelID && this.props.friends && this.props.friends.length < 1 && !this.lockedLoadFriend){
             this.LoadFriends()
+            this.lockedLoadFriend = true;
         }
 
         return (
@@ -535,7 +546,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
                         </div>
 
                         <div className="toolbar row">
-                            <button data-tooltip="Добавить в друзья" className="addFriendInChat row tooltipGlobal bottomTooltip">
+                            <button data-tooltip="Найти друзей" className="addFriendInChat row tooltipGlobal bottomTooltip">
                                 <div><svg x="0" y="0" className="icon" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24"><path className="pathColor" fill="var(--default-color-messange)" fillRule="evenodd" clipRule="evenodd" d="M21 3H24V5H21V8H19V5H16V3H19V0H21V3ZM10 12C12.205 12 14 10.205 14 8C14 5.795 12.205 4 10 4C7.795 4 6 5.795 6 8C6 10.205 7.795 12 10 12ZM10 13C5.289 13 2 15.467 2 19V20H18V19C18 15.467 14.711 13 10 13Z"></path></svg></div>
                             </button>
                             <div className="column SearchInput-Rows">
@@ -588,6 +599,8 @@ const connector = connect(mapStateToProps,{
         InitStorageMessagesAction,
         StorageMessageAdded,
         AppUserFriendListUpdateAction,
+        AppUserFriendsAdded,
+        StorageUserUpdate,
 })
 type PropsFromRedux = ConnectedProps<typeof connector> & RouteComponentProps
 

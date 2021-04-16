@@ -7,6 +7,7 @@ export const APP_USER_UPDATE_LANG = 'APP_USER_UPDATE_LANG'
 export const APP_USER_UPDATE_MESSAGE_VISIBLE = 'APP_USER_UPDATE_MESSAGE_VISIBLE'
 export const APP_USER_UPDATE_FRIENDLIST = 'APP_USER_UPDATE_FRIENDLIST'
 export const APP_USER_UPDATE_CHANNELS = 'APP_USER_UPDATE_CHANNELS'
+export const APP_USER_PUSH_FRIENDLIST = 'APP_USER_PUSH_FRIENDLIST'
 
 export const MESSAGE_CHANNEL_ID_STATE = 'MESSAGE_CHANNEL_ID_STATE'
 export const MESSAGE_CHANNEL_MESSAGES = 'MESSAGE_CHANNEL_MESSAGES'
@@ -29,6 +30,11 @@ interface UpdateChannelsState extends ActionRedux {
 interface UpdateLoadingState extends ActionRedux {
     type: typeof APP_LOADING_STATE
     payload: boolean
+}
+
+interface UpdateUserFriendsPushState extends ActionRedux{
+    type : typeof APP_USER_PUSH_FRIENDLIST
+    payload : FriendData
 }
 
 interface UpdateLanguageState extends ActionRedux {
@@ -127,7 +133,8 @@ export type UpdateStorageState = InitStorageTypes | InitStorageMessages | Storag
 export type UpdateLoadingTypes = UpdateLoadingState
 export type UpdateUserFriendListTypes = UpdateUserFriendListState
 export type UpdateUserTypes = UpdateUserState
+export type UpdateUserFriendsPushTypes = UpdateUserFriendsPushState
 export type UpdateLanguageTypes = UpdateLanguageState;
 export type UpdateMessageFormatTypes = UpdateMessageVisibleState;
 export type UpdateChannelsTypes = UpdateChannelsState;
-export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes | UpdateLanguageTypes | UpdateMessageFormatTypes | UpdateUserFriendListTypes | UpdateChannelsTypes
+export type UpdateAppState = UpdateLoadingTypes | UpdateUserTypes | UpdateLanguageTypes | UpdateMessageFormatTypes | UpdateUserFriendListTypes | UpdateChannelsTypes | UpdateUserFriendsPushTypes

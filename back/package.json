@@ -7,7 +7,7 @@
     "build": "tsc -p .",
     "prestart": "npm run build",
     "start": "node ./dist/back/src",
-    "dev": "nodemon -r dotenv/config ./src/index.ts",
+    "dev": "nodemon -r dotenv/config --files ./src/index.ts",
     "knex:migrate:make": "npx knex migrate:make --migrations-directory . -x ts",
     "knex:migrate:latest": "npx knex migrate:latest --migrations-directory ts",
     "knex:migrate:rollback": "npx knex migrate:rollback --migrations-directory ts",

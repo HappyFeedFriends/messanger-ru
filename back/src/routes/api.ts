@@ -10,8 +10,8 @@ import validator from "validator";
 import fs from "fs";
 import multer from 'multer';
 
-const upload = multer()
-const ExampleJsonResponse = require('../../const/responseExample.json') as ResponseDataExample;
+const upload = multer() 
+const ExampleJsonResponse : ResponseDataExample = require('../../const/responseExample.json');
 const routerAPI = express.Router()
 
 interface MessageInterfaceQuery extends MessageInterface{
@@ -22,7 +22,7 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
   let isAuth = !!req.cookies.auth;
   if (req.cookies.auth){
     jwt.verify(req.cookies.auth,process.env.SECRET,(err: any) => {
-        isAuth = err === null;
+        isAuth = err === null; 
     })
   }
   if (isAuth){
@@ -158,7 +158,7 @@ routerAPI.post('/feedback/:type',async (req : Request, res : Response,next) =>{
 
 
   const feedback = req.body as FeedbackData
-  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const data : ResponseDataExample = (JSON.parse(JSON.stringify(ExampleJsonResponse)));
   if (!feedback.text || feedback.text == ''){
     data.errorCode = 0
     data.errorMessage = 'Поле обязательно для заполнения!'
@@ -188,7 +188,7 @@ routerAPI.post('/user_update/:type',async (req : Request, res : Response, next) 
   const type = req.params.type   
   const body = req.body as UserUpdateInfo
   const id = res.locals.id
-  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const data : ResponseDataExample = (JSON.parse(JSON.stringify(ExampleJsonResponse)));
   if (!id) return res.sendStatus(401);
   if (!body.password) return res.sendStatus(500);
   if (type != 'username' && type != 'password' && type != 'email' && type != 'avatar') return res.sendStatus(500);
@@ -247,7 +247,7 @@ routerAPI.post('/user_update_avatar',upload.single('avatar'),async (req : Reques
   const fileName = new sha256().update(file.originalname + id + (new Date().getTime())).digest('hex') + '.' + execFile 
   fs.writeFileSync('uploads/' + fileName,file.buffer) 
   const imageUrl = req.protocol + '://' + req.headers.host + '/uploads/' + fileName 
-  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const data : ResponseDataExample = (JSON.parse(JSON.stringify(ExampleJsonResponse)));
   const idImage = (await knexQuery<ImagesTable>('images').insert({
     Url : imageUrl,
   }).returning('id'))[0]
@@ -259,12 +259,12 @@ routerAPI.post('/user_update_avatar',upload.single('avatar'),async (req : Reques
   })
   return res.send(data)
 
-})
-
+}) 
+   
 routerAPI.get('/users_search',async (req : Request, res : Response,next) => {
   const id = res.locals.id
   const searchName = req.query.text || ''
-  const data = (JSON.parse(JSON.stringify(ExampleJsonResponse))) as ResponseDataExample;
+  const data : ResponseDataExample = (JSON.parse(JSON.stringify(ExampleJsonResponse)));
 
   if (!searchName){
     data.data.push([])
@@ -277,7 +277,7 @@ routerAPI.get('/users_search',async (req : Request, res : Response,next) => {
   data.data.push(users)
   return res.send(data)
 
-})
+}) 
 
 
 

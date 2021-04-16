@@ -1,7 +1,7 @@
 import {combineReducers } from 'redux';
 import Cookies from 'universal-cookie';
 import { APP_DEFAULT, STORAGE_DEFAULT } from './default';
-import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_UPDATE, APP_USER_UPDATE_CHANNELS, APP_USER_UPDATE_FRIENDLIST, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateAppState, UpdateStorageState } from './types';
+import { AppRedux, APP_LOADING_STATE, APP_USER_INIT_STATE, APP_USER_PUSH_FRIENDLIST, APP_USER_UPDATE, APP_USER_UPDATE_CHANNELS, APP_USER_UPDATE_FRIENDLIST, APP_USER_UPDATE_LANG, APP_USER_UPDATE_MESSAGE_VISIBLE, StorageRedux, STORAGE_INIT, STORAGE_MESSAGES_ADDED, STORAGE_MESSAGES_INIT, STORAGE_USER_UPDATE, UpdateAppState, UpdateStorageState } from './types';
 
 function APPReducer(state = APP_DEFAULT,actions : UpdateAppState) : AppRedux{
     switch (actions.type) {
@@ -9,6 +9,10 @@ function APPReducer(state = APP_DEFAULT,actions : UpdateAppState) : AppRedux{
             return {...state,AppLoading : actions.payload}
         case APP_USER_UPDATE_FRIENDLIST:
             return {...state,user : {...state.user,friendsList : actions.payload}}
+        case APP_USER_PUSH_FRIENDLIST:
+            const friendlist = [...state.user.friendsList]
+            friendlist.push(actions.payload)
+            return {...state,user : {...state.user,friendsList : friendlist}}
         case APP_USER_UPDATE_CHANNELS:
             const channels = state.user.Channels
             channels.push(...(Object.keys(actions.payload.storage).map(value => Number(value))))

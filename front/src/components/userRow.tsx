@@ -9,17 +9,11 @@ interface UserRowProps {
     userData? : UserLocalData
 }
 
-interface UserRowStates{
-    user : UserLocalData,
-}
 
-class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
+class UserRow extends React.Component<PropsFromRedux>{
 
-    constructor(props : PropsFromRedux){
-        super(props)
-        this.state = {
-            user:  this.props.userData || this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, onlinestatus : false }
-        }
+    GetUser(){
+        return this.props.userData || this.GetUserDataByID(this.props.id) || { username : 'wow! Error!', Url : '', id : -1, onlinestatus : false }
     }
 
     GetUserDataByID(id : number){
@@ -27,16 +21,17 @@ class UserRow extends React.Component<PropsFromRedux,UserRowStates>{
     }
 
     render(){
+        const user = this.GetUser()
         return (
             <div className="row userRow" >
                 <div className="ImageContainer">
-                    <img src={this.state.user.Url} alt="2"/>
+                    <img src={user.Url} alt="2"/>
                     <div className="OnlineStatusContainer">
-                        <div data-online={this.state.user.onlinestatus} className="OnlineStatus" />
+                        <div data-online={user.onlinestatus} className="OnlineStatus" />
                     </div>
                 </div>
                 <div className="column userName_status">
-                    <span>{this.state.user.username}</span>
+                    <span>{user.username}</span>
                 </div>
             </div>
         );  
