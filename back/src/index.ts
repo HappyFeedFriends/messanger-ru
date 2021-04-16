@@ -28,7 +28,7 @@ const app = express();
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 console.log(process.env)
 
 app.use(cors(corsOptions)); 
@@ -62,7 +62,7 @@ app.get('/uploads/:filename/:scheme?',(req,res,next) => {
 })
 app.get('/*',async (req,res,next) => {
     const file = req.path == '/' ? 'index.html' : req.path
-    return res.sendFile(path.join(__dirname, '../../../../front/build/', file));
+    return res.sendFile(path.join(__dirname, '../front/build/', file));
 })
 
 app.use(function(req : Express.Request, res, next : NextFunction){
@@ -70,7 +70,7 @@ app.use(function(req : Express.Request, res, next : NextFunction){
 });
 
 const server = app.listen( port, () => {
-    console.log( `server started at http://localhost:${ port }` );
+    console.log( `server started at port:${ port }` );
 });
 
 server.addListener('close',() => {
