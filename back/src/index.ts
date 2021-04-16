@@ -62,7 +62,7 @@ app.get('/uploads/:filename/:scheme?',(req,res,next) => {
 })
 app.get('/*',async (req,res,next) => {
     const file = req.path == '/' ? 'index.html' : req.path
-    return res.sendFile(path.join(__dirname, '../front/build/', file));
+    return res.sendFile(path.join(__dirname, '../../front/build/', file));
 })
 
 app.use(function(req : Express.Request, res, next : NextFunction){
