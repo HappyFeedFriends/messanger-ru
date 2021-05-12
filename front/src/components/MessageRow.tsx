@@ -79,7 +79,7 @@ class MessageRow extends React.Component<PropsFromRedux,MessageRowState>{
         <div data-isdocument={this.state.isDocument} className="row fileContainerMessage">
             <div style={{position : 'relative',left:0,right:0, bottom:0,top:0}}>
                 <div className="HoverUp"/> 
-                <img className="MessageContentImage" src={ (this.state.isDocument ? '' : document.location.protocol + '//') + this.state.url} alt=""/>
+                <img className="MessageContentImage" src={ this.state.url} alt=""/>
             </div>
             <span className="MessageContentFileName">{this.state.filename}</span>
             <a href={document.location.protocol + '//' + this.props.messageData.Url}>

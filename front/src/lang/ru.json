@@ -64,5 +64,10 @@
     "Offline" : "Не в сети",
     "PersonalMessages" : "Личные сообщения",
     "Friends" : "Друзья",
-    "Channel_number" : "Чат №{id}"
+    "Channel_number" : "Чат №{id}",
+
+    "user_statistics" : "Статистика",
+    "user_admin" : "Администрирование",
+    "user_bug_report" : "Reports",
+    "user_settings_debug" : "Отладка"
 }

@@ -8,6 +8,7 @@ import UserFeedBackError from "./user/user.feedback_error";
 import UserFeedBackReview from "./user/user.feedback_review";
 import UserLanguage from "./user/user.language";
 import UserPersonalAccount from "./user/user.personal_account";
+import BugReports from "./user/user_bug_reports";
  
 interface UserProfileProps {
     openModal : (id : ModalWindowEnum, ...args : any) => void;
@@ -24,6 +25,11 @@ enum UserCategory{
     USER_CATEGORY_EXTERNAL = 2,
     USER_CATEGORY_FEEDBACK_ERROR = 3,
     USER_CATEGORY_FEEDBACK_REVIEW = 4,
+
+    USER_CATEGORY_STATISTICS = 5,
+    USER_CATEGORY_ADMIN = 6,
+    USER_CATEGORY_BUG_REPORTS = 7,
+    USER_CATEGORY_SETTINGS_DEBUG = 8,
 }
 
 class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
@@ -46,6 +52,8 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                 return <UserFeedBackError />
             case UserCategory.USER_CATEGORY_FEEDBACK_REVIEW:
                 return <UserFeedBackReview />
+            case UserCategory.USER_CATEGORY_BUG_REPORTS:
+                return <BugReports /> 
             default:
                 return <UserPersonalAccount {...this.props} />;
         }
@@ -97,15 +105,12 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                         </ul>
                     </div>
 
-                    <div className="category column">
+                    {/* <div className="category column">
                         <span className="category_header">Разработчик</span>
-                        <ul className="column category_list">
-                            <button  >Статистика</button>
-                            <button >Администрирование</button>
-                            <button >Bug Reports</button>
-                            <button >Отладка</button>
+                        <ul className="column category_list"> 
+                        {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_BUG_REPORTS,'user_bug_report')}
                         </ul>
-                    </div>
+                    </div> */}
 
                     <div className="category column">
                         <ul className="column category_list">
