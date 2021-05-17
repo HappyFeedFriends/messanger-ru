@@ -105,12 +105,12 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                         </ul>
                     </div>
 
-                    {/* <div className="category column">
+                    <div className="category column">
                         <span className="category_header">Разработчик</span>
                         <ul className="column category_list"> 
                         {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_BUG_REPORTS,'user_bug_report')}
                         </ul>
-                    </div> */}
+                    </div>
 
                     <div className="category column">
                         <ul className="column category_list">

@@ -136,3 +136,11 @@ declare interface BodyAddFriendData {
     user_id : number
     channel_id : number,
 }
+
+declare interface FeedBackAPIData{
+    text : string,
+    theme : string,
+    created_at : Date,
+    username : string,
+    id : number,
+}

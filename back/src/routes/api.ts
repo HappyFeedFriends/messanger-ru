@@ -9,6 +9,7 @@ import { sha256 } from "sha.js";
 import validator from "validator";
 import fs from "fs";
 import multer from 'multer';
+import RouterFeedBackAPI from "./api/feedback";
 
 const upload = multer() 
 const ExampleJsonResponse : ResponseDataExample = require('../../const/responseExample.json');
@@ -36,6 +37,7 @@ routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
 }); 
 
 routerAPI.use('/friends',RouterFriendsAPI);
+routerAPI.use('/feedback',RouterFeedBackAPI)
 
 if (process.env.NODE_ENV == 'development'){
   routerAPI.use('/test',RouterTestAPI)
@@ -177,7 +179,7 @@ routerAPI.post('/feedback/:type',async (req : Request, res : Response,next) =>{
     data.errorMessage = 'Поле обязательно для заполнения!'
     return res.send(data)
   }
-  knexQuery<feedbackTable>('feedback').insert({
+  await knexQuery<feedbackTable>('feedback').insert({
     text : feedback.text,
     theme : feedback.theme,
     AuthorID : res.locals.id,
