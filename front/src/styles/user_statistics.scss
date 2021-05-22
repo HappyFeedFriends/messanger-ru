@@ -89,7 +89,7 @@
         padding-right: 10px;
         padding-bottom: 10px;
         display: none;
-        overflow: auto;
+        overflow: hidden auto;
 
         span{
             max-height: 400px;
@@ -97,6 +97,8 @@
             color: var(--default-color-text);
             text-align: left;
             cursor: default;
+            word-wrap: break-word;
+            margin-bottom: 10px;
         }
         
         button{

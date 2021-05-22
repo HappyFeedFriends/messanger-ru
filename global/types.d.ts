@@ -30,6 +30,7 @@ declare interface UserData extends UserLocalData{
     id : number,
     Channels : Array<number>, 
     email : string,
+    IsAdmin : boolean,
     friendsList : Array<FriendData>,
 }
 

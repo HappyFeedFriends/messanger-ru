@@ -66,7 +66,7 @@ class DropDownMenu extends React.Component<DropDownMenuProps,DropDownMenuStates>
                     <div >
                         <span className="DropMenuRowText">
                             {this.props.isLocalize 
-                                ? <FormattedMessage id={this.props.items[this.state.selected_id]} /> 
+                                ? <FormattedMessage defaultMessage={this.props.items[this.state.selected_id]} id={this.props.items[this.state.selected_id]} /> 
                                 : this.props.items[this.state.selected_id]
                             }
                         </span>
@@ -82,7 +82,7 @@ class DropDownMenu extends React.Component<DropDownMenuProps,DropDownMenuStates>
                                 <div onClick={(e) => this.Select(index,item)} key={'index_' + index} className="DropMenuRow row">
                                     <span className="DropMenuRowText">
                                         {this.props.isLocalize 
-                                            ? <FormattedMessage id={item} /> 
+                                            ? <FormattedMessage defaultMessage={item} id={item} /> 
                                             : item
                                         }
                                     </span>

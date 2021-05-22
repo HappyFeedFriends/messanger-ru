@@ -1,7 +1,9 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
+import { connect, ConnectedProps } from "react-redux";
 import Cookies from "universal-cookie";
 import type { ModalWindowEnum } from "../enums";
+import { RootState } from "../redux/rootReducer";
 import '../styles/UserProfile.scss'
 import UserExternal from "./user/user.external";
 import UserFeedBackError from "./user/user.feedback_error";
@@ -32,9 +34,9 @@ enum UserCategory{
     USER_CATEGORY_SETTINGS_DEBUG = 8,
 }
 
-class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
+class UserProfile extends React.Component<PropsFromRedux,UserProfileStates>{
  
-    constructor(props : UserProfileProps){
+    constructor(props : PropsFromRedux){
         super(props)
 
         this.state = {
@@ -55,7 +57,7 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
             case UserCategory.USER_CATEGORY_BUG_REPORTS:
                 return <BugReports /> 
             default:
-                return <UserPersonalAccount {...this.props} />;
+                return <UserPersonalAccount openModal={this.props.openModal} />;
         }
     }
 
@@ -72,8 +74,19 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
             <button 
             data-select={this.state.CategoryID === categoryID} 
             onClick={(e) => this.OpenCategory(categoryID)}>
-                <FormattedMessage id={text}/>
+                <FormattedMessage defaultMessage={text} id={text}/>
             </button>
+        )
+    }
+
+    DevComponent(){
+        return (
+        <div className="category column">
+            <span className="category_header">Разработчик</span>
+            <ul className="column category_list"> 
+            {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_BUG_REPORTS,'user_bug_report')}
+            </ul>
+        </div>
         )
     }
 
@@ -104,14 +117,7 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
                             {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_FEEDBACK_REVIEW,'user_settings_feedback_review')}
                         </ul>
                     </div>
-
-                    <div className="category column">
-                        <span className="category_header">Разработчик</span>
-                        <ul className="column category_list"> 
-                        {this.ButtonCategorySelect(UserCategory.USER_CATEGORY_BUG_REPORTS,'user_bug_report')}
-                        </ul>
-                    </div>
-
+                    {this.props.User.IsAdmin && this.DevComponent()}
                     <div className="category column">
                         <ul className="column category_list">
                             <button className="quit" onClick={e => {  new Cookies().remove('auth'); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
@@ -147,5 +153,14 @@ class UserProfile extends React.Component<UserProfileProps,UserProfileStates>{
     }
 
 }
+const mapStateToProps = (state : RootState) => {
+    return { 
+        User : state.APPReducer.user
+    };
+}
 
-export default UserProfile
+const connector = connect(mapStateToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector> & UserProfileProps
+
+export default connector(UserProfile)

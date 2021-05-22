@@ -27,7 +27,7 @@ class UserLanguage extends React.Component<PropsFromRedux>{
         return (
             <div className="translateName_flag row">
                 <span className="translateName"> 
-                    <FormattedMessage id={'lang_' + code}/> 
+                    <FormattedMessage defaultMessage={'lang_' + code} id={'lang_' + code}/> 
                 </span>
                 <img src={flag} alt=""/>
             </div>

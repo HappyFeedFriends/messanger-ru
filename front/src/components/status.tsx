@@ -15,7 +15,7 @@ class Status extends React.Component<StatusProps>{
     render(){
         return (
             <div className="StatusHeader row" data-status={'status_' + this.props.statusCode}>
-                <span><FormattedMessage id={'status_' + this.props.statusCode}/></span>
+                <span><FormattedMessage defaultMessage={'status_' + this.props.statusCode} id={'status_' + this.props.statusCode}/></span>
             </div>
         )
     }

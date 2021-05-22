@@ -80,15 +80,17 @@ routerAPI.get('/user_data',async (req : Request, res : Response) => {
     prev[current.MessageChannelID].users.push(current.UserID)
     return prev;
   },{})
-
+  const _user = (await knexQuery<UsersTable>('users').select('email','IsAdmin').where('id',id).first())
   const user : UserData = {...users.find(value => value.id == id),
     Channels : Object.keys(channels).map(value => Number(value)),
     friendsList : [],
-    email : (await knexQuery<UsersTable>('users').select('email').where('id',id).first()).email}
+    email : _user.email,
+    IsAdmin : _user.IsAdmin,
+  }
   const obj = {
     id : id,
     Users : users,
-    User : user,
+    User : user, 
     channelsStorage : channels,
   } as UserDataResponse   
   data.data.push( obj )

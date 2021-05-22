@@ -22,7 +22,7 @@ class RadioSelector extends React.Component<SelectorProps>{
                         <div className="dot_ring" />
                     </div>
                     <span className="realName"> 
-                        <FormattedMessage id={this.props.leftText}/>  
+                        <FormattedMessage defaultMessage={this.props.leftText} id={this.props.leftText}/>  
                     </span>
                 </div>
                 {this.props.rightElement}

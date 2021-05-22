@@ -132,6 +132,10 @@
     }
 }
 
+.ChatRow{
+    margin-top: 2px;
+}
+
 .MessagesHeader:hover span{
     color: var(--default-color-messange-hover);
 }
@@ -213,7 +217,7 @@
     height: 80%;
 }
 .MessagesContainer{
-    height: calc(100% - 15px);
+    height: 100%;
 }
 .messageContainer{
     height: 100%;

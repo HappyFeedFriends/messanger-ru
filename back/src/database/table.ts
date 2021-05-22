@@ -6,6 +6,7 @@ export interface UsersTable{
     email : string,
     created_at : Date,
     onlinestatus : boolean,
+    IsAdmin : boolean,
 }
 
 export interface ImagesTable{
