@@ -120,7 +120,7 @@ class UserProfile extends React.Component<PropsFromRedux,UserProfileStates>{
                     {this.props.User.IsAdmin && this.DevComponent()}
                     <div className="category column">
                         <ul className="column category_list">
-                            <button className="quit" onClick={e => {  new Cookies().remove('auth'); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
+                            <button className="quit" onClick={e => {  new Cookies().remove('auth', { path: '/' }); window.location.reload()}} ><FormattedMessage id={'user_settings_quit'}/></button>
                         </ul>
                     </div>
 

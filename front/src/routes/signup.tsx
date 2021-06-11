@@ -43,15 +43,17 @@ class signUp extends React.Component<RouteComponentProps,SignInStates>{
 
             if (res.errorCode === -1){
                 this.props.history.push('/channel')
+                window.location.reload()
                 return;
             }
 
             this.setState({
-                dataErrorCodes : res.data
+                dataErrorCodes : res.data,
+                isLoading : false,
             })
 
         })
-        .finally(() => {
+        .catch(() => {
             this.setState({
                 isLoading : false
             })

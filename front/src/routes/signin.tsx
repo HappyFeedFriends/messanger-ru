@@ -14,6 +14,14 @@ class signIn extends React.Component<RouteComponentProps,SignInStates>{
     password : HTMLInputElement | undefined | null;
     date : HTMLInputElement | undefined | null;
 
+    constructor(props : RouteComponentProps){
+        super(props)
+        this.state = {
+            isLoading : false,
+            dataErrorCodes : [],
+        }
+    }
+
     OnSubmit(event : React.FormEvent<HTMLFormElement>){
 
         event.preventDefault();
@@ -47,6 +55,7 @@ class signIn extends React.Component<RouteComponentProps,SignInStates>{
 
             if (res.errorCode === -1){
                 this.props.history.push('/channel')
+                window.location.reload()
                 return;
             }
 
@@ -63,14 +72,6 @@ class signIn extends React.Component<RouteComponentProps,SignInStates>{
         })
 
 
-    }
-
-    constructor(props : RouteComponentProps){
-        super(props)
-        this.state = {
-            isLoading : false,
-            dataErrorCodes : [],
-        }
     }
 
     FindCodeData(errorCode : number){
