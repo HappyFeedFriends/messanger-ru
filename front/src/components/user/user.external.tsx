@@ -20,7 +20,7 @@ class UserExternal extends React.Component<PropsFromRedux>{
         data.push({...example,id : -2,content : 'Я плаваю при свете солнца!'})
         data.push({...example,id : -3,content : 'И жду, когда закончится....'}) 
         data.push({...example,id : -4,content : 'Ненависть к акулкам'})
-        data.push({...example,id : -5,content : 'Лучше посмотри на меня!',Url : 'img4.goodfon.ru/wallpaper/nbig/7/d4/akula-ryba-more-1.jpg' })
+        data.push({...example,id : -5,content : 'Лучше посмотри на меня!',Url : 'http://localhost:8080/uploads/shark.jpg' })
 
         return data
     }

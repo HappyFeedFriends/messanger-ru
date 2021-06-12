@@ -15,10 +15,6 @@ const upload = multer()
 const ExampleJsonResponse : ResponseDataExample = require('../../const/responseExample.json');
 const routerAPI = express.Router()
 
-interface MessageInterfaceQuery extends MessageInterface{
-  MessageChannelID : number,
-}
-
 routerAPI.use('/',async (req: Request, res: Response, next: () => void) => {
   let isAuth = !!req.cookies.auth;
   if (req.cookies.auth){

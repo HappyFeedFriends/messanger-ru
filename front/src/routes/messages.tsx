@@ -458,7 +458,7 @@ class MessagesRouter extends React.Component<PropsFromRedux, MessageRouterStates
 
         return (
             <div className="column FriendList">
-                <span className="FriendsOnline"> <FormattedMessage id="Online" /> — {this.props.friends.length}</span>
+                <span className="FriendsOnline"> <FormattedMessage id="Friends" /> — {this.props.friends.length}</span>
                 <div className="column">
                     {this.props.friends.map(friend => {
                         return this.FriendRowComponent(friend.id,friend.username,friend.Url,friend.onlinestatus)

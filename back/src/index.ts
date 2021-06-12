@@ -40,7 +40,7 @@ app.use(loggerMiddleware)
 app.use('/api',routerAPI);
 app.use('/auth',AuthRouter)
  
-app.get('/uploads/:filename/:scheme?',(req,res,next) => {
+app.get('/uploads/:filename/:scheme',(req,res,next) => {
     const name = req.params.filename
     if (!name){
         return next()

@@ -4,5 +4,69 @@
     "lang_en": "English",
     "real_lang_ru": "Русский",
 
-    "user_settings_quit" : "Quit"
+    "user_settings_quit" : "Quit",
+
+    "user_settings_header" : "User Settings",
+    "user_settings_account" : "My Account",
+    "user_settings_privacy" : "Privacy Policy",
+    "user_settings_app_header" : "App Settings",
+    "user_settings_app_lang" : "Language",
+    "user_settings_app_external" : "Appearance",
+    "user_settings_app_lang_sub" : "Choose Language",
+    "user_settings_feedback_header" : "Feedback",
+    "user_settings_feedback_error" : "Send Error",
+    "user_settings_feedback_review" : "Send Review",
+
+    "theme_name_dark" :  "Dark",
+    "theme_name_white" :  "Light",
+    "theme" : "Theme",
+
+    "status_0": "Development",
+
+    "message_visibility" : "Displaying Messages",
+    "text_visible_default" : "Cozy-modern, beautiful and pleasant to the eye",
+    "text_visible_compact" : "Compact - more messages fit on the screen",
+    "message_date_created_now" : "Today at {expires, time, short}",
+    "message_date_created_yesterday" : "Yesterday at {expires, time, short}",
+    "date_now" :    "Today",
+    "date_yesterday" : "Yesterday",
+
+
+    "feedback_theme_message"  : "Message Theme:",
+    "feedback_error_interface" : "Interface Error",
+    "feedback_error_localize" : "Localization Error",
+    "feedback_error_app" : "App Error",
+    "feedback_error_not_found" : "None of the options are right for me",
+
+    "feedback_review_friendly_interface" : "Friendly interface",
+    "feedback_review_happy" : "Responsive administration",
+
+    "send" :    "Send",
+    "clear_feedback" : "Clear",
+
+    "update": "Change",
+    "username" :  "Username",
+    "password" :  "Password",
+    "email" :  "Email",
+    "update_avatar" : "Change Avatar",
+    "delete_account" : "Deleting Account",
+    "delete_account_sub" : "Once you delete your account, you will no longer be able to restore it",
+    "delete_account_button" : "Delete Account",
+
+    "done" : "Done",
+
+    "delete_account_success" : "Do you really want to delete your account? This action cannot be undone or changed",
+    "cancel" : "Cancel",
+    "delete" : "Delete",
+
+    "Online" : "Online",
+    "Offline" : "Offline",
+    "PersonalMessages" : "Private Messages",
+    "Friends" : "Friends",
+    "Channel_number" : "Chat №{id}",
+
+    "user_statistics" : "Statistics",
+    "user_admin" : "Administration",
+    "user_bug_report" : "Reports",
+    "user_settings_debug" : "Debugging"
 }
